@@ -4,5 +4,4 @@ from .serializers import *
 
 
 class CreateHighlightView(generics.CreateAPIView):
-    queryset = User.objects.all()
     serializer_class = HighlightSerializer
