@@ -1,6 +1,6 @@
 import './App.css';
 import Sidebar from './Sidebar'
-import User from './User';
+import User from './User/User';
 function App() {
   return (
     <div className="App">
