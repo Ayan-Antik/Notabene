@@ -2,5 +2,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', CreateHighlightView.as_view()),
+    path('create/', CreateHighlightView.as_view()),
+    path('list/', ListHighlightView.as_view()),
 ]
