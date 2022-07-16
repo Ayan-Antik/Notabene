@@ -15,7 +15,7 @@ import {
 import axios from "axios";
 
 
-export default function User() {
+export default function User(props) {
   
 	
 	const [name, setName] = React.useState("");
@@ -39,9 +39,9 @@ export default function User() {
 		//window.location.reload();
 
 		let credentials = {
-			username : name,
-			email : mail,
-			password : pass,
+			"username" : name,
+			"email" : mail,
+			"password" : pass,
 		};
 
 		// axios
@@ -61,23 +61,24 @@ export default function User() {
 	
 		return (
 			<div>
-				<div className='leftdiv'>
+				<div className='leftdiv' style={{marginLeft:"10%"}}>
 					<h1 className='title'>notabene</h1>
+					
 					<img src={Sticky} 
-					width="128px">
+					width="128px" style={{marginLeft: "30%"}}>
 					</img>
 				</div>
 				
-				<div className='rightdiv'>
-				{/* <LogIn
+				<div className='rightdiv' style={{width: "50%"}}>
+				{props.type === "login" && <LogIn
 					name = {name}
 					setName = {setName}
 					pass = {pass}
 					setPass = {setPass}
 					handleSubmitLogIn = {handleSubmitLogIn}
-				/> */}
+				/> }
 
-				<SignUp
+				{props.type === "signup" &&<SignUp
 					name = {name}
 					setName = {setName}
 					mail = {mail}
@@ -87,7 +88,7 @@ export default function User() {
 					handleSubmitSignUp = {handleSubmitSignUp}
 				
 
-				/>
+				/>}
 					
 				</div>
 			</div>

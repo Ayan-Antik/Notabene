@@ -10,7 +10,7 @@ from django.views.generic import TemplateView
 # router.register(r'users', views.UserView, 'user')
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name = 'index.html')),
+    # path('', TemplateView.as_view(template_name = 'index.html')),
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
     path('highlight/', include('highlight.urls')),

@@ -1,0 +1,22 @@
+.feed-reco{
+    margin-left: 20%;
+    /* margin-top: 2%; */
+}
+.feed{
+    /* display: flex; */
+    /* float: left; */
+    /* border-right: 2px solid grey; */
+
+    width: 80%;
+}
+/* .reco{
+    display: flex;
+    padding-left: 16px;
+    width: auto;
+    margin-top: 2%;
+    margin-right: 8px;
+    float: right;
+} */
+.card-view{
+    display:'flex'
+}
