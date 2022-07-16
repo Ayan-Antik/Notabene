@@ -23,8 +23,8 @@
             ],
             "js": [
                 "lib/jquery-2.1.3.min.js",
-                "src/highlight.js",
-                "src/listHighlight.js"
+                "src/loadHighlight.js",
+                "src/highlight.js"
             ],
             "all_frames": true
         }

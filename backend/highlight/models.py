@@ -6,9 +6,9 @@ class Highlight(models.Model):
     text = models.TextField()
     container = models.TextField()
     anchorNode = models.TextField()
-    anchorOffset = models.TextField()
+    anchorOffset = models.IntegerField()
     focusNode = models.TextField()
-    focusOffset = models.TextField()
+    focusOffset = models.IntegerField()
     note = models.TextField(null=True)
 
     def __str__(self):
