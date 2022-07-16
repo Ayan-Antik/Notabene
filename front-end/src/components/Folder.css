@@ -1,0 +1,49 @@
+#hierarchy
+{
+    font-family: FontAwesome;
+    width: 220px;
+}
+.foldercontainer, .file, .noitems
+{
+    display: block;
+    padding: 5px 5px 5px 30px;
+}
+.folder
+{
+    color: rgb(131, 142, 110);
+}
+.file
+{
+    color: black;
+}
+.folder, .file
+{
+    cursor: pointer;
+}
+.noitems
+{
+    display: none;
+    pointer-events: none;
+}
+.folder:hover,.file:hover
+{
+    background: rgba(227, 227, 227, 0.5);
+    
+}
+.folder:before, .file:before
+{
+    padding-right: 10px;
+}
+
+#DA{
+    max-width: 22px;
+    max-height: 20px;
+    padding: 0px 6px 0px 0px;
+}
+
+#RA{
+    max-width: 16px;
+    max-height: 20px;
+    padding: 0px 6px 0px 0px;
+}
+

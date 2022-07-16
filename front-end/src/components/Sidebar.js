@@ -20,6 +20,7 @@ import TextField from '@mui/material/TextField';
 import { InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import './Sidebar.css'
+import Folder from './Folder';
 
 const drawerWidth = 240;
 const Elements = [
@@ -125,7 +126,9 @@ export default function Sidebar() {
 				</ListItemButton>
 				</ListItem>
 			))} */}
+
 			</List>
+			<Folder />
 		</Drawer>
 		
 		</Box>
