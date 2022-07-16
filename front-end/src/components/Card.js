@@ -14,7 +14,8 @@ export default function MyCard() {
           height="140"
           image="/static/images/cards/contemplative-reptile.jpg"
           alt="green iguana"
-        />
+          />
+          </CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             Lizard
@@ -24,7 +25,6 @@ export default function MyCard() {
             species, ranging across all continents except Antarctica
           </Typography>
         </CardContent>
-      </CardActionArea>
     </Card>
   );
 }

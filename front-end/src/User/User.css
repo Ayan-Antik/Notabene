@@ -1,0 +1,50 @@
+.rightdiv{
+    width: 50%;
+    float: right;
+    height: 100vh;
+    background-color: #f46524;
+}
+.leftdiv{
+
+    /* display: flex; */
+    width: 50%;
+    float: left;
+    align-items: center;
+    font-size: 48px;
+    font-family: monospace;
+    color: #f46524;
+}
+.title{
+    padding-top: 30vh;
+    margin: 8px;
+}
+/* #textform{
+    margin-top: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: antiquewhite;
+} */
+.textdiv{
+
+    max-width: 25%; 
+  
+}
+.textfield{
+    background-color: white;
+    border-color: blue;
+    border-radius:5% / 15%; 
+    
+}
+
+
+#btnlogin{
+    background-color: blue;
+    margin: 16px 0px 0px 16px;
+    padding: 8px;
+    width: 200px;
+}
+
+#btnlogin:hover{
+    background-color: darkblue;
+}
