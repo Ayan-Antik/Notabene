@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CORS_ORIGIN_ALLOW_ALL = True
 
 # Application definition
 CORS_ORIGIN_ALLOW_ALL = True
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'user',
     'highlight',
+    'document',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '..//front-end//build//static'),
 ]
+
+# CORS_ORIGIN_WHITELIST = [
+#     'http://localhost:3000'
+# ]
+

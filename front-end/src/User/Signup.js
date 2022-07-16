@@ -3,7 +3,7 @@ import TextField from '@mui/material/TextField';
 import './User.css'
 import { Button } from '@mui/material';
 
-export default function SignUp({name, setName, mail, setMail, pass, setPass, handleSubmit}){
+export default function SignUp({name, setName, mail, setMail, pass, setPass, handleSubmitSignUp}){
 
     return(
 
@@ -54,7 +54,7 @@ export default function SignUp({name, setName, mail, setMail, pass, setPass, han
             />
             <Button variant="contained" color="success"
             id="btnlogin"
-            onClick={handleSubmit}
+            onClick={handleSubmitSignUp}
             >
                 Sign Up
             </Button>

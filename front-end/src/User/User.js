@@ -12,6 +12,7 @@ import {
 	Switch,
 	Route
   } from "react-router-dom";
+import axios from "axios";
 
 
 export default function User() {
@@ -26,13 +27,35 @@ export default function User() {
 		console.log("Btn pressed");
 		console.log(name, pass);
 		window.location.reload();
+
+		// axios
+		// .put()
 		
 	}
 	const handleSubmitSignUp = (event) =>{
 		event.preventDefault();
 		console.log("Btn pressed");
 		console.log(name, mail, pass);
-		window.location.reload();
+		//window.location.reload();
+
+		let credentials = {
+			username : name,
+			email : mail,
+			password : pass,
+		};
+
+		// axios
+		// .post("http://localhost:8000/user/create/", credentials, {headers: {
+		// 	'Content-Type' : 'application/json'
+		//   }});
+
+		fetch( 'http://localhost:8000/user/create/', {
+			method: "POST",
+			body: JSON.stringify(credentials),
+			headers: {"Content-type": "application/json"}
+		})
+		.then(response => console.log(response))
+		.catch(error => console.log(error));
 		
 	}
 	
