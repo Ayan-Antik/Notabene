@@ -7,6 +7,8 @@ import Sticky from './Sticky.png'
 import { width } from '@mui/system';
 import LogIn from './Login';
 import SignUp from './Signup';
+import AuthContext from '../context/AuthContext';
+import { useContext } from "react";
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -21,13 +23,14 @@ export default function User(props) {
 	const [name, setName] = React.useState("");
 	const [mail, setMail] = React.useState("");
 	const [pass, setPass] = React.useState("");
+	const { registerUser, loginUser } = useContext(AuthContext);
 
 	const handleSubmitLogIn = (event) =>{
 		event.preventDefault();
 		console.log("Btn pressed");
 		console.log(name, pass);
-		window.location.reload();
-
+		//window.location.reload();
+		loginUser(name, pass);
 		// axios
 		// .put()
 		
@@ -38,18 +41,20 @@ export default function User(props) {
 		console.log(name, mail, pass);
 		//window.location.reload();
 
-		let credentials = {
-			username : name,
-			email : mail,
-			password : pass,
-		};
+		// let credentials = {
+		// 	username : name,
+		// 	email : mail,
+		// 	password : pass,
+		// };
 
-		axios.post("http://127.0.0.1:8000/user/create/", credentials)
-			.then(response => {
-				if (response.status == 201) {
-					window.location.replace('http://127.0.0.1:3000/feed');
-				}
-		});
+		registerUser(name, mail, pass, pass); // CHANGE TO PASS2!!!
+
+		// axios.post("http://127.0.0.1:8000/user/create/", credentials)
+		// 	.then(response => {
+		// 		if (response.status == 201) {
+		// 			window.location.replace('http://127.0.0.1:3000/user/login/');
+		// 		}
+		// });
 	}
 	
 		return (
