@@ -68,7 +68,7 @@ export default function User(props) {
 					setName = {setName}
 					pass = {pass}
 					setPass = {setPass}
-					handleSubmitLogIn = {handleSubmitLogIn}
+					handleSubmit = {handleSubmitLogIn}
 				/> }
 
 				{props.type === "signup" &&<SignUp
@@ -78,7 +78,7 @@ export default function User(props) {
 					setMail = {setMail}
 					pass = {pass}
 					setPass = {setPass}
-					handleSubmitSignUp = {handleSubmitSignUp}
+					handleSubmit = {handleSubmitSignUp}
 				
 
 				/>}
