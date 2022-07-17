@@ -39,24 +39,17 @@ export default function User(props) {
 		//window.location.reload();
 
 		let credentials = {
-			"username" : name,
-			"email" : mail,
-			"password" : pass,
+			username : name,
+			email : mail,
+			password : pass,
 		};
 
-		// axios
-		// .post("http://localhost:8000/user/create/", credentials, {headers: {
-		// 	'Content-Type' : 'application/json'
-		//   }});
-
-		fetch( 'http://localhost:8000/user/create/', {
-			method: "POST",
-			body: JSON.stringify(credentials),
-			headers: {"Content-type": "application/json"}
-		})
-		.then(response => console.log(response))
-		.catch(error => console.log(error));
-		
+		axios.post("http://127.0.0.1:8000/user/create/", credentials)
+			.then(response => {
+				if (response.status == 201) {
+					window.location.replace('http://127.0.0.1:3000/user/login/');
+				}
+		});
 	}
 	
 		return (

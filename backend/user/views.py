@@ -6,3 +6,6 @@ from .serializers import *
 class UserView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class CreateUserView(generics.CreateAPIView):
+    serializer_class = UserSerializer

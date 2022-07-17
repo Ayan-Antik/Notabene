@@ -7,7 +7,7 @@ function App() {
   return (
     <div className="App">
       {/* <Sidebar/> */}
-      {/* <Route path="user" exact element = {<User />} /> */}
+      {<Route path="user" exact element = {<User />} />}
       {/* <User /> */}
     </div>
   );
