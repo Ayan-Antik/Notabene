@@ -2,7 +2,6 @@ import React from 'react'
 import './Folder.css'
 import da from './da.png'
 import ra from './ra.png'
-import { maxHeight, maxWidth } from '@mui/system'
 
 
 const Folder = () => {

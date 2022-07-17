@@ -47,7 +47,7 @@ export default function User(props) {
 		axios.post("http://127.0.0.1:8000/user/create/", credentials)
 			.then(response => {
 				if (response.status == 201) {
-					window.location.replace('http://127.0.0.1:3000/user/login/');
+					window.location.replace('http://127.0.0.1:3000/feed');
 				}
 		});
 	}

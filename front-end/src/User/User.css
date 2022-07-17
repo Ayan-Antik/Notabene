@@ -39,12 +39,12 @@
 
 
 #btnlogin{
-    background-color: blue;
+    background-color: #4a64b4;
     margin: 16px 0px 0px 16px;
     padding: 8px;
     width: 200px;
 }
 
 #btnlogin:hover{
-    background-color: darkblue;
+    background-color: #3d5290;
 }

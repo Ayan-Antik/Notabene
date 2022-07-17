@@ -4,11 +4,11 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
-import Sticky from './Sticky.png'
+import Sticky from './lizard.jpg'
 
 export default function MyCard() {
   return (
-    <Card sx={{ minWidth: 320, width:320, m:"16px" }}>
+    <Card sx={{ minWidth: 320, width:320, mr:"16px" }}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -39,7 +39,7 @@ export default function MyCard() {
             backgroundColor: "#BFC9CA",
             borderRadius: "5% / 15%"
           }}
-          >#data-breach</span> {/*Add br tag if more than 2 tags*/}
+          >#animals</span> {/*Add br tag if more than 2 tags*/}
         </CardContent>
     </Card>
   );

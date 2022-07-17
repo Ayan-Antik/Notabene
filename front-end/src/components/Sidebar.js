@@ -64,11 +64,18 @@ export default function Sidebar() {
 		<Drawer
 			sx={{
 			width: drawerWidth,
+			mt:'20px',
 			flexShrink: 0,
 			'& .MuiDrawer-paper': {
 				width: drawerWidth,
 				boxSizing: 'border-box',
 			},
+			'& .MuiPaper-root':{
+				marginTop: '64px'
+			},
+			'& .css-cveggr-MuiListItemIcon-root':{
+				minWidth: '38px'
+			}
 			}}
 			variant="permanent"
 			anchor="left"
@@ -78,8 +85,8 @@ export default function Sidebar() {
 		sx={{
 			'& .MuiTextField-root': { m: 1, width: '22ch'},
 			'& .MuiOutlinedInput-root':{height: '40px'},
-			my: '10px',
-			mx: '10px'
+			// my: '10px',
+			mx: '10px',
 		}}
 		noValidate
 		autoComplete="off"
@@ -88,7 +95,7 @@ export default function Sidebar() {
 		}}
 		>
 
-			 <div className = "textdiv">
+			 {/* <div className = "textdiv">
 				<TextField
 			className = "sidebar--search"
 				required
@@ -98,7 +105,7 @@ export default function Sidebar() {
 					startAdornment: <InputAdornment position="start"><SearchIcon/></InputAdornment>,
 				  }}
 				/>
-			</div>
+			</div> */}
 		</Box>
 			{/* <Toolbar /> */}
 			{/* <Divider /> */}
@@ -109,7 +116,7 @@ export default function Sidebar() {
 					<ListItemIcon>
 					{icon}
 					</ListItemIcon>
-					<ListItemText primary={text} />
+					<ListItemText primary={text} sx={{pl:"0px"}}/>
 				</ListItemButton>
 				</ListItem>
 			))}
