@@ -5,12 +5,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Sticky from './lizard.jpg'
+import { useNavigate } from 'react-router-dom';
 
 export default function MyCard(props) {
+  const navigate = useNavigate();
   console.log(props.card);
   return (
     <Card sx={{ minWidth: 320, width:320, mr:"16px" }}>
-      <CardActionArea>
+      <CardActionArea onClick={() => navigate("../notes")}>
         <CardMedia
           component="img"
           height="140"

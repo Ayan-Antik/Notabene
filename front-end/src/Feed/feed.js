@@ -42,7 +42,7 @@ const Feed = () => {
             <h1 style={{fontSize:'36px'}}>Discover</h1>
             <div className='card-view' style={{display:'flex' }}>
                 <MyCard card = {data}/>
-                <MyCard card = {data}/>
+                {/* <MyCard card = {data}/> */}
 
             </div>
             {/* <div className='card-view' style={{display:'flex' }}>

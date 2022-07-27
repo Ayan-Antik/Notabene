@@ -28,7 +28,7 @@ const notes = () => {
     </div>
 
     <div>
-    <p style={{align:"left"}}>Lizards are a widespread group of squamate reptiles, with over 7,000 species</p>
+    <p className='highlighted'>Lizards are a widespread group of squamate reptiles, with over 7,000 species</p>
         <TextField
           id="outlined-multiline-flexible"
           label="Edit Note"
@@ -47,7 +47,7 @@ const notes = () => {
           <br/>
     {/* </div>
     <div> */}
-        <p>Most lizards are quadrupedal, running with a strong side-to-side motion.</p>
+        <p className='highlighted'>Most lizards are quadrupedal, running with a strong side-to-side motion.</p>
         <TextField
           id="outlined-multiline-flexible"
           label="Edit Note"
@@ -66,7 +66,7 @@ const notes = () => {
           <br/>
     {/* </div>
     <div> */}
-    <p>Lizards typically have rounded torsos, elevated heads on short necks, four limbs and long tails</p>
+    <p className='highlighted'>Lizards typically have rounded torsos, elevated heads on short necks, four limbs and long tails</p>
         <TextField
           id="outlined-multiline-flexible"
           label="Edit Note"
@@ -86,7 +86,7 @@ const notes = () => {
           <br/>
     {/* </div>
     <div> */}
-    <p>The dentitions of lizards reflect their wide range of diets, including carnivorous, insectivorous</p>
+    <p className='highlighted'>The dentitions of lizards reflect their wide range of diets, including carnivorous, insectivorous</p>
         <TextField
           id="outlined-multiline-flexible"
           label="Edit Note"
