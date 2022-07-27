@@ -102,7 +102,8 @@ export default function Navbar() {
 
   return (
     <Box sx={{ flexGrow: 1}}>
-      <AppBar position="static" style={{
+      <AppBar style={{
+        position: "fixed",
         // marginLeft: "17%"
         backgroundColor: "#f46524"
       }}>

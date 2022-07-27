@@ -6,6 +6,8 @@ import Sidebar from './components/Sidebar';
 import Feed from './Feed/feed'
 import { AuthProvider } from './context/AuthContext';
 import Home from "./TempHome";
+//import Notes from '@mui/icons-material/Notes';
+import Notes from './Notes/Notes'
 
 function App() {
   return (
@@ -15,6 +17,7 @@ function App() {
       <Routes>
           <Route path="/" exact element = {<Home />} />
           <Route path="feed" exact element = {< Feed />} />
+          <Route path="notes" exact element = {< Notes />} />
           <Route path="user/signup" exact element = {<User type="signup" />} />
           <Route path="user/login" exact element = {<User type="login" />} />
       </Routes>
