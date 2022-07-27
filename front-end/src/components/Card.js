@@ -6,7 +6,8 @@ import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Sticky from './lizard.jpg'
 
-export default function MyCard() {
+export default function MyCard(props) {
+  console.log(props.card);
   return (
     <Card sx={{ minWidth: 320, width:320, mr:"16px" }}>
       <CardActionArea>
@@ -19,11 +20,10 @@ export default function MyCard() {
           </CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard 
+            {props.card.title} 
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px" }}>
-            Lizards  are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            {props.card.summary}
           </Typography>
           
          <b> <a href='#' style={{
@@ -32,7 +32,7 @@ export default function MyCard() {
             textDecoration:"none",
             }}>tanjim_ak49</a></b>
 
-          <i>Dec 12, 2021</i><br /><br />
+          <i>{props.card.modified_date}</i><br /><br />
           <span style={{
             margin:"10px 4px 0px 0px",
             padding: "6px",
