@@ -13,8 +13,8 @@ function App() {
       <BrowserRouter>
       <AuthProvider>
       <Routes>
-          <Route path="/" exact element = {<Home />} />
-          <Route path="feed" exact element = {< Feed />} />
+          <Route path="/" exact element = {<Feed />} />
+          {/* <Route path="feed" exact element = {< Feed />} /> */}
           <Route path="user/signup" exact element = {<User type="signup" />} />
           <Route path="user/login" exact element = {<User type="login" />} />
       </Routes>
