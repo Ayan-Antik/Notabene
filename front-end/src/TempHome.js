@@ -9,6 +9,7 @@ const Home = () => {
     logoutUser();
   }
 
+  console.log(user);
   return (
     <section>
       {user && <div><h1>Hello, {user.username}</h1></div>}

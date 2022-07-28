@@ -71,7 +71,7 @@ export default function Sidebar() {
 				boxSizing: 'border-box',
 			},
 			'& .MuiPaper-root':{
-				marginTop: '64px'
+				marginTop: '68px'
 			},
 			'& .css-cveggr-MuiListItemIcon-root':{
 				minWidth: '38px'

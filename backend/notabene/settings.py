@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'user',
     'highlight',
-    # 'document',
+    'documents',
 ]
 
 MIDDLEWARE = [
