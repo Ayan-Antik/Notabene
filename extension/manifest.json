@@ -23,8 +23,9 @@
             ],
             "js": [
                 "lib/jquery-2.1.3.min.js",
-                "src/loadHighlight.js",
-                "src/highlight.js"
+                "src/storageManager.js",
+                "src/highlight.js",
+                "src/loadHighlight.js"
             ],
             "all_frames": true
         }

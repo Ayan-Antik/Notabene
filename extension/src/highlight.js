@@ -1,4 +1,4 @@
-HIGHLIGHT_CLASS = 'highlighted';
+HIGHLIGHT_CLASS = 'highlighter--highlighted';
 HIGHLIGHT_COLOR = 'yellow';
 
 function executeHighlight(text, container, selection, highlightId) {
@@ -19,6 +19,7 @@ function executeHighlight(text, container, selection, highlightId) {
         //     el.addEventListener('click', onHighlightMouseEnterOrClick);
         //     el.addEventListener('mouseleave', onHighlightMouseLeave);
         // });
+    if (selection.removeAllRanges) selection.removeAllRanges();
 }
 
 function recursiveWrapper(highlightInfo, startFound, charsHighlighted) {
@@ -90,7 +91,7 @@ function recursiveWrapper(highlightInfo, startFound, charsHighlighted) {
                     const highlightNode = document.createElement('span');
                     highlightNode.classList.add(HIGHLIGHT_CLASS); // NO DELETED CLASS
                     highlightNode.setAttribute('style', `background-color: ${HIGHLIGHT_COLOR};`);
-                    highlightNode.setAttribute('highlight-id', highlightId);
+                    highlightNode.setAttribute('data-highlight-id', highlightId);
                     highlightNode.textContent = firstSplitTextEl.nodeValue;
 
                     firstSplitTextEl.remove();

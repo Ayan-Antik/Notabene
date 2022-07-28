@@ -2,7 +2,8 @@ from operator import mod
 from pyexpat import model
 from turtle import title
 from django.db import models
-
+from django.contrib.auth.models import User
+from django.utils import timezone
 # Create your models here.
 
 class Document(models.Model):
@@ -15,21 +16,32 @@ class Document(models.Model):
     # focusOffset = models.TextField()
     # note = models.TextField(null=True)
 
-    url = models.TextField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    url = models.URLField()
     title = models.TextField()
-    summary = models.TextField()
-    source_type = models.TextField()
-    created_date = models.DateField()
-    modified_date = models.DateField()
-    privacy = models.TextField()
-    is_deleted = models.BooleanField()
-    read_count = models.IntegerField()
-    rating  = models.IntegerField()
+    summary = models.TextField(default="")
+    ARTICLE = 'ar'
+    SOURCE_CHOICES = [
+        (ARTICLE, 'Article'),
+    ]
+    source_type = models.CharField(max_length=2, choices=SOURCE_CHOICES, default=ARTICLE)
+    created_date = models.DateTimeField(default=timezone.now)
+    modified_date = models.DateTimeField(default=timezone.now)
+    PRIVATE = 'pr'
+    PUBLIC = 'pu'
+    PRIVACY_CHOICES = [
+        (PRIVATE, 'Private'),
+        (PUBLIC, 'Public'),
+    ]
+    privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
+    is_deleted = models.BooleanField(default=False)
+    read_count = models.IntegerField(default=0)
+    rating  = models.IntegerField(default=0)
 
 
 
     def __str__(self):
-        return self.text
+        return self.title
 
 
 

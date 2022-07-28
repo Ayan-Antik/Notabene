@@ -11,13 +11,37 @@ chrome.storage.local.get(['username'], data => {
         <h4 style="text-align: center; color: white;  padding: 10px;">Highlights</h4>
         <ul class="list-group" id="highlightList" style="padding: 0px 10px 10px 10px">`;
         chrome.tabs.executeScript({file: 'src/listHighlight.js'}, results => {
-            highlightTexts = results[0];
-            highlightTexts.forEach(highlightText => {
-                newListItem = document.createElement('li');
+            if (!results || !Array.isArray(results) || results.length == 0) return;
+            if (results[0].length == 0) {
+                // copyBtn.disabled = true;
+                // removeHighlightsBtn.disabled = true;
+                return;
+            }
+
+            const highlights = results[0];
+            // Clear previous list elements, but only if there is at least one otherwise leave the "empty" message
+            //highlightsListEl.innerHTML = '';
+
+            // Populate with new elements
+            for (let i = 0; i < highlights.length; i += 2) {
+                const newListItem = document.createElement('li');
                 newListItem.className = "list-group-item";
-                newListItem.textContent = highlightText;
+                newListItem.innerText = highlights[i + 1];
+                const highlightId = highlights[i];
+                // newEl.addEventListener('click', () => {
+                //     backgroundPage.showHighlight(highlightId);
+                // });
                 document.getElementById("highlightList").appendChild(newListItem);
-            });
+            }
+
+
+            // highlightTexts = results[0];
+            // highlightTexts.forEach(highlightText => {
+            //     newListItem = document.createElement('li');
+            //     newListItem.className = "list-group-item";
+            //     newListItem.textContent = highlightText;
+            //     document.getElementById("highlightList").appendChild(newListItem);
+            // });
         });
         document.body.innerHTML += "</ul>";
         document.getElementById("logoutBtn").addEventListener("click", (e) => {
