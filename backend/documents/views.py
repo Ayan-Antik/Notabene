@@ -9,3 +9,5 @@ class CreateDocumentView(generics.CreateAPIView):
 class ListDocumentView(generics.ListAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
+    
+    filterset_fields = ['owner__username']

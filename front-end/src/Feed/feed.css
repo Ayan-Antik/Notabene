@@ -7,7 +7,7 @@
     /* float: left; */
     /* border-right: 2px solid grey; */
 
-    width: 80%;
+    /* width: 60%; */
 }
 /* .reco{
     display: flex;
@@ -18,5 +18,5 @@
     float: right;
 } */
 .card-view{
-    display:'flex'
+    max-width: 50%;
 }

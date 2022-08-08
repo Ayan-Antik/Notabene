@@ -16,7 +16,7 @@ class Document(models.Model):
     # focusOffset = models.TextField()
     # note = models.TextField(null=True)
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE, null=True)
     url = models.URLField()
     title = models.TextField()
     summary = models.TextField(default="")
