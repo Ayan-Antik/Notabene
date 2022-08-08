@@ -7,12 +7,13 @@ import { CardActionArea } from '@mui/material';
 import Sticky from './lizard.jpg'
 import { useNavigate } from 'react-router-dom';
 
-export default function MyCard(prop) {
+export default function MyCard({card, setCardData}) {
   const navigate = useNavigate();
+  
   // console.log(props.card);
   return (
     <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 350, Height: 400}}>
-      <CardActionArea onClick={() => navigate("../notes")}>
+      <CardActionArea onClick={(e) => setCardData(card)}>
         <CardMedia
           component="img"
           height="140"
@@ -22,10 +23,10 @@ export default function MyCard(prop) {
           </CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {prop.card.title} 
+            {card.title} 
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px", minHeight: "100px" }}>
-            {prop.card.summary}
+            {card.summary}
           </Typography>
           
          <b> <a href='#' style={{
@@ -34,7 +35,7 @@ export default function MyCard(prop) {
             textDecoration:"none",
             }}>tanjim_ak49</a></b>
 
-          <i>{prop.card.modified_date}</i><br /><br />
+          <i>{card.modified_date}</i><br /><br />
           <span style={{
             margin:"10px 4px 0px 0px",
             padding: "6px",

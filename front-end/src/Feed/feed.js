@@ -6,6 +6,7 @@ import './feed.css'
 import Navbar from '../components/Navbar'
 import AuthContext from '../context/AuthContext'
 import axios from "axios"
+import Notes from '../Notes/Notes';
 
 
 const Feed = () => {
@@ -15,6 +16,8 @@ const Feed = () => {
    // logoutUser();
   }
 
+  const [cardData, setCardData] = useState(null)
+  console.log(cardData);
   const [data, setData] = useState([{
     url: "",
     title: "",
@@ -30,7 +33,7 @@ const Feed = () => {
   }]);
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/documents/list/").then( (response) => {
-      console.log(response.data[0]);
+    //   console.log(response.data[0]);
 	  response.data.forEach((data) => {
 		data.modified_date = data.modified_date.substr(0, 10);
 
@@ -47,11 +50,14 @@ const Feed = () => {
     });
   }, []);
 
+
+
   return (
     <div>
       <Navbar user = {user}/>
         <Sidebar />
-        <div className='feed-reco'>
+       {cardData === null ?  
+	   	 <div className='feed-reco'>
 			{/* style={{display:'flex', maxWidth:'650px' }} */}
 			<div className='recommendation'>
 
@@ -70,7 +76,7 @@ const Feed = () => {
 						// 	return <MyCard card = {dat} key={i}/>
 
 						// }
-						return (<div className='grid-item' key={i}><MyCard card = {card_data}/></div>)
+						return (<div className='grid-item' key={i}><MyCard card = {card_data} setCardData = {setCardData}/></div>)
 
 					})}
 			</div>
@@ -92,7 +98,16 @@ const Feed = () => {
 					// 	return <MyCard card = {dat} key={i}/>
 
 					// }
-					return (<div className='grid-item' key={i}><MyCard card = {card_data}/></div>)
+					return (
+					
+						<div className='grid-item' key={i}>
+							<MyCard 
+							card = {card_data}
+							setCardData = {setCardData}
+							/>
+						</div>
+					
+					)
 
 				})}
                 {/* <MyCard card = {data[0]}/>
@@ -107,6 +122,10 @@ const Feed = () => {
             
 
         </div>
+	  :
+	  <Notes
+	  info = {cardData}/> }
+	   
     </div>
   )
 }

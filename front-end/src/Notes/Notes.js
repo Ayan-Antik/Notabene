@@ -6,19 +6,19 @@ import Navbar from '../components/Navbar'
 import Iframe from 'react-iframe'
 import TextField from '@mui/material/TextField';
 
-const notes = () => {
+const Notes = (props) => {
   return (
 <div >
 
-    <div>
+    {/* <div>
       <Navbar />
         <Sidebar />
 
-    </div>
+    </div> */}
 
     <div className='note-container'>
 
-        <Iframe url="https://en.wikipedia.org/wiki/Lizard" className='iframe'
+        <Iframe url={props.info.url} className='iframe'
         />
 
     <div>
@@ -114,4 +114,4 @@ const notes = () => {
   )
 }
 
-export default notes
+export default Notes
