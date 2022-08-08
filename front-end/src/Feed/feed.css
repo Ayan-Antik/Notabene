@@ -1,6 +1,6 @@
 .feed-reco{
     margin-left: 20%;
-    /* margin-top: 2%; */
+    margin-top: 5%;
 }
 .feed{
     /* display: flex; */
@@ -18,5 +18,22 @@
     float: right;
 } */
 .card-view{
-    max-width: 50%;
+    /* max-width: 50%; */
+    /* border-right: 2px solid grey; */
+
+    display: grid;
+    grid-template-columns: minmax(380px, max-content) max-content;
+    /* padding: ; */
+}
+
+.recommendation{
+    border-left: 1px solid grey;
+    padding-left: 4%;
+    float: right;
+    margin-right: 5%;
+    display: grid;
+    grid-template-columns: auto;
+}
+.grid-item{
+    margin-bottom: 26px;
 }

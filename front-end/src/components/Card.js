@@ -11,7 +11,7 @@ export default function MyCard(prop) {
   const navigate = useNavigate();
   // console.log(props.card);
   return (
-    <Card sx={{ minWidth: 320, width:320, mr:"16px" }}>
+    <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 350, Height: 400}}>
       <CardActionArea onClick={() => navigate("../notes")}>
         <CardMedia
           component="img"
@@ -24,7 +24,7 @@ export default function MyCard(prop) {
           <Typography gutterBottom variant="h5" component="div">
             {prop.card.title} 
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px" }}>
+          <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px", minHeight: "100px" }}>
             {prop.card.summary}
           </Typography>
           

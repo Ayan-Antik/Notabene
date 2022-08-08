@@ -33,6 +33,13 @@ const Feed = () => {
       console.log(response.data[0]);
 	  response.data.forEach((data) => {
 		data.modified_date = data.modified_date.substr(0, 10);
+
+		//*Splitting card detail to make card size constant
+		if(data.summary.length > 50){
+			var split = data.summary.split(".");
+
+			data.summary = split[0] + ".";
+		}
 	  })
 	  
     //   response.data[0].modified_date = response.data[0].modified_date.substr(0, 10);
@@ -45,19 +52,48 @@ const Feed = () => {
       <Navbar user = {user}/>
         <Sidebar />
         <div className='feed-reco'>
-            <h1 style={{fontSize:'36px'}}>Discover</h1>
-			
-            <div className='card-view' style={{display:'flex' }}>
-				{data.map(function(dat, i){
-					console.log("i: ", i);
-					if(i%2 === 1){
-						return (<div key={i}><MyCard card = {dat}
-							/><br></br></div>)
-					}
-					else{
-						return <MyCard card = {dat} key={i}/>
+			{/* style={{display:'flex', maxWidth:'650px' }} */}
+			<div className='recommendation'>
 
-					}
+				<div className='grid-item'  style={{marginBottom:'12px'}}>
+
+				<h1 style={{fontSize:'36px'}}>Recommendations</h1>
+				</div>
+				<div className='grid-item' style={{marginBottom:'12px'}}></div>
+				{data.map(function(card_data, i){
+						// console.log("i: ", i);
+						// if(i%2 === 1){
+						// 	return (<div key={i}><MyCard card = {dat}
+						// 		/></div>)
+						// }
+						// else{
+						// 	return <MyCard card = {dat} key={i}/>
+
+						// }
+						return (<div className='grid-item' key={i}><MyCard card = {card_data}/></div>)
+
+					})}
+			</div>
+
+            <div className='card-view' >
+					<div className='grid-item'>
+
+						<h1 style={{fontSize:'36px'}}>Discover</h1>
+					</div>
+					<div className='grid-item'></div>
+				
+				{data.map(function(card_data, i){
+					// console.log("i: ", i);
+					// if(i%2 === 1){
+					// 	return (<div key={i}><MyCard card = {dat}
+					// 		/></div>)
+					// }
+					// else{
+					// 	return <MyCard card = {dat} key={i}/>
+
+					// }
+					return (<div className='grid-item' key={i}><MyCard card = {card_data}/></div>)
+
 				})}
                 {/* <MyCard card = {data[0]}/>
                 <MyCard card = {data[1]}/> */}
