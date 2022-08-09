@@ -8,28 +8,20 @@ import AuthContext from '../context/AuthContext'
 import axios from "axios"
 import Notes from '../Notes/Notes';
 
+  
 
 const Feed = () => {
 
   const { user, logoutUser } = useContext(AuthContext);
   const handleSubmit = (event) =>{
-   // logoutUser();
+	  console.log("Logout Clicked");
+	  console.log(user);
+	  logoutUser();
   }
 
   const [cardData, setCardData] = useState(null)
-  console.log(cardData);
+//   console.log(cardData);
   const [data, setData] = useState([{
-    url: "",
-    title: "",
-    summary: "",
-    source_type: "",
-    created_date: "2022-07-28",
-    modified_date: "2022-07-28",
-    privacy: "",
-    is_deleted:  "",
-    read_count: 2,
-    rating: 0
-
   }]);
   useEffect(() => {
     axios.get("http://127.0.0.1:8000/documents/list/").then( (response) => {
@@ -54,9 +46,8 @@ const Feed = () => {
 
   return (
     <div>
-      <Navbar user = {user}/>
+      <Navbar user = {user} handleSubmit = {handleSubmit}/>
         <Sidebar />
-       {cardData === null ?  
 	   	 <div className='feed-reco'>
 			{/* style={{display:'flex', maxWidth:'650px' }} */}
 			<div className='recommendation'>
@@ -88,16 +79,7 @@ const Feed = () => {
 					</div>
 					<div className='grid-item'></div>
 				
-				{data.map(function(card_data, i){
-					console.log("i: ", i);
-					// if(i%2 === 1){
-					// 	return (<div key={i}><MyCard card = {dat}
-					// 		/></div>)
-					// }
-					// else{
-					// 	return <MyCard card = {dat} key={i}/>
-
-					// }
+				{data.map(function(card_data, i){		
 					return (
 					
 						<div className='grid-item' key={i}>
@@ -110,21 +92,10 @@ const Feed = () => {
 					)
 
 				})}
-                {/* <MyCard card = {data[0]}/>
-                <MyCard card = {data[1]}/> */}
 
-            </div>
-            {/* <div className='card-view' style={{display:'flex' }}>
-                <MyCard />
-                <MyCard />
-
-            </div> */}
-            
+            </div>         
 
         </div>
-	  :
-	  <Notes
-	  info = {cardData}/> }
 	   
     </div>
   )

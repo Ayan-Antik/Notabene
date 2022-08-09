@@ -22,13 +22,13 @@
     /* border-right: 2px solid grey; */
 
     display: grid;
-    grid-template-columns: minmax(380px, max-content) max-content;
+    grid-template-columns:  max-content max-content;
     /* padding: ; */
 }
 
 .recommendation{
     border-left: 1px solid grey;
-    padding-left: 4%;
+    padding-left: 3%;
     float: right;
     margin-right: 5%;
     display: grid;

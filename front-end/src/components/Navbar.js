@@ -12,6 +12,7 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
 import './Navbar.css'
 
 const Search = styled('div')(({ theme }) => ({
@@ -54,7 +55,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Navbar({user}) {
+export default function Navbar({user, handleSubmit}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -139,6 +140,8 @@ export default function Navbar({user}) {
             >
               <AccountCircle />
             </IconButton>
+            {user && <LogoutIcon sx={{ml:2, mt:2.7, cursor:'pointer'}} onClick={handleSubmit}/>}
+            {!user && <LogoutIcon sx={{ml:2, mt:1.5, cursor:'pointer'}} onClick={handleSubmit}/>}
           </Box>
          
         </Toolbar>

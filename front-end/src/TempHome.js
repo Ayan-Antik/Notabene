@@ -16,9 +16,10 @@ const Home = () => {
   console.log(user);
   return (
     <div>
-      <Navbar />
-      <Sidebar/>
+      {/* <Navbar />
+      <Sidebar/> */}
       {/* {component} */}
+      
     </div>
 
     // <section>

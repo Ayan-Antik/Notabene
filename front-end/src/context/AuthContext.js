@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
-    window.location.replace("http://127.0.0.1:3000/");
+    window.location.replace("http://127.0.0.1:3000/user/login/");
   };
 
   const contextData = {
