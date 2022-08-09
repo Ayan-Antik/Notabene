@@ -16,10 +16,10 @@ function App() {
       <AuthProvider>
       <Routes>
           <Route path="/" exact element = {<Home />} />
-          <Route path="feed" exact element = {< Feed />} />
-          <Route path="notes" exact element = {< Notes />} />
-          <Route path="user/signup" exact element = {<User type="signup" />} />
-          <Route path="user/login" exact element = {<User type="login" />} />
+          <Route path="/feed" exact element = {< Feed />} />
+          <Route path="/notes/:id" exact element = {< Notes />} />
+          <Route path="/user/signup" exact element = {<User type="signup" />} />
+          <Route path="/user/login" exact element = {<User type="login" />} />
       </Routes>
       </AuthProvider>
     </BrowserRouter>

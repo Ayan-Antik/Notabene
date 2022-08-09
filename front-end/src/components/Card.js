@@ -5,15 +5,17 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Sticky from './lizard.jpg'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function MyCard({card, setCardData}) {
   const navigate = useNavigate();
+  // onClick={(e) => setCardData(card)}
   
-  // console.log(props.card);
   return (
     <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 350, Height: 400}}>
-      <CardActionArea onClick={(e) => setCardData(card)}>
+      <Link to={`../notes/${card.id}`}>
+
+      <CardActionArea >
         <CardMedia
           component="img"
           height="140"
@@ -21,6 +23,7 @@ export default function MyCard({card, setCardData}) {
           alt="green iguana"
           />
           </CardActionArea>
+      </Link>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
             {card.title} 

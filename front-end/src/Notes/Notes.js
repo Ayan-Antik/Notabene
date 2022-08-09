@@ -1,24 +1,69 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import MyCard from '../components/Card'
 import Sidebar from '../components/Sidebar'
 import './Notes.css'
 import Navbar from '../components/Navbar'
 import Iframe from 'react-iframe'
 import TextField from '@mui/material/TextField';
+import { useParams } from 'react-router-dom'
+import axios from "axios"
+import Source from './search.png'
+import { padding } from '@mui/system'
 
-const Notes = (props) => {
+const Notes = () => {
+  const {id} = useParams()
+  // const [props, setProps] = useState(null)
+  var [data, setData] = useState({});
+  useEffect(() => {
+    axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=&id=${id}`).then( (response) => {
+    //   console.log(response.data[0]);
+      // console.log(response.data[0]);
+      // setProps(response.data);
+      setData(response.data[0]);
+      console.log(data?.url.toString());
+      data.url = data.url.toString();
+
+	  });
+  }, []);
+
   return (
-<div >
+  	<div >
 
-    {/* <div>
-      <Navbar />
-        <Sidebar />
+	<div>
+	<Navbar />
+		<Sidebar />
 
-    </div> */}
+	</div>
 
     <div className='note-container'>
 
-        <Iframe url={props.info.url} className='iframe'
+		<div className='note-info'>
+			<div>
+			<h1>
+				{data.title}
+			</h1>
+
+			</div>
+			<div style={{display: 'grid', gridTemplateColumns: 'max-content auto'}}>
+			
+				<span>
+					<img src={Source} width='32px'></img> 
+
+				</span>
+				<span style={{font: '24px bold', marginLeft: '16px'}}>
+			
+
+				<a href={data.url}>{data.url}</a>
+				
+
+				</span>
+			</div>
+			<h2>
+				#
+			</h2>
+		</div>
+
+        <Iframe url={data.url} className='iframe'
         />
 
     <div>

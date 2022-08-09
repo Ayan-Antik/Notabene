@@ -89,7 +89,7 @@ const Feed = () => {
 					<div className='grid-item'></div>
 				
 				{data.map(function(card_data, i){
-					// console.log("i: ", i);
+					console.log("i: ", i);
 					// if(i%2 === 1){
 					// 	return (<div key={i}><MyCard card = {dat}
 					// 		/></div>)
