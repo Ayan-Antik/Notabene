@@ -80,7 +80,7 @@ const Notes = ({user, handleSubmit}) => {
     <div>
 	{highlights.map(function(highlight, i){
 		console.log(highlight.text);
-		return (<div>
+		return (<div key={i}>
 
 		<p className='highlighted'>
 			{highlight.text}

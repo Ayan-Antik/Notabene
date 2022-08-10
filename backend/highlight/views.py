@@ -14,7 +14,7 @@ class CreateHighlightView(APIView):
         except Document.DoesNotExist:
             document = Document(owner=owner, url=request.data['url'], title=request.data['title'])
             document.save()
-        highlight = Highlight(document=document, text=request.data['text'],
+        highlight = Highlight(document=document, text=request.data['text'], container=request.data['container'],
             anchorNode=request.data['anchorNode'], anchorOffset=request.data['anchorOffset'],
             focusNode=request.data['focusNode'], focusOffset=request.data['focusOffset'])
         highlight.save()
