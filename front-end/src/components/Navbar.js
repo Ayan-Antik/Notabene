@@ -14,6 +14,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import './Navbar.css'
+import Sticky from '../User/Sticky.png'
+import { Link } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -115,6 +117,11 @@ export default function Navbar({user, handleSubmit}) {
           >
             <MenuIcon />
           </IconButton> */}
+          <Link to={`/`}>
+            <img src={Sticky} width='32px'></img>
+          </Link>
+
+
           <Search>
             <SearchIconWrapper>
               <SearchIcon />

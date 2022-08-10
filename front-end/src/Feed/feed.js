@@ -18,13 +18,12 @@ const Feed = () => {
 	  console.log(user);
 	  logoutUser();
   }
-
-  const [cardData, setCardData] = useState(null)
 //   console.log(cardData);
   const [data, setData] = useState([{
   }]);
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/documents/list/").then( (response) => {
+	  
+	  axios.get("http://127.0.0.1:8000/documents/list/").then( (response) => {
     //   console.log(response.data[0]);
 	  response.data.forEach((data) => {
 		data.modified_date = data.modified_date.substr(0, 10);
@@ -35,11 +34,14 @@ const Feed = () => {
 
 			data.summary = split[0] + ".";
 		}
+
 	  })
 	  
-    //   response.data[0].modified_date = response.data[0].modified_date.substr(0, 10);
+	  //   response.data[0].modified_date = response.data[0].modified_date.substr(0, 10);
       setData(response.data);
     });
+	
+
   }, []);
 
 
@@ -58,16 +60,13 @@ const Feed = () => {
 				</div>
 				<div className='grid-item' style={{marginBottom:'12px'}}></div>
 				{data.map(function(card_data, i){
-						// console.log("i: ", i);
-						// if(i%2 === 1){
-						// 	return (<div key={i}><MyCard card = {dat}
-						// 		/></div>)
-						// }
-						// else{
-						// 	return <MyCard card = {dat} key={i}/>
-
-						// }
-						return (<div className='grid-item' key={i}><MyCard card = {card_data} setCardData = {setCardData}/></div>)
+						
+						return (<div className='grid-item' key={i}>
+							<MyCard 
+								card = {card_data} 
+							/>
+							</div>
+							)
 
 					})}
 			</div>
@@ -85,7 +84,7 @@ const Feed = () => {
 						<div className='grid-item' key={i}>
 							<MyCard 
 							card = {card_data}
-							setCardData = {setCardData}
+
 							/>
 						</div>
 					

@@ -23,3 +23,4 @@ class RegisterView(generics.CreateAPIView):
 class ListUserView(generics.ListAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
+    filterset_fields = ['id']

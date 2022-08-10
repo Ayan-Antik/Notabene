@@ -1,17 +1,34 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 import Sticky from './lizard.jpg'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import axios from 'axios'
 
-export default function MyCard({card, setCardData}) {
-  const navigate = useNavigate();
+export default function MyCard({card}) {
+  // const navigate = useNavigate();
   // onClick={(e) => setCardData(card)}
-  
+  const [user, setUser] = useState("dummy");
+  //! Issue: first card cannot load username
+  useEffect(()=>{
+    {card.owner!= null && axios.get(`http://127.0.0.1:8000/user/list/?id=${card.owner}`).then((response) =>{
+      // console.log(response.data[0].username);
+      setUser(response.data[0].username);
+    }).catch( (e) => {
+        console.log(e);
+    }
+    );}
+
+  }, []);
+
+  // console.log(card);
   return (
+
+
     <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 350, Height: 400}}>
       <Link to={`../notes/${card.id}`}>
 
@@ -36,7 +53,7 @@ export default function MyCard({card, setCardData}) {
             float:"right",
             color: "red",
             textDecoration:"none",
-            }}>tanjim_ak49</a></b>
+            }}>{user}</a></b>
 
           <i>{card.modified_date}</i><br /><br />
           <span style={{
