@@ -26,6 +26,7 @@ const Feed = () => {
 	  axios.get("http://127.0.0.1:8000/documents/list/").then( (response) => {
     //   console.log(response.data[0]);
 	  response.data.forEach((data) => {
+		
 		data.modified_date = data.modified_date.substr(0, 10);
 
 		//*Splitting card detail to make card size constant
@@ -61,12 +62,19 @@ const Feed = () => {
 				<div className='grid-item' style={{marginBottom:'12px'}}></div>
 				{data.map(function(card_data, i){
 						
-						return (<div className='grid-item' key={i}>
-							<MyCard 
-								card = {card_data} 
-							/>
-							</div>
+						if(card_data.owner != null){
+
+							return (
+							
+								<div className='grid-item' key={i}>
+									<MyCard 
+									card = {card_data}
+		
+									/>
+								</div>
+							
 							)
+						}
 
 					})}
 			</div>
@@ -78,17 +86,23 @@ const Feed = () => {
 					</div>
 					<div className='grid-item'></div>
 				
-				{data.map(function(card_data, i){		
-					return (
+				{data.map(function(card_data, i){	
 					
-						<div className='grid-item' key={i}>
-							<MyCard 
-							card = {card_data}
+					if(card_data.owner != null){
 
-							/>
-						</div>
+						return (
+						
+							<div className='grid-item' key={i}>
+								<MyCard 
+								card = {card_data}
+	
+								/>
+							</div>
+						
+						)
+					}
 					
-					)
+
 
 				})}
 
