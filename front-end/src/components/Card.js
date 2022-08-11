@@ -13,17 +13,29 @@ export default function MyCard({card}) {
   // const navigate = useNavigate();
   // onClick={(e) => setCardData(card)}
   const [user, setUser] = useState("dummy");
-  //! Issue: first card cannot load username
-  useEffect(()=>{
-    {card.owner!= null && axios.get(`http://127.0.0.1:8000/user/list/?id=${card.owner}`).then((response) =>{
-      // console.log(response.data[0].username);
-      setUser(response.data[0].username);
-    }).catch( (e) => {
-        console.log(e);
-    }
-    );}
+  const [imgsrc, setImgSrc] = useState(null);
+  const [hostname, setHostname] = useState("wikipedia.org");
 
-  }, []);
+  useEffect(()=>{
+    
+      // console.log(card);
+      {card.owner!= null && axios.get(`http://127.0.0.1:8000/user/list/?id=${card.owner}`).then((response) =>{
+        // console.log(response.data[0].username);
+        setUser(response.data[0].username);
+        {card.url!=null && 
+          setHostname(card.url.toString().split("/")[2]);
+          setImgSrc(`https://icon.horse/icon/${hostname}`);
+  
+      
+       }
+          // {hostname && <img src={`http://www.google.com/s2/favicons?sz=64&domain=${hostname}`}></img>}
+      }).catch( (e) => {
+          console.log(e);
+      }
+      );}
+    
+
+  }, [hostname]);
 
   // console.log(card);
   return (
@@ -32,18 +44,24 @@ export default function MyCard({card}) {
     <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 350, Height: 400}}>
       <Link to={`../notes/${card.id}`}>
 
-      <CardActionArea >
+      <CardActionArea sx={{display:'flex'}}>
         <CardMedia
           component="img"
-          height="140"
-          image={Sticky}
-          alt="green iguana"
+          // height= "128"
+          // width =  "128"
+          image= {imgsrc}
+          alt="loading img..."
+          style={{height:128, width: 128}}
           />
           </CardActionArea>
       </Link>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            {card.title} 
+            {card.title.length>50?
+            card.title.substr(0, 40)
+             + "..."
+            :card.title}
+             
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px", minHeight: "100px" }}>
             {card.summary}
