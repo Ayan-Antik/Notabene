@@ -24,6 +24,23 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             }
         })
         .catch(error => {sendResponse({isLoggedIn: false});});
+    } else if (request.username && request.url) {
+        fetch(ROOT_URL + 'highlight/list/?document__owner__username=' + request.username + '&document__url=' + request.url)
+            .then(response => response.json())
+            .then(highlights => sendResponse(highlights))
+            .catch(error => console.log(error));
+    } else if (request.highlightId && request.action == 'delete') {
+        console.log(request.action);
+        fetch(ROOT_URL + 'highlight/' + request.highlightId + '/delete/', {method: 'DELETE',})
+            .then(response => sendResponse(response.status));
+    } else if (request.highlightId && request.note) {
+        console.log(request.note);
+        fetch(ROOT_URL + 'highlight/' + request.highlightId + '/update/', {
+            method: 'PATCH',
+            body: JSON.stringify({note: request.note,}),
+            headers: {'Content-type': 'application/json'},
+        })
+        .then(response => sendResponse(response.status));
     }
     return true; // added this line because sendResponse is being called asynchronously
 });

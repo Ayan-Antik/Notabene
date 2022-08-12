@@ -28,19 +28,23 @@ const Notes = () => {
   let [data, setData] = useState({});
   const [value, setValue] = useState("");
   const [highlights, setHighlights] = useState([{}]);
-  var hostname = "" ;
+  const [hostname, setHostname] = useState("") ;
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=&id=${id}`).then( (response) => {
-  
-      setData(response.data[0]);
-      hostname = response.data[0].url.split("/")[2];
-      // console.log(typeof(encodeURI(hostname)));
-      console.log(hostname);
-    //   data.url = data?.url.toString();
-	  });
+    if(id!=null){
+
+      axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=&id=${id}`).then( (response) => {
+    
+        setData(response.data[0]);
+        setHostname(response.data[0].url.toString().split("/")[2]);
+        console.log(hostname);
+        
+        // console.log(typeof(encodeURI(hostname)));
+      //   data.url = data?.url.toString();
+      });
+    }
   }, []);
 
-  const myframe = <Iframe url={data.url} className='iframe'></Iframe>
+  const myframe = <iframe src={data.url} className='iframe'></iframe>
   // var img = myframe.getElementByTagName("img")[0];
   // console.log(img)
 
@@ -145,9 +149,12 @@ const Notes = () => {
 		</div>
 
         {myframe}
+        {/* <img src={`${hostname}`}></img> */}
         {/* <img src={`https://icon.horse/icon/${hostname}`}></img> */}
-        {/* <img src={`https://icon.horse/icon/witcher.fandom.com`}></img> */}
-        {/* <img src={`http://www.google.com/s2/favicons?sz=64&domain=${encodeURI(hostname)}`} width = '48px'></img> */}
+        {/* {hostname && <img src={`http://www.google.com/s2/favicons?sz=64&domain=${hostname}`}></img>} */}
+        {/* {hostname && <img src={`changing-violet-mule.faviconkit.com/${hostname}/64`}></img>} */}
+        {/* {hostname && <img src={`http://favicongrabber.com/api/grab/${}`}></img>} */}
+        {/* changing-violet-mule.faviconkit.com/{website}/{size} */}
 
     <div>
 

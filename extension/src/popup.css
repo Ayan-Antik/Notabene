@@ -1,0 +1,23 @@
+input {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: groove;
+}
+
+.delbtn {
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    border-bottom-style: hidden;
+    background-color: white;
+}
+
+.no-outline:focus {
+    outline: none;
+  }
+
+.bar {
+    color: #EACE09;
+    font-weight: bold;
+}

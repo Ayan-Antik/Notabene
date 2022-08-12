@@ -24,3 +24,10 @@ class ListHighlightView(generics.ListAPIView):
     queryset = Highlight.objects.all()
     serializer_class = HighlightSerializer
     filterset_fields = ['document__owner__username', 'document__url','document__id']
+
+class DestroyHighlightView(generics.DestroyAPIView):
+    queryset = Highlight.objects.all()
+
+class UpdateHiglightView(generics.UpdateAPIView):
+    queryset = Highlight.objects.all()
+    serializer_class = HighlightSerializer

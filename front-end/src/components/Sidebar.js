@@ -49,7 +49,7 @@ export default function Sidebar() {
 	
 
 	return (
-		<Box sx={{ display: 'flex', position: 'absolute' }}>
+		<Box sx={{ display: 'flex', position: 'absolute', zIndex:'10' }}>
 		<CssBaseline />
 		{/* <AppBar
 			position="fixed"

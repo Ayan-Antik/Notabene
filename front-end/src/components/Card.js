@@ -10,52 +10,44 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 export default function MyCard({card}) {
-  // const navigate = useNavigate();
-  // onClick={(e) => setCardData(card)}
-  const [user, setUser] = useState("dummy");
-  //! Issue: first card cannot load username
-  useEffect(()=>{
-    {card.owner!= null && axios.get(`http://127.0.0.1:8000/user/list/?id=${card.owner}`).then((response) =>{
-      // console.log(response.data[0].username);
-      setUser(response.data[0].username);
-    }).catch( (e) => {
-        console.log(e);
-    }
-    );}
-
-  }, []);
 
   // console.log(card);
   return (
 
 
-    <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 350, Height: 400}}>
+    <Card variant='outlined' sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 300, maxHeight: 300}}>
       <Link to={`../notes/${card.id}`}>
 
-      <CardActionArea >
+      <CardActionArea sx={{display:'flex', backgroundColor:'#d9d9d9'}}>
         <CardMedia
           component="img"
-          height="140"
-          image={Sticky}
-          alt="green iguana"
+          // height= "128"
+          // width =  "128"
+          image= {`https://icon.horse/icon/${card.url.toString().split("/")[2]}`}
+          alt="loading img..."
+          style={{height:128, width: 128}}
           />
           </CardActionArea>
       </Link>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
-            {card.title} 
+          <Typography gutterBottom variant="h6" component="div" sx={{maxHeight:64}}>
+            {card.title.length>50?
+            card.title.substr(0, 40)
+             + "..."
+            :card.title}
+             
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px", minHeight: "100px" }}>
+          {/* <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px",minHeight:80, maxHeight: 80}}>
             {card.summary}
-          </Typography>
+          </Typography> */}
           
          <b> <a href='#' style={{
             float:"right",
             color: "red",
             textDecoration:"none",
-            }}>{user}</a></b>
+            }}>{card.owner_name}</a></b>
 
-          <i>{card.modified_date}</i><br /><br />
+          <i>{card.created_date}</i><br /><br />
           <span style={{
             margin:"10px 4px 0px 0px",
             padding: "6px",
