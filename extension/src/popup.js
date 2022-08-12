@@ -10,38 +10,50 @@ chrome.storage.local.get(['username'], data => {
         </div>
         <h4 style="text-align: center; color: white;  padding: 10px;">Highlights</h4>
         <ul class="list-group" id="highlightList" style="padding: 0px 10px 10px 10px">`;
-        chrome.tabs.executeScript({file: 'src/listHighlight.js'}, results => {
-            if (!results || !Array.isArray(results) || results.length == 0) return;
-            if (results[0].length == 0) {
-                // copyBtn.disabled = true;
-                // removeHighlightsBtn.disabled = true;
-                return;
-            }
 
-            const highlights = results[0];
-            // Clear previous list elements, but only if there is at least one otherwise leave the "empty" message
-            //highlightsListEl.innerHTML = '';
+        chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
+            chrome.runtime.sendMessage({username: data.username, url: tabs[0].url}, (highlights) => {
+                console.log(highlights);
+                highlights.forEach(highlight => {
+                    listItem = document.createElement('li');
+                    listItem.className = "list-group-item";
+                    listItem.style.margin = "5px";
+                    listItem.id = "li-" + highlight.id;
 
-            // Populate with new elements
-            for (let i = 0; i < highlights.length; i += 2) {
-                const newListItem = document.createElement('li');
-                newListItem.className = "list-group-item";
-                newListItem.innerText = highlights[i + 1];
-                const highlightId = highlights[i];
-                // newEl.addEventListener('click', () => {
-                //     backgroundPage.showHighlight(highlightId);
-                // });
-                document.getElementById("highlightList").appendChild(newListItem);
-            }
+                    listItem.innerHTML =`<div>
+                    <span><span class="bar">|</span> `+ highlight.text +`</span>
+                    <span style="float: right;"><button id="btn-`+ highlight.id +`" type="button" class="btn">
+                        <img src="`+chrome.extension.getURL('images/bin.png')+`" width="20px" height="20px"></button></span>
+                    </div>
+                    <div>
+                    <span><small><i>`+ (highlight.note ? highlight.note : '') +`</i></small></span>`+
+                    (highlight.note ? `<span><button id="note-del-btn-`+ highlight.id +`" type="button" class="btn">
+                    <img src="`+chrome.extension.getURL('images/bin.png')+`" width="15px" height="15px"></button></span>` : '')
+                    +`</div>
+                    <input type="text" class="no-outline" placeholder="` + (highlight.note ? 'Edit' : 'Add') + ` Note ..."
+                        id="note-`+ highlight.id +`" required>
+                    <button id="note-edit-btn-`+ highlight.id +`" type="button" class="btn">
+                    <img src="`+chrome.extension.getURL('images/plus.png')+`" width="20px" height="20px"></button>`
+                    document.getElementById("highlightList").appendChild(listItem);
+                
+                    // delete highlight
+                    document.getElementById('btn-' + String(highlight.id)).addEventListener("click", (e) => {
+                        e.preventDefault();
+                        chrome.runtime.sendMessage({highlightId: highlight.id, action: 'delete'}, (response) => {
+                            location.reload();
+                        });
+                    });
 
-
-            // highlightTexts = results[0];
-            // highlightTexts.forEach(highlightText => {
-            //     newListItem = document.createElement('li');
-            //     newListItem.className = "list-group-item";
-            //     newListItem.textContent = highlightText;
-            //     document.getElementById("highlightList").appendChild(newListItem);
-            // });
+                    // add/edit note
+                    document.getElementById('note-edit-btn-' + String(highlight.id)).addEventListener("click", (e) => {
+                            e.preventDefault();
+                            chrome.runtime.sendMessage({highlightId: highlight.id,
+                                note: document.getElementById('note-' + String(highlight.id)).value}, (response) => {
+                                    location.reload();
+                            });
+                    });
+                });
+            });
         });
         document.body.innerHTML += "</ul>";
         document.getElementById("logoutBtn").addEventListener("click", (e) => {
@@ -73,7 +85,7 @@ chrome.storage.local.get(['username'], data => {
                         document.body.innerHTML += `<div class="alert alert-danger" role="alert">
                         Invalid username or password!</div>`;
                    }
-                });
+            });
         });
     }
   });

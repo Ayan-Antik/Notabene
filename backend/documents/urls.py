@@ -8,6 +8,7 @@ urlpatterns = [
     path('addtag/', AddTagView.as_view()),
     path('trending/', TrendingView.as_view()),
     path('recommend/', RecommendView.as_view()),
+    path('search/', SearchView.as_view()),
     path('createdir/', CreateFolderView.as_view()),
     path('listdir/', ListFolderView.as_view()),
 ]

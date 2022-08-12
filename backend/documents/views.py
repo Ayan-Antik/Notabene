@@ -1,5 +1,5 @@
 from .models import *
-from rest_framework import generics
+from rest_framework import generics, filters
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -59,6 +59,12 @@ class RecommendView(APIView):
         queryset = Document.objects.filter(~Q(owner__username=request.query_params['username']),
             privacy=PUBLIC, read_count__gte=READ_COUNT_THRESHOLD, tags__in=tags)
         return Response(DocumentSerializer(queryset.distinct(), many=True).data)
+
+class SearchView(generics.ListAPIView):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
    
 class CreateFolderView(APIView):
     def post(self, request, format = None):
