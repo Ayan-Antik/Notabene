@@ -42,7 +42,7 @@ export default function SearchItems({searchText}) {
         margin: '-16px auto auto 5.2%', 
         border:'1px solid #f46524',
         borderRadius: '5px' }}>
-      <nav aria-label="main mailbox folders">
+      <nav aria-label="">
         <List sx={{padding:0}}>
           {data.map(function(card, i){
 

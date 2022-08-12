@@ -53,7 +53,7 @@ const Feed = () => {
 	{user ? 
 	  <div>
       <Navbar user = {user} handleSubmit = {handleSubmit}/>
-        <Sidebar />
+        <Sidebar user ={user} />
 	   	 <div className='feed-reco'>
 			{/* style={{display:'flex', maxWidth:'650px' }} */}
 			<div className='recommendation'>

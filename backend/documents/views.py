@@ -22,7 +22,7 @@ class CreateDocumentView(APIView):
 class ListDocumentView(generics.ListAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
-    filterset_fields = ['owner__username', 'id']
+    filterset_fields = ['owner__username', 'id', 'folder__id']
 
 class MoveDocumentView(APIView):
     def post(self, request, format = None):
