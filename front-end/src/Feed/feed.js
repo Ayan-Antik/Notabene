@@ -24,11 +24,11 @@ const Feed = () => {
   }]);
   useEffect(() => {
 	  
-	  axios.get("http://127.0.0.1:8000/documents/list/").then( (response) => {
+	  axios.get("http://127.0.0.1:8000/documents/trending/").then( (response) => {
     //   console.log(response.data[0]);
 	  response.data.forEach((data) => {
 		
-		data.modified_date = data.modified_date.substr(0, 10);
+		data.created_date = data.created_date.substr(0, 10);
 
 		//*Splitting card detail to make card size constant
 		if(data.summary.length > 50){

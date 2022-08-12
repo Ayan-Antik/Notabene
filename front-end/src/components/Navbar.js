@@ -15,6 +15,7 @@ import './Navbar.css'
 import Sticky from '../User/Sticky.png'
 import { Link } from 'react-router-dom';
 import SearchItems from './SearchItems';
+import axios from 'axios';
 
 
 const Search = styled('div')(({ theme }) => ({
@@ -105,10 +106,9 @@ export default function Navbar({user, handleSubmit}) {
   let searchHandler = (e) => {
     var lowerCase = e.target.value.toLowerCase();
     setSearchText(lowerCase);
-    console.log(searchText);
-    // React.useEffect()
-  };
+    // console.log(searchText);
 
+  }
 
   return (
     <Box sx={{ flexGrow: 1, zIndex:'10'}}>

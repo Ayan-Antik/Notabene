@@ -10,70 +10,44 @@ import { Link } from 'react-router-dom';
 import axios from 'axios'
 
 export default function MyCard({card}) {
-  // const navigate = useNavigate();
-  // onClick={(e) => setCardData(card)}
-  const [user, setUser] = useState("dummy");
-  const [imgsrc, setImgSrc] = useState(null);
-  const [hostname, setHostname] = useState("wikipedia.org");
-
-  useEffect(()=>{
-    
-      // console.log(card);
-      {card.owner!= null && axios.get(`http://127.0.0.1:8000/user/list/?id=${card.owner}`).then((response) =>{
-        // console.log(response.data[0].username);
-        setUser(response.data[0].username);
-        {card.url!=null && 
-          setHostname(card.url.toString().split("/")[2]);
-          setImgSrc(`https://icon.horse/icon/${hostname}`);
-  
-      
-       }
-          // {hostname && <img src={`http://www.google.com/s2/favicons?sz=64&domain=${hostname}`}></img>}
-      }).catch( (e) => {
-          console.log(e);
-      }
-      );}
-    
-
-  }, [hostname]);
 
   // console.log(card);
   return (
 
 
-    <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 380, maxHeight: 380}}>
+    <Card variant='outlined' sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 300, maxHeight: 300}}>
       <Link to={`../notes/${card.id}`}>
 
-      <CardActionArea sx={{display:'flex'}}>
+      <CardActionArea sx={{display:'flex', backgroundColor:'#d9d9d9'}}>
         <CardMedia
           component="img"
           // height= "128"
           // width =  "128"
-          image= {imgsrc}
+          image= {`https://icon.horse/icon/${card.url.toString().split("/")[2]}`}
           alt="loading img..."
           style={{height:128, width: 128}}
           />
           </CardActionArea>
       </Link>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div" sx={{maxHeight:64}}>
+          <Typography gutterBottom variant="h6" component="div" sx={{maxHeight:64}}>
             {card.title.length>50?
             card.title.substr(0, 40)
              + "..."
             :card.title}
              
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px",minHeight:80, maxHeight: 80}}>
+          {/* <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px",minHeight:80, maxHeight: 80}}>
             {card.summary}
-          </Typography>
+          </Typography> */}
           
          <b> <a href='#' style={{
             float:"right",
             color: "red",
             textDecoration:"none",
-            }}>{user}</a></b>
+            }}>{card.owner_name}</a></b>
 
-          <i>{card.modified_date}</i><br /><br />
+          <i>{card.created_date}</i><br /><br />
           <span style={{
             margin:"10px 4px 0px 0px",
             padding: "6px",

@@ -168,7 +168,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import FolderIcon from '@mui/icons-material/Folder';
 
-export default function NestedList() {
+export default function Folder() {
   const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
@@ -192,12 +192,7 @@ export default function NestedList() {
         </ListItemIcon>
         <ListItemText primary="Sent mail" />
       </ListItemButton>
-      <ListItemButton>
-        <ListItemIcon>
-            <FolderIcon />
-        </ListItemIcon>
-        <ListItemText primary="Drafts" />
-      </ListItemButton>
+
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
         <FolderIcon />

@@ -41,7 +41,7 @@ class AddTagView(APIView):
         return Response({'status': 'ok'})
 
 class TrendingView(generics.ListAPIView):
-    queryset = Document.objects.filter(modified_date__gte=datetime.date.today() - datetime.timedelta(days=1),
+    queryset = Document.objects.filter(modified_date__gte=datetime.date.today() - datetime.timedelta(days=3),
         privacy=PUBLIC, read_count__gte=READ_COUNT_THRESHOLD)
     serializer_class = DocumentSerializer
 

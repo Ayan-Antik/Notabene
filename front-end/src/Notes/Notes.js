@@ -39,7 +39,7 @@ const Notes = () => {
     }
   }, []);
 
-  const myframe = <Iframe url={data.url} className='iframe'></Iframe>
+  const myframe = <iframe src={data.url} className='iframe'></iframe>
   // var img = myframe.getElementByTagName("img")[0];
   // console.log(img)
 
