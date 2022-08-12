@@ -20,10 +20,10 @@ chrome.storage.local.get(['username'], data => {
                     listItem.style.margin = "5px";
                     listItem.id = "li-" + highlight.id;
 
-                    listItem.innerHTML =`<div>
-                    <span><span class="bar">|</span> `+ highlight.text +`</span>
-                    <span style="float: right;"><button id="btn-`+ highlight.id +`" type="button" class="btn">
-                        <img src="`+chrome.extension.getURL('images/bin.png')+`" width="20px" height="20px"></button></span>
+                    listItem.innerHTML =`<div class="d-flex w-100 justify-content-between">
+                    <p><span class="bar">|</span> `+ highlight.text +`</p>
+                    <button id="btn-`+ highlight.id +`" type="button" class="btn">
+                        <img src="`+chrome.extension.getURL('images/bin.png')+`" width="20px" height="20px"></button>
                     </div>
                     <div>
                     <span><small><i>`+ (highlight.note ? highlight.note : '') +`</i></small></span>`+
@@ -33,7 +33,7 @@ chrome.storage.local.get(['username'], data => {
                     <input type="text" class="no-outline" placeholder="` + (highlight.note ? 'Edit' : 'Add') + ` Note ..."
                         id="note-`+ highlight.id +`" required>
                     <button id="note-edit-btn-`+ highlight.id +`" type="button" class="btn">
-                    <img src="`+chrome.extension.getURL('images/plus.png')+`" width="20px" height="20px"></button>`
+                    <img src="`+chrome.extension.getURL('images/check.png')+`" width="20px" height="20px"></button>`
                     document.getElementById("highlightList").appendChild(listItem);
                 
                     // delete highlight
@@ -46,12 +46,23 @@ chrome.storage.local.get(['username'], data => {
 
                     // add/edit note
                     document.getElementById('note-edit-btn-' + String(highlight.id)).addEventListener("click", (e) => {
-                            e.preventDefault();
-                            chrome.runtime.sendMessage({highlightId: highlight.id,
-                                note: document.getElementById('note-' + String(highlight.id)).value}, (response) => {
-                                    location.reload();
-                            });
+                        e.preventDefault();
+                        chrome.runtime.sendMessage({highlightId: highlight.id,
+                            note: document.getElementById('note-' + String(highlight.id)).value}, (response) => {
+                                location.reload();
+                        });
                     });
+                    
+                    // delete note
+                    const note_del_btn = document.getElementById('note-del-btn-' + String(highlight.id));
+                    if (note_del_btn) {
+                        note_del_btn.addEventListener("click", (e) => {
+                            e.preventDefault();
+                            chrome.runtime.sendMessage({highlightId: highlight.id, note: " "}, (response) => {
+                                location.reload();
+                            });
+                        });
+                    }
                 });
             });
         });
