@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar'
 import AuthContext from '../context/AuthContext'
 import axios from "axios"
 import Notes from '../Notes/Notes';
+import { useNavigate } from 'react-router-dom';
 
   
 
@@ -33,7 +34,7 @@ const Feed = () => {
 		if(data.summary.length > 50){
 			var split = data.summary.split(".");
 
-			data.summary = split[0] + ".";
+			data.summary = split[0] + "...";
 		}
 
 	  })
@@ -45,21 +46,22 @@ const Feed = () => {
 
   }, []);
 
-
+  let nav = useNavigate();
 
   return (
-    <div>
+	<div>  
+	{user ? 
+	  <div>
       <Navbar user = {user} handleSubmit = {handleSubmit}/>
         <Sidebar />
 	   	 <div className='feed-reco'>
 			{/* style={{display:'flex', maxWidth:'650px' }} */}
 			<div className='recommendation'>
 
-				<div className='grid-item'  style={{marginBottom:'12px'}}>
+				<div className='grid-item' style={{marginBottom:'-4px'}}>
 
 				<h1 style={{fontSize:'36px'}}>Recommendations</h1>
 				</div>
-				<div className='grid-item' style={{marginBottom:'12px'}}></div>
 				{data.map(function(card_data, i){
 						
 						if(card_data.owner != null){
@@ -80,11 +82,11 @@ const Feed = () => {
 			</div>
 
             <div className='card-view' >
-					<div className='grid-item'>
+					<div className='grid-item' style={{marginBottom:'-4px'}}>
 
 						<h1 style={{fontSize:'36px'}}>Discover</h1>
 					</div>
-					<div className='grid-item'></div>
+					<div className='grid-item' style={{marginBottom:'-4px'}}></div>
 				
 				{data.map(function(card_data, i){	
 					
@@ -111,6 +113,8 @@ const Feed = () => {
         </div>
 	   
     </div>
+	   : nav("../user/login",{replace:true} )}
+	   </div>
   )
 }
 

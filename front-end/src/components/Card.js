@@ -41,7 +41,7 @@ export default function MyCard({card}) {
   return (
 
 
-    <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 350, Height: 400}}>
+    <Card sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 380, maxHeight: 380}}>
       <Link to={`../notes/${card.id}`}>
 
       <CardActionArea sx={{display:'flex'}}>
@@ -56,14 +56,14 @@ export default function MyCard({card}) {
           </CardActionArea>
       </Link>
         <CardContent>
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography gutterBottom variant="h5" component="div" sx={{maxHeight:64}}>
             {card.title.length>50?
             card.title.substr(0, 40)
              + "..."
             :card.title}
              
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px", minHeight: "100px" }}>
+          <Typography variant="body2" color="text.secondary" sx={{ paddingBottom: "16px",minHeight:80, maxHeight: 80}}>
             {card.summary}
           </Typography>
           
