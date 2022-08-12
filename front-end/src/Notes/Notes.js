@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { Component } from 'react'
+import Markdown from 'react-textarea-markdown';
 import AuthContext from '../context/AuthContext'
 import MyCard from '../components/Card'
 import Sidebar from '../components/Sidebar'
@@ -6,10 +8,12 @@ import './Notes.css'
 import Navbar from '../components/Navbar'
 import Iframe from 'react-iframe'
 import TextField from '@mui/material/TextField';
+import { Button } from '@mui/material';
 import { useParams } from 'react-router-dom'
 import axios from "axios"
 import Source from './search.png'
 import { padding } from '@mui/system'
+import MDEditor from '@uiw/react-md-editor';
 
 const Notes = () => {
   const {id} = useParams()
@@ -22,6 +26,7 @@ const Notes = () => {
   }
 
   let [data, setData] = useState({});
+  const [value, setValue] = useState("");
   const [highlights, setHighlights] = useState([{}]);
   var hostname = "" ;
   useEffect(() => {
@@ -42,11 +47,68 @@ const Notes = () => {
   useEffect(() => {
 	axios.get(`http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}`).then((response) => {
 
-	// console.log(response.data);
+	//console.log(response.data);
 	setHighlights(response.data);
+  setData(response.data);
+  //console.log(response.data[0].note);
+  //setValue(response.data.note);
 
 	});
   }, []);
+
+
+  const client = axios.create({
+    baseURL: `http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}` 
+  });
+
+
+  const updateObjectInArray = (id_val, note_val) => {
+
+    // console.log("Updating");
+    // console.log({id_val});
+    // console.log({note_val});
+
+
+    setHighlights(current =>
+      current.map(obj => {
+        
+        // console.log("inside map");
+        // console.log(obj.id);
+        // console.log(id_val);
+
+        console.log(note_val);
+
+        if (obj.id === (id_val+1)) {
+          return {...obj, note: note_val};
+        }
+
+        return obj;
+      }),
+    );
+  };
+
+  const saveButton = () => {
+    // axios.post(`http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}`, highlights)
+		// 	.then(response => {
+		// 		if (response.status == 201) {
+		// 			window.location.replace('http://127.0.0.1:3000/user/login/');
+		// 		}
+		// });
+
+
+    client
+         .post('', highlights)
+         .then((response) => {
+            //setPosts([response.data, ...posts]);
+         });
+      //setTitle('');
+      //setBody('');
+
+
+  };
+
+
+
   return (
   	<div >
 
@@ -94,18 +156,43 @@ const Notes = () => {
     </div>
 
     <div>
+
 	{highlights.map(function(highlight, i){
 		// console.log(highlight.text);
+
+    //console.log({i});
+
+    // const [value, setValue] = React.useState("");
 		return (<div key={i}>
+      
 
 		<p className='highlighted'>
 			{highlight.text}
 
 		</p>
-		{highlight.note? <p style={{border: "2px solid black"}}>
-		</p> : null}
+
+
+      <div data-color-mode="light">
+        <MDEditor
+          value={highlight.note? highlight.note : ""}
+          onChange={(val) => updateObjectInArray(i, val)}
+        />
+
+      <Button 
+      variant="contained" 
+      color="success"
+      onClick={saveButton}
+      >Save</Button>
+
+        {/* {console.log({i})} */}
+      </div>
+
+      <br></br>
 		
-		</div>)
+		
+    
+    </div>)
+
 
 	})}
     {/* <p className='highlighted'>Lizards are a widespread group of squamate reptiles, with over 7,000 species</p>
