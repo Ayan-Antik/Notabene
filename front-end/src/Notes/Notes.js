@@ -80,7 +80,7 @@ const Notes = () => {
         // console.log(obj.id);
         // console.log(id_val);
 
-        console.log(note_val);
+        //console.log(note_val);
 
         if (obj.id === (id_val+1)) {
           return {...obj, note: note_val};
@@ -91,7 +91,7 @@ const Notes = () => {
     );
   };
 
-  const saveButton = () => {
+  const saveButton = (id_val) => {
     // axios.post(`http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}`, highlights)
 		// 	.then(response => {
 		// 		if (response.status == 201) {
@@ -99,12 +99,13 @@ const Notes = () => {
 		// 		}
 		// });
 
-
-    client
-         .post('', highlights)
-         .then((response) => {
-            //setPosts([response.data, ...posts]);
-         });
+    console.log(id_val);
+    // const response = await axios
+    //     .patch(`localhost:8000/highlight/1/update/`, {
+    //         title: 'foo',
+    //     }, {
+    //         headers: { 'Content-type': 'application/json; charset=UTF-8' }
+    //     });
       //setTitle('');
       //setBody('');
 
@@ -179,20 +180,48 @@ const Notes = () => {
 		</p>
 
 
-      <div data-color-mode="light">
+      {highlight.note&& <div data-color-mode="light">
         <MDEditor
           value={highlight.note? highlight.note : ""}
           onChange={(val) => updateObjectInArray(i, val)}
+          preview="preview"
         />
+
+        <br></br>
 
       <Button 
       variant="contained" 
       color="success"
-      onClick={saveButton}
+      onClick={() => {
+        
+        //let v = 
+
+        console.log(highlights[i].note);
+
+        axios
+        .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+            note: highlights[i].note,
+        }, {
+            headers: { 'Content-type': 'application/json' }
+        });
+
+      //   fetch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+      //     method: 'PATCH',
+      //     body: JSON.stringify({note: highlights[i].note,}),
+      //     headers: {'Content-type': 'application/json'},
+      // })
+      // .then(response => console.log(response.status));
+
+        console.log(highlight.id);
+      }}
       >Save</Button>
+
+      
 
         {/* {console.log({i})} */}
       </div>
+
+    }
 
       <br></br>
 		
