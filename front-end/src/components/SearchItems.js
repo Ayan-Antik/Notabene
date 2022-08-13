@@ -9,13 +9,13 @@ import Sticky  from './Sticky.png'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function SearchItems({searchText}) {
+export default function SearchItems({searchText, user}) {
 
   const [data, setData] = React.useState([{
   }]);
 
   React.useEffect(() => {
-    {searchText!= "" && axios.get(`http://127.0.0.1:8000/documents/search/?search=${searchText}`).then( (response) => {
+    {searchText!= "" && axios.get(`http://127.0.0.1:8000/documents/search/?keyword=${searchText}&username=${user.username}`).then( (response) => {
         // console.log("Search Text: " + searchText);
 
       response.data.forEach((d) => {

@@ -177,6 +177,7 @@ export default function Navbar({user, handleSubmit}) {
             {searchText && 
               <SearchItems 
               searchText = {searchText}
+              user = {user}
               />
               }
           </div>
