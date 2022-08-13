@@ -157,8 +157,7 @@
 
 // export default Folder
 
-import React from 'react';
-import ListSubheader from '@mui/material/ListSubheader';
+import React, { useEffect } from 'react';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -167,50 +166,96 @@ import Collapse from '@mui/material/Collapse';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import FolderIcon from '@mui/icons-material/Folder';
+import axios from 'axios';
+import Files from './Files';
 
-export default function Folder() {
-  const [open, setOpen] = React.useState(true);
+export default function Folder({user}) {
+  const [open, setOpen] = React.useState([]);
 
-  const handleClick = () => {
-    setOpen(!open);
+  const handleClick = (idx) => {
+ 
+    let newArr = [...open];
+    newArr[idx] = !newArr[idx];
+    setOpen(newArr);
+    console.log(open);
+
   };
+
+  const [dir, setDir] = React.useState([{}]);
+
+  React.useEffect(() => {
+	  
+	  axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then( (response) => {
+    
+      setDir(response.data);
+    });
+    
+    
+  }, []);
+  
 
   return (
     <List
       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
       component="nav"
-      aria-labelledby="nested-list-subheader"
-    //   subheader={
-    //     <ListSubheader component="div" id="nested-list-subheader">
-    //       Nested List Items
-    //     </ListSubheader>
-    //   }
-    >
-      <ListItemButton>
-        <ListItemIcon>
-          <FolderIcon />
-        </ListItemIcon>
-        <ListItemText primary="Sent mail" />
-      </ListItemButton>
+      aria-labelledby="nested-list-subheader">
+      {dir.map(function(d, index){
+       
 
-      <ListItemButton onClick={handleClick}>
+              return(
+              <div key={index}>
+                <ListItemButton key={index} onClick={() => handleClick(d.id-1)}>
+                  <ListItemIcon>
+                    <FolderIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={d.name}/>
+                  {open[d.id-1] ? <ExpandLess/> : <ExpandMore/>}
+                </ListItemButton>
+                <Collapse in={open[d.id-1]} timeout="auto" unmountOnExit>
+              
+                  <Files user = {user} folderid={d.id}/>
+              
+                  </Collapse>
+              
+
+              </div>)
+      
+      })}
+
+      {/* <ListItemButton onClick={handleClick} >
         <ListItemIcon>
         <FolderIcon />
         </ListItemIcon>
         <ListItemText primary="Inbox" />
-        {open ? <ExpandLess /> : <ExpandMore />}
+        {open ? <ExpandLess/> : <ExpandMore/>}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }} onClick={handleClick}>
+       
+          <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
             <FolderIcon />
             </ListItemIcon>
             <ListItemText primary="Starred" />
           </ListItemButton>
-        </List>
-      </Collapse>
+        
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+            <FolderIcon />
+            </ListItemIcon>
+            <ListItemText primary="Nested 2" />
+          </ListItemButton>
+
+          <ListItemButton sx={{ pl: 4 }}>
+            {true && <img src={`https://icon.horse/icon/en.wikipedia.org`} width='20px' style={{marginRight:8}}></img>}
+            
+            <ListItemText primary="Lizard"/>
+           
+          </ListItemButton>
+       
+      </Collapse> */}
       
     </List>
   );
 }
+
+//*Two folders under one folder : Two Collapse back2back

@@ -45,7 +45,7 @@ const Elements = [
         icon: <DeleteIcon/>
     }
 ]
-export default function Sidebar() {
+export default function Sidebar({user}) {
 	
 
 	return (
@@ -123,6 +123,7 @@ export default function Sidebar() {
 			</List>
 			<Divider />
 			<List>
+			
 			{/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
 				<ListItem key={text} disablePadding>
 				<ListItemButton>
@@ -135,7 +136,7 @@ export default function Sidebar() {
 			))} */}
 
 			</List>
-			<Folder />
+			<Folder user={user} />
 		</Drawer>
 		
 		</Box>
