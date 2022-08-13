@@ -169,7 +169,32 @@ import FolderIcon from '@mui/icons-material/Folder';
 import axios from 'axios';
 import Files from './Files';
 
+
+//* Trying new library
+import FolderTree, { testData, AddFileIcon } from 'react-folder-tree';
+import 'react-folder-tree/dist/style.css';
+// const Folder = () => {
+//   const onTreeStateChange = (state, event) => console.log(state, event);
+
+//   return (
+//     <FolderTree
+//       data={ testData }
+//       onChange={ onTreeStateChange }
+//     />
+//   );
+// };
+
+
+
+
+
+
 export default function Folder({user}) {
+
+  const onTreeStateChange = (state, event) => console.log(state, event);
+  const AddFileIcon = (...args) => null;
+  // console.log(testData);
+
   const [open, setOpen] = React.useState([]);
 
   const handleClick = (idx) => {
@@ -183,10 +208,21 @@ export default function Folder({user}) {
 
   const [dir, setDir] = React.useState([{}]);
 
+  const [tree, setTree] = React.useState({});
+
   React.useEffect(() => {
 	  
 	  axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then( (response) => {
-    
+      console.log(response.data);
+
+      var id = 0;
+      var checked = 0;
+      for(let i = 0; i< response.data.length; i++){
+        if(!response.data[i].parent){
+          
+        }
+      }
+
       setDir(response.data);
     });
     
@@ -253,7 +289,15 @@ export default function Folder({user}) {
           </ListItemButton>
        
       </Collapse> */}
+      <FolderTree
+      data={ testData }
+      onChange={ onTreeStateChange }
+      showCheckbox={false}
+      iconComponents={{
+        AddFileIcon
+      }}
       
+    />
     </List>
   );
 }
