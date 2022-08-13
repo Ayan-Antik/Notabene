@@ -1,7 +1,8 @@
-.feed-reco{
+.feed-reco, .all_notes{
     margin-left: 20%;
     margin-top: 5%;
 }
+
 .feed{
     /* display: flex; */
     /* float: left; */
@@ -18,12 +19,16 @@
     float: right;
 } */
 .card-view{
-    /* max-width: 50%; */
-    /* border-right: 2px solid grey; */
 
     display: grid;
     grid-template-columns:  max-content max-content;
-    /* padding: ; */
+}
+
+.card-view-2{
+    
+    display: grid;
+    grid-template-columns:  max-content max-content max-content;
+
 }
 
 .recommendation{

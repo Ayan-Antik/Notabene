@@ -16,9 +16,11 @@ export default function MyCard({card}) {
 
 
     <Card variant='outlined' sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 300, maxHeight: 300}}>
-      <Link to={`../notes/${card.id}`}>
+      
 
-      <CardActionArea sx={{display:'flex', backgroundColor:'#d9d9d9'}}>
+      <CardActionArea sx={{display:'flex', backgroundColor:'#d9d9d9'}} onClick={()=>{
+        window.location.replace(`http://127.0.0.1:3000/notes/${card.id}`);
+      }}>
         <CardMedia
           component="img"
           // height= "128"
@@ -28,7 +30,7 @@ export default function MyCard({card}) {
           style={{height:128, width: 128}}
           />
           </CardActionArea>
-      </Link>
+      
         <CardContent>
           <Typography gutterBottom variant="h6" component="div" sx={{maxHeight:64}}>
             {card.title.length>50?

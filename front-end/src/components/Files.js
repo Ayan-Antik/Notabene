@@ -41,14 +41,17 @@ const Files = ({user, folderid}) => {
                         return (
                         
                             <div key={i}>
-                            <Link to={`../notes/${data.id}`} style={{textDecoration:'none', color:'black'}}>
-                            <ListItemButton sx={{ pl: 4 }}>
+                            {/* <Link to={`../notes/${data.id}`} style={{textDecoration:'none', color:'black'}}> */}
+                            <ListItemButton sx={{ pl: 4 }} onClick={() => {
+                                console.log("Click");
+                                window.location.replace(`http://localhost:3000/notes/${data.id}`);
+                            }}>
                                 {true && <img src={`https://icon.horse/icon/${data.url}`} width='20px' style={{marginRight:8}}></img>}
                             
                                  <ListItemText primary={data.title} sx={{}}/>
                        
                              </ListItemButton>
-                             </Link>
+                             {/* </Link> */}
                             </div>
                         
                         )

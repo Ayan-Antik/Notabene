@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("authTokens", JSON.stringify(data));
       window.location.replace("http://127.0.0.1:3000/");
     } else {
-      alert("Something went wrong!");
+      alert("Information Invalid!");
     }
   };
   

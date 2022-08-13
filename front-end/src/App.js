@@ -2,11 +2,11 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import User from './User/User';
 import './User/User.css'
-import Sidebar from './components/Sidebar';
 import Feed from './Feed/feed'
-import { useContext } from "react";
 import AuthContext, {AuthProvider}  from './context/AuthContext';
 import Notes from './Notes/Notes'
+import SpecialFeed from './Feed/SpecialFeed';
+import PublicFeed from './Feed/PublicFeed';
 
 function App() {
  
@@ -17,6 +17,8 @@ function App() {
       <Routes>
           {/* <Route path="/" exact element = {<Home />} /> */}
           <Route path="/" exact element = {< Feed />} />
+          <Route path="/allnotes" exact element = {<SpecialFeed />} />
+          <Route path="/publicnotes" exact element = {<PublicFeed />} />
           {/* <Route path="/allnotes" exact element = {< Feed />} /> */}
           <Route path="/notes/:id" exact element = {< Notes />} />
           <Route path="/user/signup" exact element = {<User type="signup" />} />

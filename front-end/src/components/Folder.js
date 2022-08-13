@@ -168,11 +168,12 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import FolderIcon from '@mui/icons-material/Folder';
 import axios from 'axios';
 import Files from './Files';
-
-
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import { Form, FormControl, InputLabel, Input, InputAdornment, Tooltip, IconButton } from '@mui/material';
+import DoneIcon from '@mui/icons-material/Done';
 //* Trying new library
-import FolderTree, { testData, AddFileIcon } from 'react-folder-tree';
-import 'react-folder-tree/dist/style.css';
+// import FolderTree, { testData, AddFileIcon } from 'react-folder-tree';
+// import 'react-folder-tree/dist/style.css';
 // const Folder = () => {
 //   const onTreeStateChange = (state, event) => console.log(state, event);
 
@@ -192,7 +193,6 @@ import 'react-folder-tree/dist/style.css';
 export default function Folder({user}) {
 
   const onTreeStateChange = (state, event) => console.log(state, event);
-  const AddFileIcon = (...args) => null;
   // console.log(testData);
 
   const [open, setOpen] = React.useState([]);
@@ -202,39 +202,98 @@ export default function Folder({user}) {
     let newArr = [...open];
     newArr[idx] = !newArr[idx];
     setOpen(newArr);
-    console.log(open);
+    // console.log(open);
 
   };
 
   const [dir, setDir] = React.useState([{}]);
 
-  const [tree, setTree] = React.useState({});
-
   React.useEffect(() => {
 	  
 	  axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then( (response) => {
       console.log(response.data);
+  setDir(response.data);
+    
 
-      var id = 0;
-      var checked = 0;
-      for(let i = 0; i< response.data.length; i++){
-        if(!response.data[i].parent){
-          
-        }
-      }
-
-      setDir(response.data);
     });
     
     
   }, []);
   
+  const[folderAdd, setFolderAdd] = React.useState(false);
+  const[folderName, setFolderName] = React.useState("");
 
+  let searchHandler = (e) => {
+	e.preventDefault();
+    setFolderName(e.target.value);
+    // console.log(folderName);
+
+  }
   return (
     <List
       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
       component="nav"
       aria-labelledby="nested-list-subheader">
+		<Tooltip title="Add Folder" sx={{
+					width:'max-content',
+					pr:2,
+					display:'flex',
+					float:'right'
+
+				}} >
+			<IconButton onClick={()=>{setFolderAdd(true)}}>
+			
+				<CreateNewFolderIcon sx={{
+					
+					color:'#777'
+
+				}} 
+				
+				/>
+			</IconButton>
+
+		</Tooltip>
+
+		{folderAdd && <form variant="standard" style={{
+			display:'flex',
+			width:'95%',
+			paddingLeft:16,
+		 }}
+		 onSubmit={(e)=>{
+			 e.preventDefault();
+			// console.log(user);
+			// // console.log(folderName);
+			axios.post(`http://127.0.0.1:8000/documents/createdir/`,{
+				"username": user.username,
+				"name":folderName
+			}) .then((response) => {
+				console.log(response);
+				window.location.reload();
+			  });
+		 }}
+		 >
+			
+			<Input sx={{pr:2}}
+			id="input-with-icon-adornment"
+			startAdornment={
+				<InputAdornment position="start">
+				<FolderIcon />
+				</InputAdornment>
+			}
+			value={folderName}
+			onChange={searchHandler}
+			/>
+			<IconButton type='submit'>
+				<DoneIcon />
+			</IconButton>
+      </form>}
+		{!folderAdd && 
+			<>
+				<br></br>
+				<br></br>
+			</>
+		}
+		
       {dir.map(function(d, index){
        
 
@@ -289,15 +348,14 @@ export default function Folder({user}) {
           </ListItemButton>
        
       </Collapse> */}
-      <FolderTree
-      data={ testData }
+      {/* <FolderTree
+      data={ tree }
       onChange={ onTreeStateChange }
       showCheckbox={false}
       iconComponents={{
         AddFileIcon
-      }}
+      }} */}
       
-    />
     </List>
   );
 }
