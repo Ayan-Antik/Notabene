@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Component } from 'react'
-import Markdown from 'react-textarea-markdown';
 import AuthContext from '../context/AuthContext'
 import MyCard from '../components/Card'
 import Sidebar from '../components/Sidebar'
@@ -13,7 +12,7 @@ import { useParams } from 'react-router-dom'
 import axios from "axios"
 import Source from './search.png'
 import External from './external.png'
-import Folder from './folder.png'
+// import Folder from './folder.png'
 import { padding } from '@mui/system'
 import MDEditor from '@uiw/react-md-editor';
 import { IconButton } from '@mui/material';
@@ -30,6 +29,7 @@ import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors'
 import PropTypes from 'prop-types';
 import FolderIcon from '@mui/icons-material/Folder';
+import Markdown from "react-textarea-markdown";
 
 
 
@@ -147,7 +147,7 @@ const Notes = () => {
   });
 
 
-  const updateObjectInArray = (id_val, note_val) => {
+  const updateObjectInArray = (id_val, e) => {
 
 
     setHighlights(current =>
@@ -160,11 +160,12 @@ const Notes = () => {
         //console.log(note_val);
 
         if (obj.id === (id_val+1)) {
-          return {...obj, note: note_val};
+          console.log('id match?');
+          return {...obj, note: e.target.value};
         }
 
         return obj;
-      }),
+      })
     );
   };
 
@@ -241,7 +242,7 @@ const Notes = () => {
           <a href={data.url} target="_blank" rel="noopener noreferrer">
           <img src= {External}
           width='26px' 
-          onClick={data.url}></img></a>
+          ></img></a>
 					 
 
 				</span>
@@ -341,7 +342,6 @@ const Notes = () => {
 
     //console.log({i});
 
-    // const [value, setValue] = React.useState("");
 		return (<div key={i}>
       
 
@@ -349,14 +349,28 @@ const Notes = () => {
 			{highlight.text}
 
 		</p>
+     
+      <Markdown textarea={true} source={highlight.note} callback={(source, i)=>{
+       console.log(source);
+      }}
+      
+      sx={{borderColor:'red'}}/>
 
+     
 
-      <div data-color-mode="light">
-        <MDEditor
+      {/* <MDEditor 
+      
+      value={highlight.note}
+      onChange = {(e)=>{
+        e.preventDefault();
+        console.log(e.target.value)}}
+      /> */}
+      <div>
+        {/* <MDEditor
           value={highlight.note? highlight.note : ""}
-          onChange={(val) => updateObjectInArray(i, val)}
+          onChange={(e) => updateObjectInArray(i)}
           preview="preview"
-        />
+        /> */}
 
         <br></br>
 
