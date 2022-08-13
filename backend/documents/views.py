@@ -1,3 +1,4 @@
+from turtle import title
 from .models import *
 from rest_framework import generics, filters
 from .serializers import *
@@ -22,15 +23,17 @@ class CreateDocumentView(APIView):
 class ListDocumentView(generics.ListAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
-    filterset_fields = ['owner__username', 'id', 'folder__id']
+    filterset_fields = ['owner__username', 'id', 'folder__id', 'privacy']
 
-class MoveDocumentView(APIView):
-    def post(self, request, format = None):
-        folder = Folder.objects.get(id=request.data['folder_id'])
-        document = Document.objects.get(id=request.data['document_id'])
-        document.folder = folder
-        document.save()
-        return Response({'status': 'ok'})
+class RecentDocumentView(generics.ListAPIView):
+    def get(self, request, format = None):
+        queryset = Document.objects.filter(owner__username=request.query_params['username'],
+            modified_date__gte=datetime.date.today() - datetime.timedelta(days=3))
+        return Response(DocumentSerializer(queryset, many=True).data)
+
+class UpdateDocumentView(generics.UpdateAPIView):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
 
 class AddTagView(APIView):
     def post(self, request, format = None):
@@ -57,14 +60,14 @@ class RecommendView(APIView):
         tags = Tag.objects.filter(name__in=tag_names)
         print(tags)
         queryset = Document.objects.filter(~Q(owner__username=request.query_params['username']),
-            privacy=PUBLIC, read_count__gte=READ_COUNT_THRESHOLD, tags__in=tags)
-        return Response(DocumentSerializer(queryset.distinct(), many=True).data)
+            privacy=PUBLIC, read_count__gte=READ_COUNT_THRESHOLD, tags__in=tags).distinct()
+        return Response(DocumentSerializer(queryset, many=True).data)
 
-class SearchView(generics.ListAPIView):
-    queryset = Document.objects.all()
-    serializer_class = DocumentSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['title']
+class SearchView(APIView):
+    def get(self, request, format = None):
+        queryset = Document.objects.filter(Q(privacy=PUBLIC) | Q(owner__username=request.query_params['username']),
+        title__icontains=request.query_params['keyword'])
+        return Response(DocumentSerializer(queryset, many=True).data)
    
 class CreateFolderView(APIView):
     def post(self, request, format = None):

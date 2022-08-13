@@ -2,7 +2,7 @@ from django.db import models
 from documents.models import Document
 
 class Highlight(models.Model):
-    document = models.ForeignKey(Document, on_delete=models.CASCADE, null=True)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
     text = models.TextField()
     container = models.TextField()
     anchorNode = models.TextField()

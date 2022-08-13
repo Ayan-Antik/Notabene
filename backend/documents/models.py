@@ -1,6 +1,3 @@
-from operator import mod
-from pyexpat import model
-from turtle import title
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -21,7 +18,7 @@ class Tag(models.Model):
 
 class Folder(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=20)
     privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
 
@@ -29,8 +26,8 @@ class Folder(models.Model):
         return self.name
 
 class Document(models.Model):
-    owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE, null=True)
-    folder = models.ForeignKey(Folder, on_delete=models.CASCADE, blank=True)
+    owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
+    folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     url = models.URLField()
     title = models.TextField()
