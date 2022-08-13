@@ -176,15 +176,13 @@ const Notes = () => {
   const [folders, setFolders] = useState([{}]);
 
   // const [open, setOpen] = React.useState(false);
-  // const [selectedValue, setSelectedValue] = React.useState(emails[1]);
 
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
 
-  // const handleClose = (value) => {
+  // const handleClose = () => {
   //   setOpen(false);
-  //   setSelectedValue(value);
   // };
 
   useEffect(() => {
@@ -204,7 +202,7 @@ const Notes = () => {
     }, []);
 
 
-  // //// FOR POPUP
+
 
   const [open, setOpen] = React.useState(false);
 
@@ -216,9 +214,7 @@ const Notes = () => {
     setOpen(false);
   };
 
-
-  //console.log(folders);
-
+  // //// FOR POPUP ENDS
 
 
 
@@ -295,7 +291,7 @@ const Notes = () => {
                   headers: { 'Content-type': 'application/json' }
               });
 
-
+              handleClose();
             }}
           >
             {/* <img Source={FolderIcon}></img> */}
