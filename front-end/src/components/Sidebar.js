@@ -123,7 +123,6 @@ export default function Sidebar({user}) {
 			</List>
 			<Divider />
 			<List>
-			
 			{/* {['All mail', 'Trash', 'Spam'].map((text, index) => (
 				<ListItem key={text} disablePadding>
 				<ListItemButton>

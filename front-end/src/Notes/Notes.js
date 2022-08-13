@@ -55,7 +55,7 @@ const Notes = () => {
   	<div >
 
 	<Navbar user = {user} handleSubmit = {handleSubmit}/>
-		<Sidebar />
+		<Sidebar user = {user} />
 
 
     <div className='note-container'>
