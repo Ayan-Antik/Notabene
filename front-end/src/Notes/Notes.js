@@ -68,10 +68,6 @@ const Notes = () => {
 
   const updateObjectInArray = (id_val, note_val) => {
 
-    // console.log("Updating");
-    // console.log({id_val});
-    // console.log({note_val});
-
 
     setHighlights(current =>
       current.map(obj => {
@@ -90,28 +86,6 @@ const Notes = () => {
       }),
     );
   };
-
-  const saveButton = (id_val) => {
-    // axios.post(`http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}`, highlights)
-		// 	.then(response => {
-		// 		if (response.status == 201) {
-		// 			window.location.replace('http://127.0.0.1:3000/user/login/');
-		// 		}
-		// });
-
-    console.log(id_val);
-    // const response = await axios
-    //     .patch(`localhost:8000/highlight/1/update/`, {
-    //         title: 'foo',
-    //     }, {
-    //         headers: { 'Content-type': 'application/json; charset=UTF-8' }
-    //     });
-      //setTitle('');
-      //setBody('');
-
-
-  };
-
 
 
   return (
@@ -180,7 +154,7 @@ const Notes = () => {
 		</p>
 
 
-      {highlight.note&& <div data-color-mode="light">
+      <div data-color-mode="light">
         <MDEditor
           value={highlight.note? highlight.note : ""}
           onChange={(val) => updateObjectInArray(i, val)}
@@ -193,8 +167,6 @@ const Notes = () => {
       variant="contained" 
       color="success"
       onClick={() => {
-        
-        //let v = 
 
         console.log(highlights[i].note);
 
@@ -205,23 +177,37 @@ const Notes = () => {
             headers: { 'Content-type': 'application/json' }
         });
 
-      //   fetch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
-      //     method: 'PATCH',
-      //     body: JSON.stringify({note: highlights[i].note,}),
-      //     headers: {'Content-type': 'application/json'},
-      // })
-      // .then(response => console.log(response.status));
-
         console.log(highlight.id);
       }}
       >Save</Button>
 
-      
 
-        {/* {console.log({i})} */}
+      <Button
+      variant="contained" 
+      color="error"
+      onClick={
+        () => { 
+
+          updateObjectInArray(i, " ");
+  
+          console.log(highlights[i].note);
+  
+          axios
+          .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+              note: "",
+          }, {
+              headers: { 'Content-type': 'application/json' }
+          });
+
+  
+          console.log(highlight.id);
+      }
+    }  
+      >Delete</Button>
+
+    
       </div>
 
-    }
 
       <br></br>
 		
@@ -231,25 +217,7 @@ const Notes = () => {
 
 
 	})}
-    {/* <p className='highlighted'>Lizards are a widespread group of squamate reptiles, with over 7,000 species</p>
-        <TextField
-          id="outlined-multiline-flexible"
-          label="Edit Note"
-          multiline
-          maxRows={4}
-          length="100px"
-          style ={{width: '700px'}}
-          variant="standard"
-          color="warning"
-          focused
-          //margin-top="20%"
-          //value={value}
-          //onChange={handleChange}
-          />
-          <br/>
-          <br/> */}
-    {/* </div>
-    <div> */}
+    
   
   
     
