@@ -211,8 +211,8 @@ export default function Folder({user}) {
   React.useEffect(() => {
 	  
 	  axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then( (response) => {
-      console.log(response.data);
-  setDir(response.data);
+      // console.log(response.data);
+      setDir(response.data);
     
 
     });
