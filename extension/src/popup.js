@@ -64,9 +64,35 @@ chrome.storage.local.get(['username'], data => {
                         });
                     }
                 });
+                document.body.innerHTML += "</ul>";
+
+                // add tags
+                if (highlights.length > 0) {
+                    docId = highlights[0].document;
+                    chrome.runtime.sendMessage({ docId: docId }, (doc) => {
+                        console.log(doc);
+                        // document.body.innerHTML += `<div style="margin-left: 15px">`;
+                        doc.tag_names.forEach(tag_name => {
+                            document.body.innerHTML += `
+                            <span style="
+                                margin:10px 0px 0px 15px;
+                                padding: 6px;
+                                background-color: grey;
+                                border-radius: 5% / 15%;
+                                color: white;">#`+tag_name+`</span>`;
+                        });
+                        // document.body.innerHTML += `</div>`;
+
+                        // document.body.innerHTML += `<div>
+                        //     <input type="text" class="no-outline" placeholder="` + `Add Tags ..." id="tag" required>
+                        //     <button id="tag-btn` +`" type="button" class="btn"></button></div>`;
+                    });
+                }
+                
+
             });
         });
-        document.body.innerHTML += "</ul>";
+        
         document.getElementById("logoutBtn").addEventListener("click", (e) => {
             e.preventDefault();
             chrome.storage.local.clear();
