@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Component } from 'react'
-import Markdown from 'react-textarea-markdown';
 import AuthContext from '../context/AuthContext'
 import MyCard from '../components/Card'
 import Sidebar from '../components/Sidebar'
@@ -13,7 +12,7 @@ import { useParams } from 'react-router-dom'
 import axios from "axios"
 import Source from './search.png'
 import External from './external.png'
-import Folder from './folder.png'
+// import Folder from './folder.png'
 import { padding } from '@mui/system'
 import MDEditor from '@uiw/react-md-editor';
 import { IconButton } from '@mui/material';
@@ -30,6 +29,9 @@ import Typography from '@mui/material/Typography';
 import { blue } from '@mui/material/colors'
 import PropTypes from 'prop-types';
 import FolderIcon from '@mui/icons-material/Folder';
+import SaveIcon from '@mui/icons-material/Save';
+import {Tooltip} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
@@ -159,7 +161,7 @@ const Notes = () => {
 
         //console.log(note_val);
 
-        if (obj.id === (id_val+1)) {
+        if (obj.id === (id_val)) {
           return {...obj, note: note_val};
         }
 
@@ -176,15 +178,13 @@ const Notes = () => {
   const [folders, setFolders] = useState([{}]);
 
   // const [open, setOpen] = React.useState(false);
-  // const [selectedValue, setSelectedValue] = React.useState(emails[1]);
 
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
 
-  // const handleClose = (value) => {
+  // const handleClose = () => {
   //   setOpen(false);
-  //   setSelectedValue(value);
   // };
 
   useEffect(() => {
@@ -204,7 +204,7 @@ const Notes = () => {
     }, []);
 
 
-  // //// FOR POPUP
+
 
   const [open, setOpen] = React.useState(false);
 
@@ -216,9 +216,7 @@ const Notes = () => {
     setOpen(false);
   };
 
-
-  //console.log(folders);
-
+  // //// FOR POPUP ENDS
 
 
 
@@ -234,21 +232,30 @@ const Notes = () => {
 
 		<div className='note-info'>
 			<div>
-			<h1>
+				<span style={{
+          display:'flex',
+          float:'right',
+          padding: '18px 48px 0px 0px'
+        }}>
+          <a href={data.url} target="_blank" rel="noopener noreferrer">
+          <img src= {External}
+          width='26px' 
+          ></img></a>
+					 
+
+				</span>
+			{data.title && <h1 style={{width:'80%'}}>
 				{data.title}
-			</h1>
+			</h1>}
+      {!data.title &&
+      <>
+        
+      </>
+      }
 
 			</div>
 			<div style={{display: 'grid', gridTemplateColumns: 'max-content auto'}}>
 			
-				<span>
-          <a href={data.url} target="_blank" rel="noopener noreferrer">
-          <img src= {External}
-          width='26px' 
-          onClick={data.url}></img></a>
-					 
-
-				</span>
 				<span style={{font: '24px bold', marginLeft: '16px'}}>
 			
 
@@ -257,9 +264,9 @@ const Notes = () => {
 
 				</span>
 			</div>
-			<h2>
+			{/* <h2>
 				#
-			</h2>
+			</h2> */}
 		</div>
 
     {/* Code for popup */}
@@ -270,7 +277,10 @@ const Notes = () => {
       </Typography>
       <br /> */}
       <Button variant="outlined" onClick={handleClickOpen}>
-        Add In A Folder
+        <span style={{paddingRight:6}}>
+        Add to
+        </span>
+        <FolderIcon/>
       </Button>
 
       <Dialog onClose={handleClose} open={open}>
@@ -295,7 +305,7 @@ const Notes = () => {
                   headers: { 'Content-type': 'application/json' }
               });
 
-
+              handleClose();
             }}
           >
             {/* <img Source={FolderIcon}></img> */}
@@ -325,12 +335,6 @@ const Notes = () => {
     {/* code for popup ends */}
 
         {myframe}
-        {/* <img src={`${hostname}`}></img> */}
-        {/* <img src={`https://icon.horse/icon/${hostname}`}></img> */}
-        {/* {hostname && <img src={`http://www.google.com/s2/favicons?sz=64&domain=${hostname}`}></img>} */}
-        {/* {hostname && <img src={`changing-violet-mule.faviconkit.com/${hostname}/64`}></img>} */}
-        {/* {hostname && <img src={`http://favicongrabber.com/api/grab/${}`}></img>} */}
-        {/* changing-violet-mule.faviconkit.com/{website}/{size} */}
 
     <div>
 
@@ -345,7 +349,6 @@ const Notes = () => {
 
     //console.log({i});
 
-    // const [value, setValue] = React.useState("");
 		return (<div key={i}>
       
 
@@ -353,37 +356,54 @@ const Notes = () => {
 			{highlight.text}
 
 		</p>
+     
 
-
-      <div data-color-mode="light">
+        <div data-color-mode="light" style = {{
+            marginRight:14
+          }}>
         <MDEditor
           value={highlight.note? highlight.note : ""}
-          onChange={(val) => updateObjectInArray(i, val)}
+          onChange={(val) => updateObjectInArray(highlight.id, val)}
           preview="preview"
+          
         />
 
         <br></br>
 
-      <Button 
-      variant="contained" 
-      color="success"
-      onClick={() => {
 
-        console.log(highlights[i].note);
+    <Tooltip title="Save Note" sx={{
+					width:'max-content',
+          mt:-2
 
-        axios
-        .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
-            note: highlights[i].note,
-        }, {
-            headers: { 'Content-type': 'application/json' }
-        });
+				}} >
+			<IconButton  
+        onClick={() => {
 
-        console.log(highlight.id);
-      }}
-      >Save</Button>
+          console.log(highlights[i].note);
 
+          axios
+          .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+              note: highlights[i].note,
+          }, {
+              headers: { 'Content-type': 'application/json' }
+          });
 
-      <Button
+          console.log(highlight.id);
+        }}
+      >
+			
+				<SaveIcon color='primary' sx={{
+					fontSize:'36px'
+					// color:'blue'
+
+				}} 
+				
+				/>
+			</IconButton>
+
+		</Tooltip>
+
+      {/* <Button
       variant="contained" 
       color="error"
       onClick={
@@ -404,7 +424,46 @@ const Notes = () => {
           console.log(highlight.id);
       }
     }  
-      >Delete</Button>
+      >Delete</Button> */}
+
+    <Tooltip title="Delete Note" sx={{
+              width:'max-content',
+              mt:-2
+
+            }} >
+          <IconButton  onClick={
+            () => { 
+
+              updateObjectInArray(i, "");
+      
+              console.log(highlights[i].note);
+      
+              axios.patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+                  note: "",
+              }, {
+                  headers: { 'Content-type': 'application/json' }
+              }).then((response)=>{
+                console.log(response);
+                if(response.status == 200){
+                  window.location.reload();
+                }
+              });
+
+      
+              // console.log(highlight.id);
+          }
+        }  >
+          
+            <DeleteIcon color='error' sx={{
+              fontSize:'36px'
+              // color:'blue'
+
+            }} 
+            
+            />
+          </IconButton>
+
+        </Tooltip>
 
     
       </div>

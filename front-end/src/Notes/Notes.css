@@ -39,3 +39,7 @@
     padding-left: 8px;
 
 }
+.markdown-clearfloat{
+    border: 2px solid grey;
+    border-radius: 4px;
+}
