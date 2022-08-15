@@ -49,8 +49,11 @@ export default function SearchItems({searchText, user}) {
             if(i<6){
               return(
               
-                  <Link to={`../notes/${card.id}`} style={{textDecoration:'none', color:'black'}} key={i} >
-                    <ListItem disablePadding sx={{borderBottom: "1px solid #f46524"}} >
+                  // <Link to={`../notes/${card.id}`} style={{textDecoration:'none', color:'black'}} key={i} >
+                    <ListItem disablePadding sx={{borderBottom: "1px solid #f46524"}} onClick={()=>{
+        window.location.replace(`http://127.0.0.1:3000/notes/${card.id}`);
+                      
+                    }} >
                       <ListItemButton>
                         {card.url && <img src={`https://icon.horse/icon/${card.url.toString().split("/")[2]}`} width='20px' style={{marginRight:8}}></img>}
                         <ListItemText primary={card.title}/>
@@ -62,7 +65,7 @@ export default function SearchItems({searchText, user}) {
                         }}/>
                       </ListItemButton>
                     </ListItem>
-                  </Link>
+                  // </Link>
               )
 
             }

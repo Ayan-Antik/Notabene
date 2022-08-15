@@ -41,11 +41,6 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             headers: {'Content-type': 'application/json'},
         })
         .then(response => sendResponse(response.status));
-    } else if (request.docId) {
-        fetch(ROOT_URL + 'documents/list/?id=' + request.docId, {method: 'GET'})
-        .then(response => response.json())
-        .then(documents => sendResponse(documents[0]))
-        .catch(error => console.log(error));
     }
     return true; // added this line because sendResponse is being called asynchronously
 });
