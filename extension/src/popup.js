@@ -23,17 +23,17 @@ chrome.storage.local.get(['username'], data => {
                     listItem.innerHTML =`<div class="d-flex w-100 justify-content-between">
                     <p><span class="bar">|</span> `+ highlight.text +`</p>
                     <button id="btn-`+ highlight.id +`" type="button" class="btn">
-                        <img src="`+chrome.extension.getURL('images/bin.png')+`" width="20px" height="20px"></button>
+                        <img src="`+chrome.runtime.getURL('images/bin.png')+`" width="20px" height="20px"></button>
                     </div>
                     <div>
                     <span><small><i>`+ (highlight.note ? highlight.note : '') +`</i></small></span>`+
                     (highlight.note ? `<span><button id="note-del-btn-`+ highlight.id +`" type="button" class="btn">
-                    <img src="`+chrome.extension.getURL('images/bin.png')+`" width="15px" height="15px"></button></span>` : '')
+                    <img src="`+chrome.runtime.getURL('images/bin.png')+`" width="15px" height="15px"></button></span>` : '')
                     +`</div>
                     <input type="text" class="no-outline" placeholder="` + (highlight.note ? 'Edit' : 'Add') + ` Note ..."
                         id="note-`+ highlight.id +`" required>
                     <button id="note-edit-btn-`+ highlight.id +`" type="button" class="btn">
-                    <img src="`+chrome.extension.getURL('images/check.png')+`" width="20px" height="20px"></button>`
+                    <img src="`+chrome.runtime.getURL('images/check.png')+`" width="20px" height="20px"></button>`
                     document.getElementById("highlightList").appendChild(listItem);
                 
                     // delete highlight

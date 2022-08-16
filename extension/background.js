@@ -1,9 +1,17 @@
+import { executeInCurrentTab } from './src/utils.js';
+
 const ROOT_URL = 'http://127.0.0.1:8000/';
 
-chrome.contextMenus.create({title: "Highlight", onclick: createHighlight, contexts: ["selection"]});
+chrome.contextMenus.create({title: "Highlight", id: 'highlight', contexts: ["selection"]});
+
+chrome.contextMenus.onClicked.addListener(({ menuItemId, _ }) => {
+    if (menuItemId === 'highlight') {
+        createHighlight();
+    }
+});
 
 function createHighlight() {
-    chrome.tabs.executeScript({file: 'src/createHighlight.js'});
+    executeInCurrentTab({ file: 'src/createHighlight.js' });
 }
 
 chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
