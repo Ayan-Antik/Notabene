@@ -28,7 +28,7 @@ const Elements = [
     {
         id: 2,
         text: "Recent Docs",
-		url: '/recentdocs',
+		url: '#',
         icon: <HistoryIcon/>
     },
     {
@@ -46,7 +46,7 @@ const Elements = [
     {
         id: 5,
         text: "Trash",
-		url: '/trash',
+		url: '#',
         icon: <DeleteIcon/>
     }
 ]
@@ -76,7 +76,7 @@ export default function Sidebar({user}) {
 				boxSizing: 'border-box',
 			},
 			'& .MuiPaper-root':{
-				marginTop: '66px'
+				marginTop: '67px'
 			},
 			'& .css-cveggr-MuiListItemIcon-root':{
 				minWidth: '38px'

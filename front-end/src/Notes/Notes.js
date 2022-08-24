@@ -7,13 +7,13 @@ import './Notes.css'
 import Navbar from '../components/Navbar'
 import Iframe from 'react-iframe'
 import TextField from '@mui/material/TextField';
-import { Button, ListItemIcon } from '@mui/material';
+import { Button, ListItemIcon, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom'
 import axios from "axios"
 import Source from './search.png'
 import External from './external.png'
 // import Folder from './folder.png'
-import { padding } from '@mui/system'
+import { maxHeight, padding } from '@mui/system'
 import MDEditor from '@uiw/react-md-editor';
 import { IconButton } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -23,16 +23,15 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import PersonIcon from '@mui/icons-material/Person';
+import TextArea from '@uiw/react-md-editor/lib/components/TextArea'
 import AddIcon from '@mui/icons-material/Add';
-import Typography from '@mui/material/Typography';
-import { blue } from '@mui/material/colors'
 import PropTypes from 'prop-types';
 import FolderIcon from '@mui/icons-material/Folder';
 import SaveIcon from '@mui/icons-material/Save';
 import {Tooltip} from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import MarkdownPreview from '@uiw/react-markdown-preview';
+import TagIcon from '@mui/icons-material/Tag';
 
 
 /// FOR POPUP
@@ -146,9 +145,10 @@ const Notes = () => {
 
   
     });
-
-
+    
+    
   }, []);
+
 
 
   const client = axios.create({
@@ -184,10 +184,6 @@ const Notes = () => {
 
   const [folders, setFolders] = useState([{}]);
 
-
-
-
-
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -215,43 +211,51 @@ const Notes = () => {
 		<div className='note-info'>
 			<div>
 				<span style={{
-          display:'flex',
-          float:'right',
-          padding: '18px 48px 0px 0px'
-        }}>
-          <Tooltip title="Go to source">
-          <a href={data.url} target="_blank" rel="noopener noreferrer">
-          <img src= {External}
-          width='26px' 
-          ></img></a>
-
-          </Tooltip>
-					 
-
-				</span>
-			{data.title && <h1 style={{width:'80%'}}>
-				{data.title}
-			</h1>}
-      {!data.title &&
-      <>
-        
-      </>
-      }
-
+					display:'flex',
+					float:'right',
+					padding: '18px 48px 0px 0px',
+        		}}>
+				<Tooltip title="Go to source">
+					<a href={data.url} target="_blank" rel="noopener noreferrer">
+					<img src= {External}
+					width='26px'></img></a>
+					
+				</Tooltip>
+		 		 </span>
+				{data.title && <h1 style={{width:'80%'}}>
+					{data.title}
+				</h1>}
+				{!data.title &&
+				<>
+					
+				</>
+				}
 			</div>
-			<div style={{display: 'grid', gridTemplateColumns: 'max-content auto'}}>
+			{data.tags && data.tags.length > 0 && 
+	  		<div style={{width:'80%'}}>
+				{data.tag_names.map((tag, i) => {
+						
+						return(
+							<div key={i} style={{maxWidth:'max-content', padding:6, marginBottom:24, backgroundColor:'#ccc', borderRadius:'10% / 20%'}}>
+								<b style={{paddingRight:'2px', fontSize:24}}>#</b>
+								<Typography variant="subtitle" sx={{fontSize:24}} >
+								{tag}
+								</Typography>
+								
+							</div>
+						)
+
+					}
+				)}
+			</div>
+		}
+			{/* <div style={{display: 'grid', gridTemplateColumns: 'max-content auto'}}>
 			
 				<span style={{font: '24px bold', marginLeft: '16px'}}>
 			
-
-				{/* <a href={data.url}>{data.url}</a> */}
-				
-
 				</span>
-			</div>
-			{/* <h2>
-				#
-			</h2> */}
+			</div> */}
+
 		</div>
 
     {/* Code for popup */}
@@ -261,19 +265,19 @@ const Notes = () => {
         Selected: {selectedValue}
       </Typography>
       <br /> */}
-      <Button variant="outlined" onClick={handleClickOpen}>
+      {data.owner === user.user_id && <Button variant="outlined" onClick={handleClickOpen}>
         <span style={{paddingRight:6}}>
         Add to
         </span>
         <FolderIcon/>
-      </Button>
+      </Button>}
 
       <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Select A Folder</DialogTitle>
 
       <List sx={{ pt: 0 }}>
 
-      {folders.map(function(folderName, i){
+      {folders.map((folderName, i) => {
 
 
 		    return (<div key={i}>
@@ -293,10 +297,8 @@ const Notes = () => {
               handleClose();
             }}
           >
-            {/* <img Source={FolderIcon}></img> */}
-            {/* <ListItemIcon children={FolderIcon}></ListItemIcon> */}
             <ListItemAvatar>
-              <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+              <Avatar sx={{ bgcolor: 'transparent', color: "#f46524" }}>
                 <FolderIcon />
               </Avatar>
             </ListItemAvatar>
@@ -318,14 +320,10 @@ const Notes = () => {
     </div>
 
     {/* code for popup ends */}
-
+		
         {myframe}
-
-    <div>
-
-        <h1 style={{textAlign:'left'}}>Highlights: </h1>
-
-    </div>
+       
+        {highlights.length && <h1 style={{textAlign:'left'}}>Highlights: </h1>}
 
     <div>
 
@@ -334,22 +332,47 @@ const Notes = () => {
 
     //console.log({i});
 
-		return (<div key={i}>
+		return (
+		<div key={i}>
       
+			<div className='highlighted'>
 
-		<p className='highlighted'>
-			{highlight.text}
+				<Tooltip title="Delete Highlight" sx={{
+					float:'right', p: '0px 24px 0px 0px'}} >
+					<IconButton  onClick={() => { 
+							axios.delete(`http://127.0.0.1:8000/highlight/${highlight.id}/delete/`).then((response) => {
+								console.log(response.data);
+								setHighlights(current => current.filter(obj => obj.id !== highlight.id));
+							}).catch((error) => {
+								console.log(error);
+							});
+					}}>
+						<DeleteIcon color='error' sx={{fontSize:'36px'}}/> 	
+					</IconButton>
 
-		</p>
-     
+				</Tooltip>
+				<Typography sx={{width:'80%', mb:4}}>
+					{highlight.text}
+				</Typography>
+			</div>
+     {data.owner != user.user_id && highlight.note &&
+        <div data-color-mode="light" style={{border: '1px solid #ccc', padding:16, marginRight:24}}>
 
-        <div data-color-mode="light" style = {{
-            marginRight:14
+		<MarkdownPreview
+			source={highlight.note}
+		/>
+	  </div>
+      }
+
+       {data.owner === user.user_id &&
+       
+       <div data-color-mode="light" style = {{
+            marginRight:36
           }}>
         <MDEditor
           value={highlight.note? highlight.note : ""}
           onChange={(val) => updateObjectInArray(highlight.id, val)}
-          preview="preview"
+          preview='preview'
           
         />
 
@@ -451,7 +474,7 @@ const Notes = () => {
         </Tooltip>
 
     
-      </div>
+      </div>}
 
 
       <br></br>
