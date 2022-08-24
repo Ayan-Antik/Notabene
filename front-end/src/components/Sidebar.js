@@ -12,6 +12,7 @@ import NotesIcon from '@mui/icons-material/Notes';
 import HistoryIcon from '@mui/icons-material/History';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PublicIcon from '@mui/icons-material/Public';
+import FolderOffIcon from '@mui/icons-material/FolderOff';
 import { Link } from 'react-router-dom';
 import './Sidebar.css'
 import Folder from './Folder';
@@ -20,24 +21,30 @@ const drawerWidth = 240;
 const Elements = [
     {
         id: 1,
-        text: "All Notes",
-		url: '/allnotes',
+        text: "My Docs",
+		url: '/alldocs',
         icon: <NotesIcon/>
     },
     {
         id: 2,
-        text: "Recent Notes",
-		url: '/recentnotes',
+        text: "Recent Docs",
+		url: '/recentdocs',
         icon: <HistoryIcon/>
     },
     {
         id: 3,
-        text: "Public Notes",
-		url: '/publicnotes',
+        text: "Public Docs",
+		url: '/publicdocs',
         icon: <PublicIcon/>
     },
-    {
+	{
         id: 4,
+        text: "Uncategorized",
+		url: '/uncategorized',
+        icon: <FolderOffIcon/>
+    },
+    {
+        id: 5,
         text: "Trash",
 		url: '/trash',
         icon: <DeleteIcon/>
@@ -69,7 +76,7 @@ export default function Sidebar({user}) {
 				boxSizing: 'border-box',
 			},
 			'& .MuiPaper-root':{
-				marginTop: '68px'
+				marginTop: '66px'
 			},
 			'& .css-cveggr-MuiListItemIcon-root':{
 				minWidth: '38px'

@@ -9,7 +9,7 @@ import axios from "axios"
 import { useNavigate } from 'react-router-dom';
 
 
-const PublicFeed = () => {
+const Uncategorized = () => {
     
     const { user, logoutUser } = useContext(AuthContext);
     const handleSubmit = (event) =>{
@@ -22,10 +22,11 @@ const PublicFeed = () => {
     }]);
     useEffect(() => {
         
-        axios.get(`http://127.0.0.1:8000/documents/list/?privacy=pu`).then( (response) => {
+        axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=${user.username}`).then( (response) => {
       //   console.log(response.data[0]);
         response.data.forEach((data) => {
-          
+            
+           if(data.folder === null){ 
           data.created_date = data.created_date.substr(0, 10);
   
           //*Splitting card detail to make card size constant
@@ -34,11 +35,11 @@ const PublicFeed = () => {
   
               data.summary = split[0] + "...";
           }
+          setData(prevData => [...prevData, data]);
+        }
   
         })
         
-        //   response.data[0].modified_date = response.data[0].modified_date.substr(0, 10);
-        setData(response.data);
       });
       
   
@@ -58,7 +59,7 @@ const PublicFeed = () => {
               <div className='card-view-2' >
                       <div className='grid-item' style={{marginBottom:'-4px'}}>
   
-                          <h1 style={{fontSize:'36px'}}>Public Docs</h1>
+                          <h1 style={{fontSize:'36px'}}>Uncategorized Docs</h1>
                       </div>
                       <div className='grid-item' style={{marginBottom:'-4px'}}></div>
                       <div className='grid-item' style={{marginBottom:'-4px'}}></div>
@@ -93,4 +94,4 @@ const PublicFeed = () => {
     )
   }
 
-export default PublicFeed
+export default Uncategorized

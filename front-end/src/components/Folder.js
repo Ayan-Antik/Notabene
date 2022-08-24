@@ -215,9 +215,9 @@ export default function Folder({user}) {
       setDir(response.data);
     
 
-    });
+  });
     
-    
+  
   }, []);
   
   const[folderAdd, setFolderAdd] = React.useState(false);

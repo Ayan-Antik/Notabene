@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 const Files = ({user, folderid}) => {
 
   const [file, setFile] = useState([{}]);
-  console.log(folderid);
+//   console.log(folderid);
   useEffect(()=>{
     {folderid && axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=${user.username}&id=&folder__id=${folderid}`).then( (response) => {
-    console.log(response.data);
+    // console.log(response.data);
     response.data.forEach((dat) => {
 
         if(dat.title.length > 25){
@@ -28,12 +28,6 @@ const Files = ({user, folderid}) => {
   }, [])  
   return (
     
-        //     <ListItemButton sx={{ pl: 4 }}>
-        //       {true && <img src={`https://icon.horse/icon/en.wikipedia.org`} width='20px' style={{marginRight:8}}></img>}
-              
-        //       <ListItemText primary="Lizard"/>
-         
-        //    </ListItemButton>
             <div>
 
                 {file.map(function(data, i){
@@ -42,9 +36,8 @@ const Files = ({user, folderid}) => {
                         
                             <div key={i}>
                             {/* <Link to={`../notes/${data.id}`} style={{textDecoration:'none', color:'black'}}> */}
-                            <ListItemButton sx={{ pl: 4 }} onClick={() => {
-                                console.log("Click");
-                                window.location.replace(`http://localhost:3000/notes/${data.id}`);
+                            <ListItemButton sx={{ pl: 4 }} onClick={()=>{
+                               window.location.replace(`http://localhost:3000/notes/${data.id}`);
                             }}>
                                 {true && <img src={`https://icon.horse/icon/${data.url}`} width='20px' style={{marginRight:8}}></img>}
                             
