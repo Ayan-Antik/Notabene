@@ -1,11 +1,12 @@
-from turtle import title
 from .models import *
-from rest_framework import generics, filters
+from rest_framework import generics
 from .serializers import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 import datetime
 from django.db.models import Q
+from django.conf import settings
+from django.core.mail import send_mail
 
 READ_COUNT_THRESHOLD = 1
 
@@ -81,3 +82,17 @@ class ListFolderView(generics.ListAPIView):
     queryset = Folder.objects.all()
     serializer_class = FolderSerializer
     filterset_fields = ['owner__username']
+
+class AddEditorView(APIView):
+    def patch(self, request, pk):
+        editor_name = request.data['username']
+        document = Document.objects.get(pk=pk)
+        editor = User.objects.get(username=editor_name)
+        document.editors.add(editor)
+        subject = 'Notabene Document Collaboration Invitation'
+        message = (f'Hi {editor_name}, You have been added as an editor in the Notabene document titled \"{document.title}\". '
+        + f'Click the following link to view the document:\nhttp://localhost:3000/notes/{document.id}/')
+        email_from = settings.EMAIL_HOST_USER
+        recipient_list = [editor.email, ]
+        send_mail( subject, message, email_from, recipient_list )
+        return Response({'status': 'ok'})

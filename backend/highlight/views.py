@@ -21,7 +21,7 @@ class CreateHighlightView(APIView):
         return Response({'id': highlight.id})
 
 class ListHighlightView(generics.ListAPIView):
-    queryset = Highlight.objects.all()
+    queryset = Highlight.objects.all().order_by('text')
     serializer_class = HighlightSerializer
     filterset_fields = ['document__owner__username', 'document__url','document__id']
 
@@ -31,3 +31,8 @@ class DestroyHighlightView(generics.DestroyAPIView):
 class UpdateHiglightView(generics.UpdateAPIView):
     queryset = Highlight.objects.all()
     serializer_class = HighlightSerializer
+
+class SearchView(APIView):
+    def get(self, request, format = None):
+        queryset = Highlight.objects.filter(document__id=request.query_params['doc_id'], text__icontains=request.query_params['keyword'])
+        return Response(HighlightSerializer(queryset, many=True).data)

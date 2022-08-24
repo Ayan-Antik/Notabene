@@ -27,6 +27,7 @@ class Folder(models.Model):
 
 class Document(models.Model):
     owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
+    editors = models.ManyToManyField(User, blank=True)
     folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     url = models.URLField()
