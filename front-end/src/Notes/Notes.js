@@ -108,7 +108,6 @@ const Notes = () => {
   }
 
   let [data, setData] = useState({});
-  const [value, setValue] = useState("");
   const [highlights, setHighlights] = useState([{}]);
   const [hostname, setHostname] = useState("") ;
   useEffect(() => {
@@ -118,7 +117,6 @@ const Notes = () => {
     
         setData(response.data[0]);
         setHostname(response.data[0].url.toString().split("/")[2]);
-        console.log(hostname);
         
         // console.log(typeof(encodeURI(hostname)));
       //   data.url = data?.url.toString();
@@ -126,8 +124,8 @@ const Notes = () => {
     }
   }, []);
 
-  const myframe = <iframe src={data.url} className='iframe'></iframe>
-  // var img = myframe.getElementByTagName("img")[0];
+  const myframe = <iframe src={data.url} className='iframe' id='frame1'></iframe>
+  // var img = window.frames['frame1'].getElementByTagName('img')[0];
   // console.log(img)
 
   useEffect(() => {
@@ -135,12 +133,21 @@ const Notes = () => {
 
 	console.log(response.data);
 	setHighlights(response.data);
-  setData(response.data);
   //console.log(response.data[0].note);
   //setValue(response.data.note);
   //console.log({data});
 
 	});
+
+  axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then((response) => {
+  
+    console.log(response.data);
+    setFolders(response.data);
+
+  
+    });
+
+
   }, []);
 
 
@@ -173,35 +180,10 @@ const Notes = () => {
 
 
 
-  //// FOR POPUP
+  // FOR POPUP
 
   const [folders, setFolders] = useState([{}]);
 
-  // const [open, setOpen] = React.useState(false);
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  // };
-
-  useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then((response) => {
-  
-    console.log(response.data);
-    setFolders(response.data);
-    //setData(response.data);
-    //console.log(response.data[0].note);
-    //setValue(response.data.note);
-
-    //console.log(user.username);
-
-    //console.log(folders);
-  
-    });
-    }, []);
 
 
 
@@ -216,7 +198,7 @@ const Notes = () => {
     setOpen(false);
   };
 
-  // //// FOR POPUP ENDS
+  // FOR POPUP ENDS
 
 
 
@@ -237,10 +219,13 @@ const Notes = () => {
           float:'right',
           padding: '18px 48px 0px 0px'
         }}>
+          <Tooltip title="Go to source">
           <a href={data.url} target="_blank" rel="noopener noreferrer">
           <img src= {External}
           width='26px' 
           ></img></a>
+
+          </Tooltip>
 					 
 
 				</span>

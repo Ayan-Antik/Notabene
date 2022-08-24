@@ -7,6 +7,7 @@ import AuthContext, {AuthProvider}  from './context/AuthContext';
 import Notes from './Notes/Notes'
 import SpecialFeed from './Feed/SpecialFeed';
 import PublicFeed from './Feed/PublicFeed';
+import Uncategorized from './Feed/Uncategorized';
 
 function App() {
  
@@ -17,8 +18,9 @@ function App() {
       <Routes>
           {/* <Route path="/" exact element = {<Home />} /> */}
           <Route path="/" exact element = {< Feed />} />
-          <Route path="/allnotes" exact element = {<SpecialFeed />} />
-          <Route path="/publicnotes" exact element = {<PublicFeed />} />
+          <Route path="/alldocs" exact element = {<SpecialFeed />} />
+          <Route path="/publicdocs" exact element = {<PublicFeed />} />
+          <Route path="/uncategorized" exact element = {<Uncategorized />} />
           {/* <Route path="/allnotes" exact element = {< Feed />} /> */}
           <Route path="/notes/:id" exact element = {< Notes />} />
           <Route path="/user/signup" exact element = {<User type="signup" />} />

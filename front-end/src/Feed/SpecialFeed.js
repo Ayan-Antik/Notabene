@@ -58,7 +58,7 @@ const SpecialFeed = () => {
               <div className='card-view-2' >
                       <div className='grid-item' style={{marginBottom:'-4px'}}>
   
-                          <h1 style={{fontSize:'36px'}}>All Notes</h1>
+                          <h1 style={{fontSize:'36px'}}>My Docs</h1>
                       </div>
                       <div className='grid-item' style={{marginBottom:'-4px'}}></div>
                       <div className='grid-item' style={{marginBottom:'-4px'}}></div>
