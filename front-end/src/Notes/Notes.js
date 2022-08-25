@@ -1,21 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { Component } from 'react'
 import AuthContext from '../context/AuthContext'
-import MyCard from '../components/Card'
 import Sidebar from '../components/Sidebar'
 import './Notes.css'
 import Navbar from '../components/Navbar'
-import Iframe from 'react-iframe'
-import TextField from '@mui/material/TextField';
 import { Button, ListItemIcon, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom'
 import axios from "axios"
-import Source from './search.png'
 import External from './external.png'
-// import PublicEye from './eye1.png'
-// import PrivateEye from './eye2.png'
-// import Folder from './folder.png'
-import { maxHeight, padding } from '@mui/system'
 import MDEditor from '@uiw/react-md-editor';
 import { IconButton } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -25,7 +17,6 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
-import TextArea from '@uiw/react-md-editor/lib/components/TextArea'
 import AddIcon from '@mui/icons-material/Add';
 import PropTypes from 'prop-types';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -37,22 +28,22 @@ import { styled, alpha } from '@mui/material/styles';
 import InputBase from '@mui/material/InputBase';
 import UserSearchItems from './UserSearchItems';
 import MarkdownPreview from '@uiw/react-markdown-preview';
-import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
+import Toolbar from '@mui/material'
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+	backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: '100%',
   [theme.breakpoints.up('sm')]: {
-    width: 'auto',
+	width: 'auto',
   },
 }));
 
@@ -68,72 +59,71 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(2)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+	padding: theme.spacing(1, 1, 1, 0),
+	// vertical padding + font size from searchIcon
+	paddingLeft: `calc(1em + ${theme.spacing(2)})`,
+	transition: theme.transitions.create('width'),
+	width: '100%',
+	[theme.breakpoints.up('md')]: {
+	  width: '20ch',
+	},
   },
 }));
 
 function hasEditAccess(id, doc) {
   console.log(doc);
   if (id && doc) {
-    return id === doc.owner || (doc.editors && doc.editors.includes(id));
+	return id === doc.owner || (doc.editors && doc.editors.includes(id));
   }
   return false;
 }
 
 /// FOR POPUP
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
 
 function SimpleDialog(props, folderArray) {
   const { onClose, selectedValue, open } = props;
 
   const handleClose = () => {
-    onClose(selectedValue);
+	onClose(selectedValue);
   };
 
   const handleListItemClick = (value) => {
-    onClose(value);
+	onClose(value);
   };
 
   console.log(folderArray);
 
 
   return (
-    <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Select A Folder</DialogTitle>
+	<Dialog onClose={handleClose} open={open}>
+	  <DialogTitle>Select A Folder</DialogTitle>
 
-      <List sx={{ pt: 0 }}>
+	  <List sx={{ pt: 0 }}>
 
-        {/* {folderArray.map((folderName) => (
-          <ListItem key={folderName}>
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
-                <PersonIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={folderName} />
-          </ListItem>
-        ))} */}
+		{/* {folderArray.map((folderName) => (
+		  <ListItem key={folderName}>
+			<ListItemAvatar>
+			  <Avatar sx={{ bgcolor: blue[100], color: blue[600] }}>
+				<PersonIcon />
+			  </Avatar>
+			</ListItemAvatar>
+			<ListItemText primary={folderName} />
+		  </ListItem>
+		))} */}
 
-        <ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
-          <ListItemAvatar>
-            <Avatar>
-              <AddIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Add account" />
-        </ListItem>
+		<ListItem autoFocus button onClick={() => handleListItemClick('addAccount')}>
+		  <ListItemAvatar>
+			<Avatar>
+			  <AddIcon />
+			</Avatar>
+		  </ListItemAvatar>
+		  <ListItemText primary="Add account" />
+		</ListItem>
 
-      </List>
+	  </List>
 
-    </Dialog>
+	</Dialog>
   );
 }
 
@@ -160,7 +150,7 @@ const Notes = () => {
   }
   const [searchText, setSearchText] = React.useState("");
   const handleAddEditor = (e) => {
-    setSearchText(e.target.value);
+	setSearchText(e.target.value);
   }
 
   let [data, setData] = useState({});
@@ -168,19 +158,19 @@ const Notes = () => {
   const [privacy, setPrivacy] = useState("");
   const [hostname, setHostname] = useState("") ;
   useEffect(() => {
-    if(id!=null){
+	if(id!=null){
 
-      axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=&id=${id}`).then( (response) => {
-    
-        setData(response.data[0]);
-        setPrivacy(response.data[0].privacy);
-        setHostname(response.data[0].url.toString().split("/")[2]);
-        
-        console.log(privacy);
-        // console.log(typeof(encodeURI(hostname)));
-      //   data.url = data?.url.toString();
-      });
-    }
+	  axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=&id=${id}`).then( (response) => {
+	
+		setData(response.data[0]);
+		setPrivacy(response.data[0].privacy);
+		setHostname(response.data[0].url.toString().split("/")[2]);
+		
+		console.log(privacy);
+		// console.log(typeof(encodeURI(hostname)));
+	  //   data.url = data?.url.toString();
+	  });
+	}
   }, []);
 
   const myframe = <iframe src={data.url} className='iframe' id='frame1'></iframe>
@@ -200,41 +190,41 @@ const Notes = () => {
 
   axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then((response) => {
   
-    console.log(response.data);
-    setFolders(response.data);
+	console.log(response.data);
+	setFolders(response.data);
 
   
-    });
-    
-    
+	});
+	
+	
   }, []);
 
 
 
   const client = axios.create({
-    baseURL: `http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}` 
+	baseURL: `http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}` 
   });
 
 
   const updateObjectInArray = (id_val, note_val) => {
 
 
-    setHighlights(current =>
-      current.map(obj => {
-        
-        // console.log("inside map");
-        // console.log(obj.id);
-        // console.log(id_val);
+	setHighlights(current =>
+	  current.map(obj => {
+		
+		// console.log("inside map");
+		// console.log(obj.id);
+		// console.log(id_val);
 
-        //console.log(note_val);
+		//console.log(note_val);
 
-        if (obj.id === (id_val)) {
-          return {...obj, note: note_val};
-        }
+		if (obj.id === (id_val)) {
+		  return {...obj, note: note_val};
+		}
 
-        return obj;
-      }),
-    );
+		return obj;
+	  }),
+	);
   };
 
 
@@ -245,13 +235,15 @@ const Notes = () => {
   const [folders, setFolders] = useState([{}]);
 
   const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
+
+	setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
+	setOpen(false);
   };
 
   // FOR POPUP ENDS
@@ -266,7 +258,7 @@ const Notes = () => {
 		<Sidebar user = {user} />
 
 
-    <div className='note-container'>
+	<div className='note-container'>
 
 		<div className='note-info'>
 
@@ -275,7 +267,7 @@ const Notes = () => {
 					display:'flex',
 					float:'right',
 					padding: '18px 48px 0px 0px',
-        		}}>
+				}}>
 				<Tooltip title="Go to source">
 					<a href={data.url} target="_blank" rel="noopener noreferrer">
 					<img src= {External}
@@ -283,70 +275,72 @@ const Notes = () => {
 					
 				</Tooltip>
 		 		 </span>
-          
-          <span style={{
+		  
+		  <span style={{
 					display:'flex',
 					float:'right',
 					padding: '22px 24px 0px 0px',
-        		}}>
+				}}>
 
-				{privacy == "pr" && <Tooltip title="Change privacy">
+				{privacy === "pr" && <Tooltip title="Make Public">
 					{/* <a href={data.url} target="_blank" rel="noopener noreferrer"> */}
 					<VisibilityOffIcon
 					width='34px'
-          onClick = {
-            () => {             
-              axios
-              .patch(`http://localhost:8000/documents/${id}/update/`, {
-                  privacy: "pu",
-              }, {
-                  headers: { 'Content-type': 'application/json' }
-              }).then((response)=>{
-                console.log(response);
-                if(response.status == 200){
-                  window.location.reload();
-                }
-              });
+		  cursor='pointer'
+		  onClick = {
+			() => {             
+			  axios
+			  .patch(`http://localhost:8000/documents/${id}/update/`, {
+				  privacy: "pu",
+			  }, {
+				  headers: { 'Content-type': 'application/json' }
+			  }).then((response)=>{
+				console.log(response);
+				if(response.status == 200){
+				  window.location.reload();
+				}
+			  });
 
-              // handleClose();
-            }
-          }
-          >
-          </VisibilityOffIcon>
-          
-          {/* </a> */}
+			  // handleClose();
+			}
+		  }
+		  >
+		  </VisibilityOffIcon>
+		  
+		  {/* </a> */}
 					
 				</Tooltip>
-        }
+		}
 
-        {privacy == "pu" && <Tooltip title="Change privacy">
+		{privacy === "pu" && <Tooltip title="Make Private">
 					{/* <a href={data.url} target="_blank" rel="noopener noreferrer"> */}
 					<VisibilityIcon
 					width='34px'
-          onClick = {
-            () => {             
-              axios
-              .patch(`http://localhost:8000/documents/${id}/update/`, {
-                  privacy: "pr",
-              }, {
-                  headers: { 'Content-type': 'application/json' }
-              }).then((response)=>{
-                console.log(response);
-                if(response.status == 200){
-                  window.location.reload();
-                }
-              });
+		  cursor='pointer'
+		  onClick = {
+			() => {             
+			  axios
+			  .patch(`http://localhost:8000/documents/${id}/update/`, {
+				  privacy: "pr",
+			  }, {
+				  headers: { 'Content-type': 'application/json' }
+			  }).then((response)=>{
+				console.log(response);
+				if(response.status == 200){
+				  window.location.reload();
+				}
+			  });
 
-              // handleClose();
-            }
-          }
-          >
-          </VisibilityIcon>
-          
-          {/* </a> */}
+			  // handleClose();
+			}
+		  }
+		  >
+		  </VisibilityIcon>
+		  
+		  {/* </a> */}
 					
 				</Tooltip>
-        }
+		}
 		 		 </span>
 
 
@@ -365,8 +359,8 @@ const Notes = () => {
 						
 						return(
 							<div key={i} style={{maxWidth:'max-content', padding:6, marginBottom:24, backgroundColor:'#ccc', borderRadius:'10% / 20%'}}>
-								<b style={{paddingRight:'2px', fontSize:24}}>#</b>
-								<Typography variant="subtitle" sx={{fontSize:24}} >
+								<b style={{paddingRight:'2px', fontSize:18}}>#</b>
+								<Typography variant="subtitle" sx={{fontSize:18}} >
 								{tag}
 								</Typography>
 								
@@ -386,114 +380,138 @@ const Notes = () => {
 
 		</div>
 
-    {/* Code for popup */}
+	{/* Code for popup */}
 
-    {hasEditAccess(user.user_id, data) && <div>
-      {/* <Typography variant="subtitle1" component="div">
-        Selected: {selectedValue}
-      </Typography>
-      <br /> */}
-      <Button variant="outlined" onClick={handleClickOpen}>
-        <span style={{paddingRight:6}}>
-        Add to
-        </span>
-        <FolderIcon/>
-      </Button>
-      
-      <Search>
-        <SearchIconWrapper><SearchIcon /></SearchIconWrapper>
-        <StyledInputBase
-          placeholder="Add Editor…"
-          inputProps={{ 'aria-label': 'search' }}
-          onChange={handleAddEditor}/>
-      </Search>
-      <div>
-        {/* SearchResults */}
-        {searchText && <UserSearchItems 
-          searchText = {searchText}
-          docId = {id}/>
-        }
-      </div>
-      {data.editor_names.length > 0 && <div>
-        <h4>Editors</h4>
-        <List sx={{ pt: 0 }}>
-        {data.editor_names.map(function(editor_name, i){
-          return (<div key={i}>
-            <ListItem key={i} >
-              <ListItemText primary={editor_name} />
-            </ListItem>
-            </div>
-          )
-        })}
-        </List>
-      </div>}
+	{hasEditAccess(user.user_id, data) && 
+	
+	<div>
+	  {/* <Typography variant="subtitle1" component="div">
+		Selected: {selectedValue}
+	  </Typography>
+	  <br /> */}
+	  <Button id='folder' variant="contained" onClick={handleClickOpen}>
+		<span style={{paddingRight:6}}>
+		Add to
+		</span>
+		<FolderIcon/>
+	  </Button>
 
-      <Dialog onClose={handleClose} open={open}>
-      <DialogTitle>Select A Folder</DialogTitle>
+	  <Button variant="contained" onClick={() => {setOpenEdit(true)}} sx={{
+		ml:2, 
+		backgroundColor:'#FBBC04', 
+		color:'black',
+		'&:hover':{
+			backgroundColor:'#FBCC04',
+		}
+		}}>
+		<ShareRoundedIcon sx={{}}/>
+		<span style={{paddingLeft:6}}>
+		Add Editor
+		</span>
+	  </Button>
 
-      <List sx={{ pt: 0 }}>
+	  <Dialog open={openEdit} onClose={()=>{setOpenEdit(false)}} aria-labelledby="form-dialog-title">
+		<Typography variant='h6' sx={{p:2}}>
+			Share "{data.title}"
+		</Typography>
+	  <Search sx={{backgroundColor:'#f5f5f5', ml:2, mb:2}}>
+		<SearchIconWrapper sx={{p:2}}><SearchIcon /></SearchIconWrapper>
+		<StyledInputBase sx={{pl:2}}
+		  placeholder="Add Editor"
+		  inputProps={{ 'aria-label': 'search' }}
+		  onChange={handleAddEditor}/>
+	  </Search>
+	  <div>
+		{/* SearchResults */}
+		{searchText && <UserSearchItems 
+		  searchText = {searchText}
+		  docId = {id}/>
+		}
+	  </div>
+	  {data.editor_names.length > 0 && 
+	  
+	  <div style={{paddingLeft:12}}>
+		<Typography variant='h6'>Editors</Typography>
+		<List sx={{ pt: 0 }}>
+		{data.editor_names.map(function(editor_name, i){
+		  return (<div key={i}>
+			<ListItem key={i} >
+			  <ListItemText primary={<Typography variant='body' sx={{fontWeight:'bold'}}>{editor_name}</Typography>}/>
+			</ListItem>
+			</div>
+		  )
+		})}
+		</List>
+		</div>}
+		</Dialog>
+	
 
-      {folders.map((folderName, i) => {
+	  <Dialog onClose={handleClose} open={open}>
+	  <DialogTitle>Select A Folder</DialogTitle>
 
+	  <List sx={{ pt: 0 }}>
 
-		    return (<div key={i}>
-          
-          <ListItem key={i} 
-          button
-          onClick={
-            () => {
-              
-              axios
-              .patch(`http://localhost:8000/documents/${id}/update/`, {
-                  folder: folderName.id,
-              }, {
-                  headers: { 'Content-type': 'application/json' }
-              });
-
-              handleClose();
-            }}
-          >
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: 'transparent', color: "#f46524" }}>
-                <FolderIcon />
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={folderName.name} />
-          </ListItem>
-
-          </div>
-      
-
-		    )
+	  {folders.map((folderName, i) => {
 
 
-	    })}
+			return (<div key={i}>
+		  
+		  <ListItem key={i} 
+		  button
+		  onClick={
+			() => {
+			  
+			  axios
+			  .patch(`http://localhost:8000/documents/${id}/update/`, {
+				  folder: folderName.id,
+			  }, {
+				  headers: { 'Content-type': 'application/json' }
+			  });
+
+			  handleClose();
+			}}
+		  >
+			<ListItemAvatar>
+			  <Avatar sx={{ bgcolor: 'transparent', color: "#f46524" }}>
+				<FolderIcon />
+			  </Avatar>
+			</ListItemAvatar>
+			<ListItemText primary={folderName.name} />
+		  </ListItem>
+
+		  </div>
+	  
+
+			)
 
 
-      </List>
+		})}
 
-    </Dialog>
-    </div>}
 
-    {/* code for popup ends */}
+	  </List>
+
+	</Dialog>
+	</div>}
+
+	{/* code for popup ends */}
 		
-        {myframe}
-       
-        {highlights.length && <h1 style={{textAlign:'left'}}>Highlights: </h1>}
+		{myframe}
+	   
+		{highlights.length && <h1 style={{textAlign:'left'}}>Highlights: </h1>}
 
-    <div>
+	<div>
 
 	{highlights.map(function(highlight, i){
 		// console.log(highlight.text);
 
-    //console.log({i});
+	//console.log({i});
 
 		return (
 		<div key={i}>
-      
+	  
 			<div className='highlighted'>
 
-      {hasEditAccess(user.user_id, data) && <Tooltip title="Delete Highlight" sx={{
+	  {hasEditAccess(user.user_id, data) && <Tooltip title="Delete Highlight" sx={{
 					float:'right', p: '0px 24px 0px 0px'}} >
 					<IconButton  onClick={() => { 
 							axios.delete(`http://127.0.0.1:8000/highlight/${highlight.id}/delete/`).then((response) => {
@@ -511,50 +529,50 @@ const Notes = () => {
 					{highlight.text}
 				</Typography>
 			</div>
-     {data.owner != user.user_id && highlight.note &&
-        <div data-color-mode="light" style={{border: '1px solid #ccc', padding:16, marginRight:24}}>
+	 {data.owner != user.user_id && highlight.note &&
+		<div data-color-mode="light" style={{border: '1px solid #ccc', padding:16, marginRight:24}}>
 
 		<MarkdownPreview
 			source={highlight.note}
 		/>
 	  </div>
-      }
+	  }
 
-       {hasEditAccess(user.user_id, data) &&
-       
-       <div data-color-mode="light" style = {{
-            marginRight:36
-          }}>
-        <MDEditor
-          value={highlight.note? highlight.note : ""}
-          onChange={(val) => updateObjectInArray(highlight.id, val)}
-          preview='preview'
-          
-        />
+	   {hasEditAccess(user.user_id, data) &&
+	   
+	   <div data-color-mode="light" style = {{
+			marginRight:36
+		  }}>
+		<MDEditor
+		  value={highlight.note? highlight.note : ""}
+		  onChange={(val) => updateObjectInArray(highlight.id, val)}
+		  preview='preview'
+		  
+		/>
 
-        <br></br>
+		<br></br>
 
 
-    <Tooltip title="Save Note" sx={{
+	<Tooltip title="Save Note" sx={{
 					width:'max-content',
-          mt:-2
+		  mt:-2
 
 				}} >
 			<IconButton  
-        onClick={() => {
+		onClick={() => {
 
-          console.log(highlights[i].note);
+		  console.log(highlights[i].note);
 
-          axios
-          .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
-              note: highlights[i].note,
-          }, {
-              headers: { 'Content-type': 'application/json' }
-          });
+		  axios
+		  .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+			  note: highlights[i].note,
+		  }, {
+			  headers: { 'Content-type': 'application/json' }
+		  });
 
-          console.log(highlight.id);
-        }}
-      >
+		  console.log(highlight.id);
+		}}
+	  >
 			
 				<SaveIcon color='primary' sx={{
 					fontSize:'36px'
@@ -567,89 +585,89 @@ const Notes = () => {
 
 		</Tooltip>
 
-      {/* <Button
-      variant="contained" 
-      color="error"
-      onClick={
-        () => { 
+	  {/* <Button
+	  variant="contained" 
+	  color="error"
+	  onClick={
+		() => { 
 
-          updateObjectInArray(i, " ");
+		  updateObjectInArray(i, " ");
   
-          console.log(highlights[i].note);
+		  console.log(highlights[i].note);
   
-          axios
-          .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
-              note: "",
-          }, {
-              headers: { 'Content-type': 'application/json' }
-          });
+		  axios
+		  .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+			  note: "",
+		  }, {
+			  headers: { 'Content-type': 'application/json' }
+		  });
 
   
-          console.log(highlight.id);
-      }
-    }  
-      >Delete</Button> */}
+		  console.log(highlight.id);
+	  }
+	}  
+	  >Delete</Button> */}
 
-    <Tooltip title="Delete Note" sx={{
-              width:'max-content',
-              mt:-2
+	<Tooltip title="Delete Note" sx={{
+			  width:'max-content',
+			  mt:-2
 
-            }} >
-          <IconButton  onClick={
-            () => { 
+			}} >
+		  <IconButton  onClick={
+			() => { 
 
-              updateObjectInArray(i, "");
-      
-              console.log(highlights[i].note);
-      
-              axios.patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
-                  note: "",
-              }, {
-                  headers: { 'Content-type': 'application/json' }
-              }).then((response)=>{
-                console.log(response);
-                if(response.status == 200){
-                  window.location.reload();
-                }
-              });
+			  updateObjectInArray(i, "");
+	  
+			  console.log(highlights[i].note);
+	  
+			  axios.patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
+				  note: "",
+			  }, {
+				  headers: { 'Content-type': 'application/json' }
+			  }).then((response)=>{
+				console.log(response);
+				if(response.status == 200){
+				  window.location.reload();
+				}
+			  });
 
-      
-              // console.log(highlight.id);
-          }
-        }  >
-          
-            <DeleteIcon color='error' sx={{
-              fontSize:'36px'
-              // color:'blue'
+	  
+			  // console.log(highlight.id);
+		  }
+		}  >
+		  
+			<DeleteIcon color='error' sx={{
+			  fontSize:'36px'
+			  // color:'blue'
 
-            }} 
-            
-            />
-          </IconButton>
+			}} 
+			
+			/>
+		  </IconButton>
 
-        </Tooltip>
+		</Tooltip>
 
-    
-      </div>}
+	
+	  </div>}
 
 
-      <br></br>
+	  <br></br>
 		
 		
-    
-    </div>)
+	
+	</div>)
 
 
 	})}
-    
+	
   
   
-    
-    </div>
+	
+	</div>
 
-    </div>
+	</div>
 
-    </div>
+	</div>
   )
 }
 

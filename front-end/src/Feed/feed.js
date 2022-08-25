@@ -42,16 +42,16 @@ const Feed = () => {
 		//   response.data[0].modified_date = response.data[0].modified_date.substr(0, 10);
 		setData(response.data);
     });
-	// axios.get("http://127.0.0.1:8000/documents/recommend/").then( (response) => {
-	// 	//   console.log(response.data[0]);
-	// 	  response.data.forEach((data) => {	
-	// 		data.created_date = data.created_date.substr(0, 10);
+	axios.get(`http://127.0.0.1:8000/documents/recommend/?username=${user.username}`).then( (response) => {
+		//   console.log(response.data[0]);
+		  response.data.forEach((data) => {	
+			data.created_date = data.created_date.substr(0, 10);
 	
-	// 	  })
+		  })
 		  
-	// 	  console.log(response.data);
-	// 	  setRecommend(response.data);
-	// 	});
+		  console.log(response.data);
+		  setRecommend(response.data);
+		});
 	
 
   }, []);

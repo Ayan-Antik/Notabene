@@ -21,12 +21,12 @@ export default function SearchItems({ searchText, docId }) {
 
     return (
         <Box id='sbox' sx={{
-            width: '100%', maxWidth: 500,
+            width: '100%', maxWidth: 200,
             bgcolor: 'background.paper',
             position: 'fixed',
             zIndex: '20',
-            margin: '-16px auto auto 5.2%',
-            border: '1px solid #f46524',
+            margin: '-4% auto auto 16%',
+            border: '1px solid #ccc',
             borderRadius: '5px'
         }}>
             <nav aria-label="">
@@ -34,7 +34,8 @@ export default function SearchItems({ searchText, docId }) {
                     {data.map(function (card, i) {
                         if (i < 6) {
                             return (
-                                <ListItem disablePadding sx={{ borderBottom: "1px solid #f46524" }} onClick={() => {
+                                <ListItem disablePadding sx={{ borderBottom: "1px solid #ccc" }} onClick={() => {
+                                    
                                     axios.patch(`http://localhost:8000/documents/${docId}/addeditor/`, {
                                         username: card.username,
                                     }, {
