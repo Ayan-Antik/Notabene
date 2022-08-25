@@ -337,7 +337,7 @@ const Notes = () => {
       
 			<div className='highlighted'>
 
-				<Tooltip title="Delete Highlight" sx={{
+      {data.owner === user.user_id && <Tooltip title="Delete Highlight" sx={{
 					float:'right', p: '0px 24px 0px 0px'}} >
 					<IconButton  onClick={() => { 
 							axios.delete(`http://127.0.0.1:8000/highlight/${highlight.id}/delete/`).then((response) => {
@@ -350,7 +350,7 @@ const Notes = () => {
 						<DeleteIcon color='error' sx={{fontSize:'36px'}}/> 	
 					</IconButton>
 
-				</Tooltip>
+				</Tooltip>}
 				<Typography sx={{width:'80%', mb:4}}>
 					{highlight.text}
 				</Typography>
