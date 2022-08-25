@@ -12,6 +12,8 @@ import { useParams } from 'react-router-dom'
 import axios from "axios"
 import Source from './search.png'
 import External from './external.png'
+// import PublicEye from './eye1.png'
+// import PrivateEye from './eye2.png'
 // import Folder from './folder.png'
 import { maxHeight, padding } from '@mui/system'
 import MDEditor from '@uiw/react-md-editor';
@@ -32,6 +34,8 @@ import {Tooltip} from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import TagIcon from '@mui/icons-material/Tag';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 
 /// FOR POPUP
@@ -108,6 +112,7 @@ const Notes = () => {
 
   let [data, setData] = useState({});
   const [highlights, setHighlights] = useState([{}]);
+  const [privacy, setPrivacy] = useState("");
   const [hostname, setHostname] = useState("") ;
   useEffect(() => {
     if(id!=null){
@@ -115,8 +120,10 @@ const Notes = () => {
       axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=&id=${id}`).then( (response) => {
     
         setData(response.data[0]);
+        setPrivacy(response.data[0].privacy);
         setHostname(response.data[0].url.toString().split("/")[2]);
         
+        console.log(privacy);
         // console.log(typeof(encodeURI(hostname)));
       //   data.url = data?.url.toString();
       });
@@ -209,6 +216,7 @@ const Notes = () => {
     <div className='note-container'>
 
 		<div className='note-info'>
+
 			<div>
 				<span style={{
 					display:'flex',
@@ -222,6 +230,73 @@ const Notes = () => {
 					
 				</Tooltip>
 		 		 </span>
+          
+          <span style={{
+					display:'flex',
+					float:'right',
+					padding: '22px 24px 0px 0px',
+        		}}>
+
+				{privacy == "pr" && <Tooltip title="Change privacy">
+					{/* <a href={data.url} target="_blank" rel="noopener noreferrer"> */}
+					<VisibilityOffIcon
+					width='34px'
+          onClick = {
+            () => {             
+              axios
+              .patch(`http://localhost:8000/documents/${id}/update/`, {
+                  privacy: "pu",
+              }, {
+                  headers: { 'Content-type': 'application/json' }
+              }).then((response)=>{
+                console.log(response);
+                if(response.status == 200){
+                  window.location.reload();
+                }
+              });
+
+              // handleClose();
+            }
+          }
+          >
+          </VisibilityOffIcon>
+          
+          {/* </a> */}
+					
+				</Tooltip>
+        }
+
+        {privacy == "pu" && <Tooltip title="Change privacy">
+					{/* <a href={data.url} target="_blank" rel="noopener noreferrer"> */}
+					<VisibilityIcon
+					width='34px'
+          onClick = {
+            () => {             
+              axios
+              .patch(`http://localhost:8000/documents/${id}/update/`, {
+                  privacy: "pr",
+              }, {
+                  headers: { 'Content-type': 'application/json' }
+              }).then((response)=>{
+                console.log(response);
+                if(response.status == 200){
+                  window.location.reload();
+                }
+              });
+
+              // handleClose();
+            }
+          }
+          >
+          </VisibilityIcon>
+          
+          {/* </a> */}
+					
+				</Tooltip>
+        }
+		 		 </span>
+
+
 				{data.title && <h1 style={{width:'80%'}}>
 					{data.title}
 				</h1>}
