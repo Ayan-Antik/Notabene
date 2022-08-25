@@ -1,12 +1,11 @@
 ROOT_URL = 'http://127.0.0.1:8000/';
-
 chrome.storage.local.get(['username'], data => {
     if (data.username) {
         document.body.innerHTML += `
         <div style="padding: 10px;">
-        <span> <img src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-512.png" height=20 width=20> </span>
-        <span style="color: white;"> `+ data.username +`</span>
-        <span style="float: right;"><button id="logoutBtn" type="button" class="btn btn-danger">Logout</button></span>
+        <span> <img src="`+chrome.runtime.getURL('images/user.png')+`" height=35 width=35> </span>
+        <span style="color: white;"> <b style="font-size:larger;">`+ data.username +`</b></span>
+        <span style="float: right;"><button id="logoutBtn" type="button" class="btn btn-primary">Logout</button></span>
         </div>
         <h4 style="text-align: center; color: white;  padding: 10px;">Highlights</h4>
         <ul class="list-group" id="highlightList" style="padding: 0px 10px 10px 10px">`;
@@ -21,12 +20,12 @@ chrome.storage.local.get(['username'], data => {
                     listItem.id = "li-" + highlight.id;
 
                     listItem.innerHTML =`<div class="d-flex w-100 justify-content-between">
-                    <p><span class="bar">|</span> `+ highlight.text +`</p>
+                    <p style="border-left:3px solid yellow; padding-left:8px; font-weight:500;"> `+ highlight.text +`</p>
                     <button id="btn-`+ highlight.id +`" type="button" class="btn">
                         <img src="`+chrome.runtime.getURL('images/bin.png')+`" width="20px" height="20px"></button>
                     </div>
                     <div>
-                    <span><small><i>`+ (highlight.note ? highlight.note : '') +`</i></small></span>`+
+                    <span><small>`+ MarkdownToHtml.parse(highlight.note) +`</small></span>`+
                     (highlight.note ? `<span><button id="note-del-btn-`+ highlight.id +`" type="button" class="btn">
                     <img src="`+chrome.runtime.getURL('images/bin.png')+`" width="15px" height="15px"></button></span>` : '')
                     +`</div>
@@ -75,15 +74,12 @@ chrome.storage.local.get(['username'], data => {
     } else {
         document.body.innerHTML += `<h4 style="text-align: center; color: white;  padding: 10px;">Login</h4>
         <form style="padding: 0px 10px 10px 10px;">
-            <div class="form-group">
-                <label for="username" style="color:white;">Username</label>
-                <input type="text" class="form-control" id="username">
+            <div class="form-group" >
+                <input type="text" class="form-control" id="username" placeholder="username" style="margin-bottom: 16px;">
+            
+                <input type="password" class="form-control" id="password" placeholder="password">
             </div>
-            <div class="form-group">
-                <label for="password" style="color:white;">Password</label>
-                <input type="password" class="form-control" id="password">
-            </div>
-            <button id="submitBtn" class="btn btn-primary mt-3">Login</button>
+            <button id="submitBtn" class="btn btn-primary mt-3" style="width:100%;">Login</button>
         </form>`;
         document.getElementById("submitBtn").addEventListener("click", (e) => {
             e.preventDefault();

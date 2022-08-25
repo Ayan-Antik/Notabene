@@ -17,7 +17,7 @@ input {
     outline: none;
   }
 
-.bar {
-    color: #EACE09;
-    font-weight: bold;
+.form-control{
+    min-height: 48px;
+    
 }

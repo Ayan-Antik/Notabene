@@ -17,7 +17,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import TagIcon from '@mui/icons-material/Tag';
 import MailIcon from '@mui/icons-material/Mail';
 export default function MyCard({card}) {
-	const { user, logoutUser } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 //   console.log(user);
 
 
@@ -66,7 +66,7 @@ export default function MyCard({card}) {
 		<Link to={`../notes/${card.id}`}>
       <CardActionArea sx={{display:'flex', backgroundColor:'#d9d9d9'}} onClick={()=>{
 		
-		if(user.user_id != card.owner){
+		if(user.user_id !== card.owner && (card.editors.length===0 || (card.editors.length > 0 && !card.editors.includes(user.user_id)))){
 			axios
 			.patch(`http://localhost:8000/documents/${card.id}/update/`, {
 				read_count: card.read_count+1,

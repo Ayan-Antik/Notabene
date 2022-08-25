@@ -72,7 +72,7 @@ const Feed = () => {
 
 				<h1 style={{fontSize:'36px'}}>Recommendations</h1>
 				</div>
-				{data.map(function(card_data, i){
+				{recommend.map(function(card_data, i){
 						
 						if(card_data.owner != null){
 
