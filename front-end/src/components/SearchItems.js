@@ -51,7 +51,7 @@ export default function SearchItems({searchText, user}) {
               
                   // <Link to={`../notes/${card.id}`} style={{textDecoration:'none', color:'black'}} key={i} >
                     <ListItem disablePadding sx={{borderBottom: "1px solid #f46524"}} onClick={()=>{
-        window.location.replace(`http://127.0.0.1:3000/notes/${card.id}`);
+                      window.location.replace(`http://127.0.0.1:3000/notes/${card.id}`);
                       
                     }} >
                       <ListItemButton>

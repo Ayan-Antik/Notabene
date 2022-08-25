@@ -20,28 +20,38 @@ const Feed = () => {
 	  logoutUser();
   }
 //   console.log(cardData);
-  const [data, setData] = useState([{
-  }]);
+  const [data, setData] = useState([{}]);
+  const [recommend, setRecommend] = useState([{}]);
   useEffect(() => {
 	  
 	  axios.get("http://127.0.0.1:8000/documents/trending/").then( (response) => {
     //   console.log(response.data[0]);
-	  response.data.forEach((data) => {
+		response.data.forEach((data) => {
+			
+			data.created_date = data.created_date.substr(0, 10);
+
+			//*Splitting card detail to make card size constant
+			// if(data.summary.length > 50){
+			// 	var split = data.summary.split(".");
+
+			// 	data.summary = split[0] + "...";
+			// }
+
+		})
 		
-		data.created_date = data.created_date.substr(0, 10);
-
-		//*Splitting card detail to make card size constant
-		if(data.summary.length > 50){
-			var split = data.summary.split(".");
-
-			data.summary = split[0] + "...";
-		}
-
-	  })
-	  
-	  //   response.data[0].modified_date = response.data[0].modified_date.substr(0, 10);
-      setData(response.data);
+		//   response.data[0].modified_date = response.data[0].modified_date.substr(0, 10);
+		setData(response.data);
     });
+	// axios.get("http://127.0.0.1:8000/documents/recommend/").then( (response) => {
+	// 	//   console.log(response.data[0]);
+	// 	  response.data.forEach((data) => {	
+	// 		data.created_date = data.created_date.substr(0, 10);
+	
+	// 	  })
+		  
+	// 	  console.log(response.data);
+	// 	  setRecommend(response.data);
+	// 	});
 	
 
   }, []);
