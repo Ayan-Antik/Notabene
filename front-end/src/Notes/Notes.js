@@ -75,6 +75,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+function hasEditAccess(id, doc) {
+  console.log(doc);
+  if (id && doc) {
+    return id === doc.owner || (doc.editors && doc.editors.includes(id));
+  }
+  return false;
+}
+
 /// FOR POPUP
 
 const emails = ['username@gmail.com', 'user02@gmail.com'];
@@ -305,17 +313,17 @@ const Notes = () => {
 
     {/* Code for popup */}
 
-    <div>
+    {hasEditAccess(user.user_id, data) && <div>
       {/* <Typography variant="subtitle1" component="div">
         Selected: {selectedValue}
       </Typography>
       <br /> */}
-      {data.owner === user.user_id && <Button variant="outlined" onClick={handleClickOpen}>
+      <Button variant="outlined" onClick={handleClickOpen}>
         <span style={{paddingRight:6}}>
         Add to
         </span>
         <FolderIcon/>
-      </Button>}
+      </Button>
       
       <Search>
         <SearchIconWrapper><SearchIcon /></SearchIconWrapper>
@@ -331,20 +339,19 @@ const Notes = () => {
           docId = {id}/>
         }
       </div>
-      <h4>Editors</h4>
-      <List sx={{ pt: 0 }}>
-      {/* <ListItem>
-            <ListItemText primary={data.editors} />
-          </ListItem> */}
-      {data.editor_names && data.editor_names.map(function(editor_name, i){
-		    return (<div key={i}>
-          <ListItem key={i} >
-            <ListItemText primary={editor_name} />
-          </ListItem>
-          </div>
-		    )
-	    })}
-      </List>
+      {data.editor_names.length > 0 && <div>
+        <h4>Editors</h4>
+        <List sx={{ pt: 0 }}>
+        {data.editor_names.map(function(editor_name, i){
+          return (<div key={i}>
+            <ListItem key={i} >
+              <ListItemText primary={editor_name} />
+            </ListItem>
+            </div>
+          )
+        })}
+        </List>
+      </div>}
 
       <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Select A Folder</DialogTitle>
@@ -391,7 +398,7 @@ const Notes = () => {
       </List>
 
     </Dialog>
-    </div>
+    </div>}
 
     {/* code for popup ends */}
 		
@@ -411,7 +418,7 @@ const Notes = () => {
       
 			<div className='highlighted'>
 
-      {data.owner === user.user_id && <Tooltip title="Delete Highlight" sx={{
+      {hasEditAccess(user.user_id, data) && <Tooltip title="Delete Highlight" sx={{
 					float:'right', p: '0px 24px 0px 0px'}} >
 					<IconButton  onClick={() => { 
 							axios.delete(`http://127.0.0.1:8000/highlight/${highlight.id}/delete/`).then((response) => {
@@ -438,7 +445,7 @@ const Notes = () => {
 	  </div>
       }
 
-       {data.owner === user.user_id &&
+       {hasEditAccess(user.user_id, data) &&
        
        <div data-color-mode="light" style = {{
             marginRight:36

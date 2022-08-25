@@ -8,6 +8,7 @@ import Notes from './Notes/Notes'
 import SpecialFeed from './Feed/SpecialFeed';
 import PublicFeed from './Feed/PublicFeed';
 import Uncategorized from './Feed/Uncategorized';
+import SharedFeed from './Feed/SharedFeed';
 
 function App() {
  
@@ -21,6 +22,7 @@ function App() {
           <Route path="/alldocs" exact element = {<SpecialFeed />} />
           <Route path="/publicdocs" exact element = {<PublicFeed />} />
           <Route path="/uncategorized" exact element = {<Uncategorized />} />
+          <Route path="/shared" exact element = {<SharedFeed />} />
           {/* <Route path="/allnotes" exact element = {< Feed />} /> */}
           <Route path="/notes/:id" exact element = {< Notes />} />
           <Route path="/user/signup" exact element = {<User type="signup" />} />

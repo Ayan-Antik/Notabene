@@ -24,7 +24,7 @@ class CreateDocumentView(APIView):
 class ListDocumentView(generics.ListAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
-    filterset_fields = ['owner__username', 'id', 'folder__id', 'privacy']
+    filterset_fields = ['owner__username', 'id', 'folder__id', 'privacy', 'editors__username']
 
 class RecentDocumentView(generics.ListAPIView):
     def get(self, request, format = None):

@@ -13,6 +13,7 @@ import HistoryIcon from '@mui/icons-material/History';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PublicIcon from '@mui/icons-material/Public';
 import FolderOffIcon from '@mui/icons-material/FolderOff';
+import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import { Link } from 'react-router-dom';
 import './Sidebar.css'
 import Folder from './Folder';
@@ -45,6 +46,12 @@ const Elements = [
     },
     {
         id: 5,
+        text: "Shared with me",
+		url: '/shared',
+        icon: <FolderSharedIcon/>
+    },
+	{
+        id: 6,
         text: "Trash",
 		url: '#',
         icon: <DeleteIcon/>
