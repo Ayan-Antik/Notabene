@@ -10,13 +10,18 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
 import './Navbar.css'
 import Sticky from '../User/Sticky.png'
 import { Link } from 'react-router-dom';
 import SearchItems from './SearchItems';
 import axios from 'axios';
-
+import TagIcon from '@mui/icons-material/Tag';
+import MailIcon from '@mui/icons-material/Mail';
+import { Dialog } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import DescriptionIcon from '@mui/icons-material/Description';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -102,15 +107,49 @@ export default function Navbar({user, handleSubmit}) {
   // );
 
   const [searchText, setSearchText] = React.useState("");
-  const [searchClick, setSearchClick] = React.useState(false);
   let searchHandler = (e) => {
     var lowerCase = e.target.value.toLowerCase();
     setSearchText(lowerCase);
     // console.log(searchText);
 
   }
+  const [open, setOpen] = React.useState(false);
+  const [count, setCount] = React.useState(0);
+  const [tag, setTag] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const handleClickOpen = () => {
+  setOpen(true);
+  
+  axios.get(`http://127.0.0.1:8000/documents/list/?owner__username=${user.username}`).then( (response) => {
+  
+    setCount(response.data.length);
+    axios.get(`http://127.0.0.1:8000/user/list/?id=${response.data[0].owner}`).then( (response) => setEmail(response.data[0].email));
+    let t=response.data.length-1;
+    while(t>=0){
+      if(response.data[t].tag_names.length > 0){
+        setTag(response.data[t].tag_names[0]);
+        break;
+      }
+      t = t-1;
+
+    }
+    });
+
+    if(user){
+    axios.get(`http://127.0.0.1:8000/user/list/?id=${user.user_id}`).then( (response) => {
+
+    setEmail(response.data[0].email);
+    
+    });
+  }
+
+  }
+  const handleClose = () => {
+  setOpen(false);
+  };
 
   return (
+    <>
     <Box sx={{ flexGrow: 1, zIndex:'10'}}>
       <AppBar style={{
         position: "fixed",
@@ -118,7 +157,7 @@ export default function Navbar({user, handleSubmit}) {
         backgroundColor: "#f46524",
         zIndex:'10'
       }}>
-        <Toolbar>
+        <Toolbar sx={{ml:2}}>
           {/* <IconButton
             size="large"
             edge="start"
@@ -162,9 +201,13 @@ export default function Navbar({user, handleSubmit}) {
               aria-haspopup="true"
               // onClick={handleProfileMenuOpen}
               color="inherit"
+              onClick={() => {
+                handleClickOpen();
+              }}
             >
               <AccountCircle />
             </IconButton>
+
             {user && <LogoutIcon sx={{ml:2, mt:2.7, cursor:'pointer'}} onClick={handleSubmit}/>}
             {!user && <LogoutIcon sx={{ml:2, mt:1.5, cursor:'pointer'}} onClick={handleSubmit}/>}
           </Box>
@@ -181,8 +224,48 @@ export default function Navbar({user, handleSubmit}) {
               />
               }
           </div>
-    </Box>
+       </Box>
+       <Dialog onClose={handleClose} open={open}>
 
+        <div style={{display:'flex', padding:'16px'}}>
+
+        <AccountCircleIcon fontSize='large' sx={{color:'#f46524'}}/>
+        <Typography variant="h5" component="div" sx={{display:'block',pl:2, fontWeight:'bold'}}>
+          {user.username} 
+        </Typography>
+
+        <br></br>
+
+        </div>
+        <div style={{display:'flex', padding:'16px'}}>
+        <MailIcon fontSize='medium' sx={{pt:0.5}}/>
+        <Typography variant="p" component="div" sx={{display:'flex',pl:.5, pt:0.5, fontWeight:'bold'}}>
+          Email
+        </Typography>
+        <Typography variant="h6"  sx={{pl:10}}>
+          <i>{email}</i> 
+        </Typography>
+        </div>
+        <div style={{display:'flex', padding:'16px'}}>
+        <DescriptionIcon fontSize='medium' sx={{pt:0.5}}/>
+        <Typography variant="p" component="div" sx={{display:'flex',pl:.5, pt:0.5, fontWeight:'bold'}}>
+          Total Docs
+        </Typography>
+        <Typography variant="h6" component="div" sx={{display:'flex', pl:24, fontWeight:'bold'}}>
+          {count}
+        </Typography>
+        </div>
+        {tag !="" && <div style={{display:'flex', padding:'16px'}}>
+        <TagIcon sx={{pt:0.5, fontSize:'28px'}}/>
+        <Typography variant="p" sx={{display:'flex',pl:.5, pt:0.5, fontWeight:'bold'}}>
+          Recent Tag
+        </Typography>
+        <Typography variant="h6"  sx={{display:'flex', pl:16, fontWeight:'bold'}}>
+          {tag}
+        </Typography>
+        </div>}
+        </Dialog>
+        </>
 
   );
 }

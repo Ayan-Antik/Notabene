@@ -32,11 +32,52 @@ import FolderIcon from '@mui/icons-material/Folder';
 import SaveIcon from '@mui/icons-material/Save';
 import {Tooltip} from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete';
+import SearchIcon from '@mui/icons-material/Search';
+import { styled, alpha } from '@mui/material/styles';
+import InputBase from '@mui/material/InputBase';
+import UserSearchItems from './UserSearchItems';
 import MarkdownPreview from '@uiw/react-markdown-preview';
 import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
+const Search = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  '&:hover': {
+    backgroundColor: alpha(theme.palette.common.white, 0.25),
+  },
+  marginRight: theme.spacing(2),
+  marginLeft: 0,
+  width: '100%',
+  [theme.breakpoints.up('sm')]: {
+    width: 'auto',
+  },
+}));
+
+const SearchIconWrapper = styled('div')(({ theme }) => ({
+  height: '100%',
+  position: 'absolute',
+  pointerEvents: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: 'inherit',
+  '& .MuiInputBase-input': {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(2)})`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+}));
 
 /// FOR POPUP
 
@@ -108,6 +149,10 @@ const Notes = () => {
 	  console.log("Logout Clicked");
 	  console.log(user);
 	  logoutUser();
+  }
+  const [searchText, setSearchText] = React.useState("");
+  const handleAddEditor = (e) => {
+    setSearchText(e.target.value);
   }
 
   let [data, setData] = useState({});
@@ -346,6 +391,35 @@ const Notes = () => {
         </span>
         <FolderIcon/>
       </Button>}
+      
+      <Search>
+        <SearchIconWrapper><SearchIcon /></SearchIconWrapper>
+        <StyledInputBase
+          placeholder="Add Editor…"
+          inputProps={{ 'aria-label': 'search' }}
+          onChange={handleAddEditor}/>
+      </Search>
+      <div>
+        {/* SearchResults */}
+        {searchText && <UserSearchItems 
+          searchText = {searchText}
+          docId = {id}/>
+        }
+      </div>
+      <h4>Editors</h4>
+      <List sx={{ pt: 0 }}>
+      {/* <ListItem>
+            <ListItemText primary={data.editors} />
+          </ListItem> */}
+      {data.editor_names && data.editor_names.map(function(editor_name, i){
+		    return (<div key={i}>
+          <ListItem key={i} >
+            <ListItemText primary={editor_name} />
+          </ListItem>
+          </div>
+		    )
+	    })}
+      </List>
 
       <Dialog onClose={handleClose} open={open}>
       <DialogTitle>Select A Folder</DialogTitle>
@@ -412,7 +486,7 @@ const Notes = () => {
       
 			<div className='highlighted'>
 
-				<Tooltip title="Delete Highlight" sx={{
+      {data.owner === user.user_id && <Tooltip title="Delete Highlight" sx={{
 					float:'right', p: '0px 24px 0px 0px'}} >
 					<IconButton  onClick={() => { 
 							axios.delete(`http://127.0.0.1:8000/highlight/${highlight.id}/delete/`).then((response) => {
@@ -425,7 +499,7 @@ const Notes = () => {
 						<DeleteIcon color='error' sx={{fontSize:'36px'}}/> 	
 					</IconButton>
 
-				</Tooltip>
+				</Tooltip>}
 				<Typography sx={{width:'80%', mb:4}}>
 					{highlight.text}
 				</Typography>
