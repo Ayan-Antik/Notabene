@@ -25,7 +25,7 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
                     <img src="`+chrome.runtime.getURL('images/bin.png')+`" width="20px" height="20px"></button>
                 </div>
                 <div>
-                <span><small>`+ MarkdownToHtml.parse(highlight.note ? highlight.note : "") +`</small></span>`+
+                <span><small>`+ (highlight.note? MarkdownToHtml.parse(highlight.note): '') +`</small></span>`+
                 (highlight.note ? `<span><button id="note-del-btn-`+ highlight.id +`" type="button" class="btn">
                 <img src="`+chrome.runtime.getURL('images/bin.png')+`" width="15px" height="15px"></button></span>` : '')
                 +`</div>
@@ -38,7 +38,6 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
                 // delete highlight
                 document.getElementById('btn-' + String(highlight.id)).addEventListener("click", (e) => {
                     e.preventDefault();
-                    console.log("aaa");
                     chrome.runtime.sendMessage({action: 'delete', highlightId: highlight.id}, (response) => {
                         location.reload();
                         chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
