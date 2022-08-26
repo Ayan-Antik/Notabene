@@ -1,12 +1,13 @@
 ROOT_URL = 'http://127.0.0.1:8000/';
 
 function store(selection, container, callback) {
-    chrome.storage.local.get(['username'], data => {
-        if (data.username) {
+    chrome.storage.local.get(['username', 'owner_name'], data => {
+        if (data.username && data.owner_name) {
             fetch(ROOT_URL + 'highlight/create/', {
                 method: "POST",
                 body: JSON.stringify({
                     username: data.username,
+                    owner_name: data.owner_name,
                     url: window.location.href,
                     title: document.title,
                     text: text,
@@ -19,10 +20,13 @@ function store(selection, container, callback) {
                 headers: {"Content-type": "application/json"},
             })
             .then(response => response.json())
-            .then(data => {
-                console.log("data");
-                callback(data.id);
-                console.log(data.id);
+            .then(response => {
+                console.log(response);
+                if (response.changeOwner) {
+                    chrome.storage.local.set({owner_name: data.username}, () => {
+                        callback(response.id);
+                    });
+                }
             })
             .catch(error => console.log(error));
         }
@@ -30,9 +34,9 @@ function store(selection, container, callback) {
 }
 
 function loadAll(url) {
-    chrome.storage.local.get(['username'], data => {
-        if (data.username) {
-            fetch(ROOT_URL + 'highlight/list/?document__owner__username=' + data.username + '&document__url=' + url)
+    chrome.storage.local.get(['owner_name'], data => {
+        if (data.owner_name) {
+            fetch(ROOT_URL + 'highlight/list/?document__owner__username=' + data.owner_name + '&document__url=' + url)
             .then(response => response.json())
             .then(highlights => highlights.forEach(highlight => {
                 load(highlight);

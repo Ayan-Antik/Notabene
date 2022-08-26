@@ -21,3 +21,9 @@ input {
     min-height: 48px;
     
 }
+
+.ownerbtn {
+    position: absolute;
+    bottom: 0;
+    margin: 10px;
+}

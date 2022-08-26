@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
           })
         .then(response => {
             if (response.status == 200) {
-                chrome.storage.local.set({username: request.username}, () => {
+                chrome.storage.local.set({username: request.username, owner_name: request.username}, () => {
                     sendResponse({isLoggedIn: true});
                 });
             }
@@ -32,16 +32,19 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             }
         })
         .catch(error => {sendResponse({isLoggedIn: false});});
-    } else if (request.username && request.url) {
-        fetch(ROOT_URL + 'highlight/list/?document__owner__username=' + request.username + '&document__url=' + request.url)
+    } else if (request.action == "get") {
+        chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
+            console.log(tabs[0].url);
+            fetch(ROOT_URL + 'highlight/list/?document__owner__username=' + request.username + '&document__url=' + tabs[0].url)
             .then(response => response.json())
             .then(highlights => sendResponse(highlights))
             .catch(error => console.log(error));
-    } else if (request.highlightId && request.action == 'delete') {
+        });
+    } else if (request.action == 'delete') {
         console.log(request.action);
         fetch(ROOT_URL + 'highlight/' + request.highlightId + '/delete/', {method: 'DELETE',})
             .then(response => sendResponse(response.status));
-    } else if (request.highlightId && request.note) {
+    } else if (request.action == "updateNote") {
         console.log(request.note);
         fetch(ROOT_URL + 'highlight/' + request.highlightId + '/update/', {
             method: 'PATCH',
@@ -49,6 +52,14 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
             headers: {'Content-type': 'application/json'},
         })
         .then(response => sendResponse(response.status));
+    } else if (request.action == "shared") {
+        chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, (tabs) => {
+            console.log(tabs[0].url);
+            fetch(ROOT_URL +  'documents/list/?editors__username=' + request.username + '&url=' + tabs[0].url)
+            .then(response => response.json())
+            .then(docs => sendResponse(docs))
+            .catch(error => console.log(error));
+        });
     }
     return true; // added this line because sendResponse is being called asynchronously
 });
