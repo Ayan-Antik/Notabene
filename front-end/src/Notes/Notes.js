@@ -17,6 +17,7 @@ import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
 import AddIcon from '@mui/icons-material/Add';
 import PropTypes from 'prop-types';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -31,7 +32,8 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-import Toolbar from '@mui/material'
+
+
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -71,7 +73,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function hasEditAccess(id, doc) {
-  console.log(doc);
+//   console.log(doc);
   if (id && doc) {
 	return id === doc.owner || (doc.editors && doc.editors.includes(id));
   }
@@ -166,7 +168,7 @@ const Notes = () => {
 		setPrivacy(response.data[0].privacy);
 		setHostname(response.data[0].url.toString().split("/")[2]);
 		
-		console.log(privacy);
+		// console.log(privacy);
 		// console.log(typeof(encodeURI(hostname)));
 	  //   data.url = data?.url.toString();
 	  });
@@ -174,8 +176,7 @@ const Notes = () => {
   }, []);
 
   const myframe = <iframe src={data.url} className='iframe' id='frame1'></iframe>
-  // var img = window.frames['frame1'].getElementByTagName('img')[0];
-  // console.log(img)
+
 
   useEffect(() => {
 	axios.get(`http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}`).then((response) => {
@@ -234,9 +235,14 @@ const Notes = () => {
 
   const [folders, setFolders] = useState([{}]);
 
-  const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
+  const [saved, setSaved] = useState(false);
 
+  const handleSaved = () => {
+	setSaved(true);
+	// setTimeout(() => {setSaved(false)}, 1000);
+  };
   const handleClickOpen = () => {
 
 	setOpen(true);
@@ -276,7 +282,7 @@ const Notes = () => {
 				</Tooltip>
 		 		 </span>
 		  
-		  <span style={{
+		 { hasEditAccess(user.user_id, data) && <span style={{
 					display:'flex',
 					float:'right',
 					padding: '22px 24px 0px 0px',
@@ -341,12 +347,14 @@ const Notes = () => {
 					
 				</Tooltip>
 		}
-		 		 </span>
+		 		 </span>}
 
 
-				{data.title && <h1 style={{width:'80%'}}>
+				{data.title && 
+				<h1 style={{width:'80%', paddingBottom:16, borderBottom:'1px solid #ccc'}}>
 					{data.title}
-				</h1>}
+				</h1>
+				}
 				{!data.title &&
 				<>
 					
@@ -445,6 +453,11 @@ const Notes = () => {
 		</div>}
 		</Dialog>
 	
+		<Dialog open={saved} onClose={()=>{setSaved(false)}}>
+		<DialogTitle>Note Saved</DialogTitle>
+		</Dialog>
+
+		
 
 	  <Dialog onClose={handleClose} open={open}>
 	  <DialogTitle>Select A Folder</DialogTitle>
@@ -551,7 +564,7 @@ const Notes = () => {
 		/>
 
 		<br></br>
-
+		
 
 	<Tooltip title="Save Note" sx={{
 					width:'max-content',
@@ -562,12 +575,17 @@ const Notes = () => {
 		onClick={() => {
 
 		  console.log(highlights[i].note);
-
+		  handleSaved();
 		  axios
 		  .patch(`http://localhost:8000/highlight/${highlight.id}/update/`, {
 			  note: highlights[i].note,
 		  }, {
 			  headers: { 'Content-type': 'application/json' }
+		  }).then((response) => {
+			if(response.status === 200){
+				setTimeout(() => {setSaved(false)} , 500);
+			  
+			}
 		  });
 
 		  console.log(highlight.id);
@@ -585,6 +603,7 @@ const Notes = () => {
 
 		</Tooltip>
 
+		
 	  {/* <Button
 	  variant="contained" 
 	  color="error"
@@ -607,15 +626,14 @@ const Notes = () => {
 	  }
 	}  
 	  >Delete</Button> */}
-
-	<Tooltip title="Delete Note" sx={{
+		<Tooltip title="Delete Note" sx={{
 			  width:'max-content',
 			  mt:-2
 
 			}} >
 		  <IconButton  onClick={
 			() => { 
-
+				
 			  updateObjectInArray(i, "");
 	  
 			  console.log(highlights[i].note);
