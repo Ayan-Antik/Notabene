@@ -49,12 +49,6 @@ const Elements = [
         text: "Shared with me",
 		url: '/shared',
         icon: <FolderSharedIcon/>
-    },
-	{
-        id: 6,
-        text: "Trash",
-		url: '#',
-        icon: <DeleteIcon/>
     }
 ]
 export default function Sidebar({user}) {

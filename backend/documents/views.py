@@ -36,6 +36,10 @@ class UpdateDocumentView(generics.UpdateAPIView):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
 
+class DeleteDocumentView(generics.DestroyAPIView):
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
+
 class AddTagView(APIView):
     def post(self, request, format = None):
         tag = Tag.objects.get(name=request.data['tag_name'])

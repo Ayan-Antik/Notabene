@@ -252,6 +252,7 @@ const Notes = () => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [docDelDialog, setDocDelDialog] = useState(false);
   const [role, setRole] = useState("viewer");
 
   const handleSaved = () => {
@@ -364,6 +365,12 @@ const Notes = () => {
 		}
 		 		 </span>}
 
+		{ hasEditAccess(user.user_id, data) && <span style={{display:'flex', float:'right',
+			padding: '22px 24px 0px 0px',}}>
+			<Tooltip title="Delete">
+			<DeleteIcon width='34px' cursor='pointer' onClick = {() => {setDocDelDialog(true)}}></DeleteIcon>
+			</Tooltip>
+		 	</span>}
 
 				{data.title && 
 				<h1 style={{width:'80%', paddingBottom:16, borderBottom:'1px solid #ccc'}}>
@@ -491,7 +498,17 @@ const Notes = () => {
 		<DialogTitle>Note Saved</DialogTitle>
 		</Dialog>
 
-		
+		<Dialog open={docDelDialog} onClose={()=>{setDocDelDialog(false)}}>
+		<DialogTitle>Are you sure you want to delete this document? All highlights and notes will be lost.</DialogTitle>
+		<Button id='doc-del-yes' onClick={() => {             
+			  axios
+			  .delete(`http://localhost:8000/documents/${id}/delete/`).then((response)=>{
+				console.log(response);
+				window.location.replace("http://127.0.0.1:3000/");
+			  });
+			}}>Yes</Button>
+		<Button id='doc-del-no' onClick={()=>{setDocDelDialog(false)}}>No</Button>
+		</Dialog>
 
 	  <Dialog onClose={handleClose} open={open}>
 	  <DialogTitle>Select A Folder</DialogTitle>
