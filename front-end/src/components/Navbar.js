@@ -191,7 +191,7 @@ export default function Navbar({user, handleSubmit}) {
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             
-      {user && <div><h4>Hello, {user.username}</h4></div>}
+      {user && <div><h4>Welcome back, {user.username}</h4></div>}
             
             <IconButton
               size="large"

@@ -16,6 +16,9 @@ import Dialog from '@mui/material/Dialog';
 import DescriptionIcon from '@mui/icons-material/Description';
 import TagIcon from '@mui/icons-material/Tag';
 import MailIcon from '@mui/icons-material/Mail';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+
 export default function MyCard({card}) {
 	const { user } = useContext(AuthContext);
 //   console.log(user);
@@ -94,7 +97,7 @@ export default function MyCard({card}) {
           </CardActionArea>
       </Link>
         <CardContent>
-          <Typography gutterBottom variant="h6" component="div" sx={{maxHeight:64}}>
+          <Typography gutterBottom variant="h6" component="div" sx={{minHeight:64, maxHeight:64}}>
             {card.title.length>50?
             card.title.substr(0, 40)
              + "..."
@@ -176,6 +179,18 @@ export default function MyCard({card}) {
 		precision={0.1} readOnly
         value={totalRating?totalRating:2.5} 
       />
+
+	  {card.privacy === "pr" &&
+	  			
+					<VisibilityOffIcon fontSize='small' sx={{ float:'right'}}/>
+				
+	  }
+
+		{card.privacy === "pu" &&
+	  			
+				  <VisibilityIcon fontSize='small' sx={{float:'right'}}/>
+			  
+	}
 
 		</div>
         </CardContent>
