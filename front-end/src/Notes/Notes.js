@@ -641,7 +641,7 @@ const Notes = () => {
 	<Rating
         name="half-rating-read"
 		precision={0.1} readOnly
-        value={totalRating} 
+        value={totalRating? totalRating : 2.5 } 
       />
 		
 	  
