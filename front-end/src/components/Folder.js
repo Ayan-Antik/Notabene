@@ -245,7 +245,7 @@ export default function Folder({user}) {
 			
 				<CreateNewFolderIcon sx={{
 					
-					color:'#777'
+					color:'#f46523'
 
 				}} 
 				
@@ -277,7 +277,7 @@ export default function Folder({user}) {
 			id="input-with-icon-adornment"
 			startAdornment={
 				<InputAdornment position="start">
-				<FolderIcon />
+				<FolderIcon sx={{color:'#f46523'}}/>
 				</InputAdornment>
 			}
 			value={folderName}
@@ -301,7 +301,7 @@ export default function Folder({user}) {
               <div key={index}>
                 <ListItemButton key={index} onClick={() => handleClick(d.id-1)}>
                   <ListItemIcon>
-                    <FolderIcon />
+                    <FolderIcon sx={{color:'#f46523'}}/>
                   </ListItemIcon>
                   <ListItemText primary={d.name}/>
                   {open[d.id-1] ? <ExpandLess/> : <ExpandMore/>}

@@ -142,13 +142,24 @@ export default function MyCard({card}) {
 
           <i>{card.created_date}</i><br /><br />
           
-          {card.tags.length>0 && <span style={{
-            margin:"10px 4px 0px 0px",
-            padding: "6px",
-            backgroundColor: "#BFC9CA",
-            borderRadius: "5% / 15%"
-          }}
-          >#{card.tag_names[0]}</span> }{/*Add br tag if more than 2 tags*/}
+          {card.tags.length>0 && <span 
+          >
+			{card.tag_names.map((tag, index) => {
+			const colors = ['skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange',];
+			return(
+				<span key={index} style={{
+					margin:"10px 8px 0px 0px",
+					padding: "6px",
+					backgroundColor: `${colors[index]}`,
+					borderRadius: "10% / 20%"
+				  }}>
+				#{tag}
+				</span>
+			);
+			  
+
+		  })}
+		  </span>}
         </CardContent>
     </Card>
   );

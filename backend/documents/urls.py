@@ -7,6 +7,8 @@ urlpatterns = [
     path('recent/', RecentDocumentView.as_view()),
     path('<int:pk>/update/', UpdateDocumentView.as_view()),
     path('addtag/', AddTagView.as_view()),
+    path('listtags/', ListTagView.as_view()),
+    path('searchtags/', SearchTagView.as_view()),
     path('trending/', TrendingView.as_view()),
     path('recommend/', RecommendView.as_view()),
     path('search/', SearchView.as_view()),

@@ -33,7 +33,11 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import SearchHighlights from './SearchHighlights'
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Addtags from './Addtags'
 
+
+const colors = ['skyblue', 'orange', '#ccccff', '#fbcc04','skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange',];
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -152,6 +156,9 @@ const Notes = () => {
   }
   const [searchText, setSearchText] = React.useState("");
   const [searchHighlights, setSearchHighlights] = React.useState("");
+  const [searchTags, setSearchTags] = React.useState("");
+ 
+
   const handleAddEditor = (e) => {
 	setSearchText(e.target.value);
   }
@@ -164,7 +171,7 @@ const Notes = () => {
   let [data, setData] = useState({});
   const [highlights, setHighlights] = useState([{}]);
   const [privacy, setPrivacy] = useState("");
-  const [hostname, setHostname] = useState("") ;
+
   useEffect(() => {
 	if(id!=null){
 
@@ -172,7 +179,7 @@ const Notes = () => {
 	
 		setData(response.data[0]);
 		setPrivacy(response.data[0].privacy);
-		setHostname(response.data[0].url.toString().split("/")[2]);
+		// setHostname(response.data[0].url.toString().split("/")[2]);
 		
 		// console.log(privacy);
 		// console.log(typeof(encodeURI(hostname)));
@@ -244,6 +251,8 @@ const Notes = () => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [openTag, setOpenTag] = useState(false);
+
 
   const handleSaved = () => {
 	setSaved(true);
@@ -368,23 +377,36 @@ const Notes = () => {
 				}
 			</div>
 			{data.tags && data.tags.length > 0 && 
-	  		<div style={{width:'80%'}}>
-				{data.tag_names.map((tag, i) => {
-						
-						return(
-							<div key={i} style={{maxWidth:'max-content', padding:6, marginBottom:24, backgroundColor:'#ccc', borderRadius:'10% / 20%'}}>
-								<b style={{paddingRight:'2px', fontSize:18}}>#</b>
-								<Typography variant="subtitle" sx={{fontSize:18}} >
-								{tag}
-								</Typography>
-								
-							</div>
-						)
+				<>
+					{data.tag_names.map((tag, i) => {
+							
+							return(
+								<span key={i} style={{
+									maxWidth:'max-content', 
+									display:'inline-block',
+									color:'black',
+									padding:'1px 8px', marginRight:8,
+									backgroundColor:`${colors[i]}`,
+									borderRadius:'10% / 30%'
+									
+									}}>
+									<b style={{paddingRight:'2px', fontSize:18}}>#</b>
+									<Typography variant="subtitle" sx={{fontSize:18}} >
+									{tag}
+									</Typography>
+									
+								</span>
+							)
 
-					}
-				)}
-			</div>
-		}
+						}
+					)}
+				</>
+			}
+			<Tooltip title="Add Tags">
+				<IconButton onClick={()=>{setOpenTag(true);}} >
+					<AddBoxIcon fontSize='large' sx={{color:'#1976d2'}} />
+				</IconButton>
+			</Tooltip>
 			{/* <div style={{display: 'grid', gridTemplateColumns: 'max-content auto'}}>
 			
 				<span style={{font: '24px bold', marginLeft: '16px'}}>
@@ -398,7 +420,7 @@ const Notes = () => {
 
 	{hasEditAccess(user.user_id, data) && 
 	
-	<div>
+	<div style={{float:'right', marginRight:64}}>
 	  {/* <Typography variant="subtitle1" component="div">
 		Selected: {selectedValue}
 	  </Typography>
@@ -418,7 +440,7 @@ const Notes = () => {
 			backgroundColor:'#FBCC04',
 		}
 		}}>
-		<ShareRoundedIcon sx={{}}/>
+		<ShareRoundedIcon/>
 		<span style={{paddingLeft:6}}>
 		Add Editor
 		</span>
@@ -428,7 +450,11 @@ const Notes = () => {
 		<Typography variant='h6' sx={{p:2}}>
 			Share "{data.title}"
 		</Typography>
-	  <Search sx={{backgroundColor:'#f5f5f5', ml:2, mb:2}}>
+	  <Search sx={{backgroundColor:'#f5f5f5', ml:2, mb:2,
+			':hover':{
+				bgcolor:'#e5e5e5',
+			},
+		}}>
 		<SearchIconWrapper sx={{p:2}}><SearchIcon /></SearchIconWrapper>
 		<StyledInputBase sx={{pl:2}}
 		  placeholder="Add Editor"
@@ -458,6 +484,14 @@ const Notes = () => {
 		</List>
 		</div>}
 		</Dialog>
+
+		{hasEditAccess(user.user_id, data) && <Addtags 
+			openTag = {openTag}
+			setOpenTag = {setOpenTag}
+			searchTags = {searchTags}
+			setSearchTags = {setSearchTags}
+			docid = {id}
+		/>}
 	
 		<Dialog open={saved} onClose={()=>{setSaved(false)}}>
 		<DialogTitle>Note Saved</DialogTitle>
@@ -735,4 +769,4 @@ const Notes = () => {
   )
 }
 
-export default Notes
+export default Notes;
