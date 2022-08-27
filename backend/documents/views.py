@@ -114,6 +114,9 @@ class ListFolderView(generics.ListAPIView):
     serializer_class = FolderSerializer
     filterset_fields = ['owner__username']
 
+class DeleteFolderView(generics.DestroyAPIView):
+    queryset = Folder.objects.all()
+    serializer_class = FolderSerializer
 class AddCollabView(APIView):
     def patch(self, request, pk):
         username = request.data['username']
