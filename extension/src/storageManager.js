@@ -23,10 +23,9 @@ function store(selection, container, callback) {
             .then(response => {
                 console.log(response);
                 if (response.changeOwner) {
-                    chrome.storage.local.set({owner_name: data.username}, () => {
-                        callback(response.id);
-                    });
+                    chrome.storage.local.set({owner_name: data.username});
                 }
+                callback(response.id);
             })
             .catch(error => console.log(error));
         }
