@@ -29,7 +29,7 @@ class Document(models.Model):
     owner = models.ForeignKey(User, related_name='owner', on_delete=models.CASCADE)
     editors = models.ManyToManyField(User, blank=True, related_name='editors')
     viewers = models.ManyToManyField(User, blank=True, related_name='viewers')
-    folder = models.ForeignKey(Folder, on_delete=models.CASCADE, null=True, blank=True)
+    folder = models.ForeignKey(Folder, on_delete=models.SET_NULL, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     url = models.URLField()
     title = models.TextField()

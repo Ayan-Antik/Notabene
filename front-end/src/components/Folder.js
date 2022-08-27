@@ -171,6 +171,8 @@ import Files from './Files';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import { Form, FormControl, InputLabel, Input, InputAdornment, Tooltip, IconButton } from '@mui/material';
 import DoneIcon from '@mui/icons-material/Done';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 //* Trying new library
 // import FolderTree, { testData, AddFileIcon } from 'react-folder-tree';
 // import 'react-folder-tree/dist/style.css';
@@ -298,14 +300,25 @@ export default function Folder({user}) {
        
 
               return(
-              <div key={index}>
-                <ListItemButton key={index} onClick={() => handleClick(d.id-1)}>
+              <span key={index}>
+                <ListItemButton key={index} onClick={() => handleClick(d.id-1)} sx={{maxWidth:'80%'}}>
                   <ListItemIcon>
                     <FolderIcon sx={{color:'#f46523'}}/>
                   </ListItemIcon>
                   <ListItemText primary={d.name}/>
                   {open[d.id-1] ? <ExpandLess/> : <ExpandMore/>}
                 </ListItemButton>
+                <IconButton sx={{color:'#f46523' , display: 'flex', float: 'right', marginTop:-6, marginRight:1}} onClick={()=>{
+                  axios.delete(`http://localhost:8000/documents/${d.id}/deletefolder/`).then((response) => {
+                  console.log(response);
+                  window.location.reload();
+                }).catch((error) => {
+                  console.log(error);
+                })
+              }
+                }>
+                <DeleteIcon  />
+                </IconButton>
                 <Collapse in={open[d.id-1]} timeout="auto" unmountOnExit>
               
                   <Files user = {user} folderid={d.id}/>
@@ -313,7 +326,7 @@ export default function Folder({user}) {
                   </Collapse>
               
 
-              </div>)
+              </span>)
       
       })}
 
