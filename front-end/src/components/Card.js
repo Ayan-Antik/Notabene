@@ -28,6 +28,15 @@ export default function MyCard({card}) {
 		const [tag, setTag] = React.useState("");
 		const [cardOwner, setCardOwner] = React.useState(0);
 		const [email, setEmail] = React.useState("");
+		const [totalRating, setTotalRating] = React.useState(0);
+
+		useEffect(() => {
+			axios.get(`http://127.0.0.1:8000/documents/totalrating/?document_id=${card.id}`).then((response) => {
+			// console.log(response.data);
+			setTotalRating(response.data.rating__avg);
+		});
+		}, []);
+
 		const handleClickOpen = () => {
 		setOpen(true);
 		
@@ -161,7 +170,13 @@ export default function MyCard({card}) {
 		  })}
 		  </span>}
 		  <div style={{marginTop:12}}>
-		  <Rating name="read-only" value='3' readOnly />
+
+		  <Rating
+        name="half-rating-read"
+		precision={0.1} readOnly
+        value={totalRating?totalRating:2.5} 
+      />
+
 		</div>
         </CardContent>
     </Card>

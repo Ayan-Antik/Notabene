@@ -462,11 +462,11 @@ const Notes = () => {
 					)}
 				</>
 			}
-			<Tooltip title="Add Tags">
+			{hasEditAccess(user.user_id, data) && <Tooltip title="Add Tags">
 				<IconButton onClick={()=>{setOpenTag(true);}} >
 					<AddBoxIcon fontSize='large' sx={{color:'#1976d2'}} />
 				</IconButton>
-			</Tooltip>
+			</Tooltip>}
 			{/* <div style={{display: 'grid', gridTemplateColumns: 'max-content auto'}}>
 			
 				<span style={{font: '24px bold', marginLeft: '16px'}}>
@@ -635,16 +635,24 @@ const Notes = () => {
 	</Dialog>
 	</div>}
 
+
+	<Typography component="legend" sx={{mt:4, font:'18px Arial'}}>Document Rating</Typography>
+
 	<Rating
         name="half-rating-read"
 		precision={0.1} readOnly
-        value={totalRating}
+        value={totalRating} 
       />
-	  {totalRating}
+		
+	  
 	  <br/>
 	  
 
-	{!hasEditAccess(user.user_id, data) && <Rating
+	{!hasEditAccess(user.user_id, data) && 
+	<>
+	
+	<Typography component="legend" sx={{mt:1, font:'18px Arial'}}>My Rating</Typography>
+	<Rating
         name="simple-controlled"
         value={myRating}
         onChange={(event, newRating) => {
@@ -657,7 +665,9 @@ const Notes = () => {
 				console.log(response);
 			  });
         }}
-      />}
+      />
+	</>
+	  }
 
 	{/* code for popup ends */}
 		
