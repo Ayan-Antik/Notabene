@@ -80,6 +80,14 @@ function hasEditAccess(id, doc) {
   return false;
 }
 
+function hasViewAccess(id, doc) {
+	if (doc && doc.privacy === 'pu') return true;  
+	if (id && doc) {
+		return id === doc.owner || (doc.editors && doc.editors.includes(id)) || (doc.viewers && doc.viewers.includes(id));
+	}
+	return false;
+}
+
 /// FOR POPUP
 
 
@@ -244,6 +252,7 @@ const Notes = () => {
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [role, setRole] = useState("viewer");
 
   const handleSaved = () => {
 	setSaved(true);
@@ -270,7 +279,7 @@ const Notes = () => {
 		{user &&<Sidebar user = {user} />}
 
 
-	{user && <div className='note-container'>
+	{user && hasViewAccess(user.user_id, data) && <div className='note-container'>
 
 		<div className='note-info'>
 
@@ -420,7 +429,7 @@ const Notes = () => {
 		}}>
 		<ShareRoundedIcon sx={{}}/>
 		<span style={{paddingLeft:6}}>
-		Add Editor
+		Add Collaborator
 		</span>
 	  </Button>
 
@@ -428,10 +437,14 @@ const Notes = () => {
 		<Typography variant='h6' sx={{p:2}}>
 			Share "{data.title}"
 		</Typography>
+		<div onChange={(e)=>{setRole(e.target.value)}}>
+			<input type="radio" value="viewer" name="role" defaultChecked/> Viewer
+			<input type="radio" value="editor" name="role" /> Editor
+		</div>
 	  <Search sx={{backgroundColor:'#f5f5f5', ml:2, mb:2}}>
 		<SearchIconWrapper sx={{p:2}}><SearchIcon /></SearchIconWrapper>
 		<StyledInputBase sx={{pl:2}}
-		  placeholder="Add Editor"
+		  placeholder="Add Collaborator"
 		  inputProps={{ 'aria-label': 'search' }}
 		  onChange={handleAddEditor}/>
 	  </Search>
@@ -439,7 +452,8 @@ const Notes = () => {
 		{/* SearchResults */}
 		{searchText && <UserSearchItems 
 		  searchText = {searchText}
-		  docId = {id}/>
+		  docId = {id}
+		  role = {role}/>
 		}
 	  </div>
 	  {data.editor_names.length > 0 && 
@@ -451,6 +465,20 @@ const Notes = () => {
 		  return (<div key={i}>
 			<ListItem key={i} >
 			  <ListItemText primary={<Typography variant='body' sx={{fontWeight:'bold'}}>{editor_name}</Typography>}/>
+			</ListItem>
+			</div>
+		  )
+		})}
+		</List>
+		</div>}
+		{data.viewer_names.length > 0 && 
+		<div style={{paddingLeft:12}}>
+		<Typography variant='h6'>Viewers</Typography>
+		<List sx={{ pt: 0 }}>
+		{data.viewer_names.map(function(viewer_name, i){
+		  return (<div key={i}>
+			<ListItem key={i} >
+			  <ListItemText primary={<Typography variant='body' sx={{fontWeight:'bold'}}>{viewer_name}</Typography>}/>
 			</ListItem>
 			</div>
 		  )

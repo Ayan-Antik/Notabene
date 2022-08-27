@@ -83,16 +83,32 @@ class ListFolderView(generics.ListAPIView):
     serializer_class = FolderSerializer
     filterset_fields = ['owner__username']
 
-class AddEditorView(APIView):
+class AddCollabView(APIView):
     def patch(self, request, pk):
-        editor_name = request.data['username']
+        username = request.data['username']
+        role = request.data['role']
         document = Document.objects.get(pk=pk)
-        editor = User.objects.get(username=editor_name)
-        document.editors.add(editor)
+        user = User.objects.get(username=username)
+        if role == "viewer":
+            document.editors.remove(user)
+            document.viewers.add(user)
+            article = 'a'
+        elif role == "editor":
+            document.viewers.remove(user)
+            document.editors.add(user)
+            article = 'an'
+        else:
+            return Response({'status': 'error'})
         subject = 'Notabene Document Collaboration Invitation'
-        message = (f'Hi {editor_name}, You have been added as an editor in the Notabene document titled \"{document.title}\". '
+        message = (f'Hi {username}, You have been added as {article} {role} in the Notabene document titled \"{document.title}\". '
         + f'Click the following link to view the document:\nhttp://localhost:3000/notes/{document.id}/')
         email_from = settings.EMAIL_HOST_USER
-        recipient_list = [editor.email, ]
+        recipient_list = [user.email, ]
         send_mail( subject, message, email_from, recipient_list )
         return Response({'status': 'ok'})
+
+class SharedListView(APIView):
+    def get(self, request, format = None):
+        queryset = Document.objects.filter(Q(editors__username=request.query_params['username']) | 
+            Q(viewers__username=request.query_params['username']))
+        return Response(DocumentSerializer(queryset, many=True).data)

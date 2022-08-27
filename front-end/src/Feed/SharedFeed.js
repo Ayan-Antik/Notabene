@@ -20,7 +20,7 @@ const SharedFeed = () => {
   const [data, setData] = useState([{
   }]);
   useEffect(() => {
-    axios.get(`http://127.0.0.1:8000/documents/list/?editors__username=${user.username}`).then((response) => {
+    axios.get(`http://127.0.0.1:8000/documents/sharedlist/?username=${user.username}`).then((response) => {
       response.data.forEach((data) => {
         data.created_date = data.created_date.substr(0, 10);
 

@@ -6,7 +6,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import axios from 'axios';
 
-export default function SearchItems({ searchText, docId }) {
+export default function SearchItems({ searchText, docId, role }) {
     const [data, setData] = React.useState([{
     }]);
 
@@ -36,8 +36,9 @@ export default function SearchItems({ searchText, docId }) {
                             return (
                                 <ListItem disablePadding sx={{ borderBottom: "1px solid #ccc" }} onClick={() => {
                                     
-                                    axios.patch(`http://localhost:8000/documents/${docId}/addeditor/`, {
+                                    axios.patch(`http://localhost:8000/documents/${docId}/addcollab/`, {
                                         username: card.username,
+                                        role: role
                                     }, {
                                         headers: { 'Content-type': 'application/json' }
                                     }).then((response) => {

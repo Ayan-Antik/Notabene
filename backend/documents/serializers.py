@@ -5,6 +5,7 @@ class DocumentSerializer(serializers.ModelSerializer):
     owner_name = serializers.SerializerMethodField('get_owner_name')
     tag_names = serializers.SerializerMethodField('get_tag_names')
     editor_names = serializers.SerializerMethodField('get_editor_names')
+    viewer_names = serializers.SerializerMethodField('get_viewer_names')
 
     class Meta:
         model = Document
@@ -31,6 +32,15 @@ class DocumentSerializer(serializers.ModelSerializer):
         for editor in editors.all():
             editor_names.append(editor.username)
         return editor_names
+
+    def get_viewer_names(self, document):
+        viewers = document.viewers
+        if viewers == None:
+            return []
+        viewer_names = []
+        for viewer in viewers.all():
+            viewer_names.append(viewer.username)
+        return viewer_names
 
 class FolderSerializer(serializers.ModelSerializer):
     class Meta:

@@ -12,5 +12,6 @@ urlpatterns = [
     path('search/', SearchView.as_view()),
     path('createdir/', CreateFolderView.as_view()),
     path('listdir/', ListFolderView.as_view()),
-    path('<int:pk>/addeditor/', AddEditorView.as_view()),
+    path('<int:pk>/addcollab/', AddCollabView.as_view()),
+    path('sharedlist/', SharedListView.as_view()),
 ]

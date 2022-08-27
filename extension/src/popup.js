@@ -88,7 +88,7 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
             document.getElementById("highlightList").remove();
             document.getElementById("owner").remove();
             document.body.innerHTML += `
-            <h4 id="header" style="text-align: center; color: white;  padding: 10px;">Owner List</h4>`;
+            <h4 id="ownerHeader" style="text-align: center; color: white;  padding: 10px;">Owner List</h4>`;
             chrome.runtime.sendMessage({action: 'shared', username: data.username}, (docs) => {
                 console.log(docs);
                 owner_names = [data.username];
