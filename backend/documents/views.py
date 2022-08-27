@@ -60,6 +60,16 @@ class SearchTagView(APIView):
         queryset = Tag.objects.filter(name__icontains=request.query_params['keyword'])
         return Response(TagSerializer(queryset, many=True).data)
 
+class DeleteTagView(APIView):
+     def post(self, request, format = None):
+        tag = Tag.objects.get(name=request.data['tag_name'])
+        tag.use_count-=1
+        tag.save()
+        document = Document.objects.get(id=request.data['document_id'])
+        document.tags.remove(tag)
+        document.modified_date = timezone.now()
+        document.save()
+        return Response({'status': 'ok'})
 class TrendingView(generics.ListAPIView):
     queryset = Document.objects.filter(modified_date__gte=datetime.date.today() - datetime.timedelta(days=3),
         privacy=PUBLIC, read_count__gte=READ_COUNT_THRESHOLD)

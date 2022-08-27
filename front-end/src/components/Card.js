@@ -9,7 +9,7 @@ import Sticky from './lizard.jpg'
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import AuthContext from '../context/AuthContext'
-
+import Rating from '@mui/material/Rating';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
@@ -61,7 +61,7 @@ export default function MyCard({card}) {
   return (
 
 
-    <Card variant='outlined' sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 300, maxHeight: 300}}>
+    <Card variant='outlined' sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 340, maxHeight: 340}}>
       
 		<Link to={`../notes/${card.id}`}>
       <CardActionArea sx={{display:'flex', backgroundColor:'#d9d9d9'}} onClick={()=>{
@@ -160,6 +160,9 @@ export default function MyCard({card}) {
 
 		  })}
 		  </span>}
+		  <div style={{marginTop:12}}>
+		  <Rating name="read-only" value='3' readOnly />
+		</div>
         </CardContent>
     </Card>
   );

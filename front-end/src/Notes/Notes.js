@@ -35,9 +35,10 @@ import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import SearchHighlights from './SearchHighlights'
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import Addtags from './Addtags'
+import CancelIcon from '@mui/icons-material/Cancel';
 
+const colors = ['skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange',];
 
-const colors = ['skyblue', 'orange', '#ccccff', '#fbcc04','skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange',];
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
@@ -179,6 +180,13 @@ const Notes = () => {
 	
 		setData(response.data[0]);
 		setPrivacy(response.data[0].privacy);
+		for(let i = 0; i<response.data[0].tags.length; i++){
+		
+			delIcon.push(false);
+			console.log(delIcon);
+		}
+
+		
 		// setHostname(response.data[0].url.toString().split("/")[2]);
 		
 		// console.log(privacy);
@@ -194,7 +202,7 @@ const Notes = () => {
   useEffect(() => {
 	axios.get(`http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}`).then((response) => {
 
-	console.log(response.data);
+	// console.log(response.data);
 	setHighlights(response.data);
   //console.log(response.data[0].note);
   //setValue(response.data.note);
@@ -204,7 +212,7 @@ const Notes = () => {
 
   {user && axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then((response) => {
   
-	console.log(response.data);
+	// console.log(response.data);
 	setFolders(response.data);
 
   
@@ -252,6 +260,7 @@ const Notes = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [saved, setSaved] = useState(false);
   const [openTag, setOpenTag] = useState(false);
+  const [delIcon, setDelIcon] = useState([]);
 
 
   const handleSaved = () => {
@@ -381,22 +390,45 @@ const Notes = () => {
 					{data.tag_names.map((tag, i) => {
 							
 							return(
-								<span key={i} style={{
+								<span key={i} onMouseEnter={() => {setDelIcon(current => [...current.slice(0, i), true, ...current.slice(i + 1)]
+										
+									)}} 
+									onMouseLeave={() => {setDelIcon(current => [...current.slice(0, i), false, ...current.slice(i + 1)]
+								)}}>
+								<span style={{
 									maxWidth:'max-content', 
 									display:'inline-block',
 									color:'black',
-									padding:'1px 8px', marginRight:8,
+									padding:'4px 10px 4px 8px', marginRight:8,marginTop:8,
 									backgroundColor:`${colors[i]}`,
 									borderRadius:'10% / 30%'
 									
-									}}>
+									}}
+									
+									>									
 									<b style={{paddingRight:'2px', fontSize:18}}>#</b>
 									<Typography variant="subtitle" sx={{fontSize:18}} >
 									{tag}
 									</Typography>
 									
 								</span>
-							)
+								{delIcon[i] &&<span style={{marginLeft:'-28px'}}> <CancelIcon fontSize='medium' sx={{color:'black', borderBottom:8, borderColor:'transparent', cursor:'pointer'}} 
+									onClick = {()=>{
+										axios.post(`http://localhost:8000/documents/deletetag/`, {
+											tag_name: tag,
+											document_id:id
+										}).then((response)=>{
+											
+											if(response.status == 200){
+												window.location.reload();
+											}
+										}).catch((error)=>{
+											console.log(error);
+										})
+									}}
+									/></span>}
+							</span>
+									)
 
 						}
 					)}
