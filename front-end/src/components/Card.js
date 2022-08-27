@@ -9,7 +9,7 @@ import Sticky from './lizard.jpg'
 import { Link } from 'react-router-dom';
 import axios from 'axios'
 import AuthContext from '../context/AuthContext'
-
+import Rating from '@mui/material/Rating';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog from '@mui/material/Dialog';
@@ -61,7 +61,7 @@ export default function MyCard({card}) {
   return (
 
 
-    <Card variant='outlined' sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 300, maxHeight: 300}}>
+    <Card variant='outlined' sx={{ minWidth: 320, width:320, mr:"16px", minHeight: 340, maxHeight: 340}}>
       
 		<Link to={`../notes/${card.id}`}>
       <CardActionArea sx={{display:'flex', backgroundColor:'#d9d9d9'}} onClick={()=>{
@@ -142,13 +142,27 @@ export default function MyCard({card}) {
 
           <i>{card.created_date}</i><br /><br />
           
-          {card.tags.length>0 && <span style={{
-            margin:"10px 4px 0px 0px",
-            padding: "6px",
-            backgroundColor: "#BFC9CA",
-            borderRadius: "5% / 15%"
-          }}
-          >#{card.tag_names[0]}</span> }{/*Add br tag if more than 2 tags*/}
+          {card.tags.length>0 && <span 
+          >
+			{card.tag_names.map((tag, index) => {
+			const colors = ['skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange',];
+			return(
+				<span key={index} style={{
+					margin:"10px 8px 0px 0px",
+					padding: "6px",
+					backgroundColor: `${colors[index]}`,
+					borderRadius: "10% / 20%"
+				  }}>
+				#{tag}
+				</span>
+			);
+			  
+
+		  })}
+		  </span>}
+		  <div style={{marginTop:12}}>
+		  <Rating name="read-only" value='3' readOnly />
+		</div>
         </CardContent>
     </Card>
   );

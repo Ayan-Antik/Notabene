@@ -6,18 +6,17 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import axios from 'axios';
 
-export default function SearchItems({ searchText, docId, role }) {
-    const [data, setData] = React.useState([{
-    }]);
+export default function SearchItems({ searchTags, setSearchTags }) {
+    const [data, setData] = React.useState([{}]);
 
     React.useEffect(() => {
         {
-            searchText != "" && axios.get(`http://127.0.0.1:8000/user/search/?keyword=${searchText}`).then((response) => {
+            searchTags != "" && axios.get(`http://127.0.0.1:8000/documents/searchtags/?keyword=${searchTags}`).then((response) => {
                 setData(response.data);
             });
         }
 
-    }, [searchText]);
+    }, [searchTags]);
 
     return (
         <>
@@ -26,28 +25,21 @@ export default function SearchItems({ searchText, docId, role }) {
             bgcolor: 'background.paper',
             position: 'fixed',
             zIndex: '20',
-            margin: '-.5% auto auto 0%',
+            margin: '-1% auto auto 0%',
             border: '1px solid #ccc',
             // borderRadius: '5px'
         }}>
             <nav aria-label="">
                 <List sx={{ padding: 0 }}>
-                    {data.map(function (card, i) {
+                    {data.map(function (tag, i) {
                         if (i < 6) {
                             return (
-                                <ListItem disablePadding sx={{ borderBottom: "1px solid #ccc" }} onClick={() => {
-                                    
-                                    axios.patch(`http://localhost:8000/documents/${docId}/addcollab/`, {
-                                        username: card.username,
-                                        role: role
-                                    }, {
-                                        headers: { 'Content-type': 'application/json' }
-                                    }).then((response) => {
-                                        window.location.reload();
-                                    });
+                                <ListItem key={i} disablePadding sx={{ borderBottom: "1px solid #ccc" }} onClick={() => {
+                                    console.log(tag);
+                                    setSearchTags(tag.name);
                                 }} >
                                     <ListItemButton>
-                                        <ListItemText primary={card.username} />
+                                        <ListItemText primary={tag.name} />
                                     </ListItemButton>
                                 </ListItem>
                             )

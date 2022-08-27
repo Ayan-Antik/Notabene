@@ -29,7 +29,7 @@ const Elements = [
     {
         id: 2,
         text: "Recent Docs",
-		url: '#',
+		url: '/recentdocs',
         icon: <HistoryIcon/>
     },
     {
@@ -120,10 +120,11 @@ export default function Sidebar({user}) {
 				<ListItem key={text} disablePadding  >
 				<Link to={url} style={{textDecoration:'none', color:'black', width:'inherit'}}>
 				<ListItemButton sx={{width:'inherit'}}>
-					<ListItemIcon>
+					<ListItemIcon sx={{
+						color:'#f46523'}}>
 					{icon}
 					</ListItemIcon>
-					<ListItemText primary={text} sx={{pl:"0px"}}/>
+					<ListItemText primary={text} sx={{ml:-2}}/>
 				</ListItemButton>
 
 				</Link>

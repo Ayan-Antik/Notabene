@@ -27,7 +27,7 @@ class ListDocumentView(generics.ListAPIView):
     serializer_class = DocumentSerializer
     filterset_fields = ['owner__username', 'id', 'folder__id', 'privacy', 'editors__username', 'url']
 
-class RecentDocumentView(generics.ListAPIView):
+class RecentDocumentView(APIView):
     def get(self, request, format = None):
         queryset = Document.objects.filter(owner__username=request.query_params['username'],
             modified_date__gte=datetime.date.today() - datetime.timedelta(days=3))
@@ -43,12 +43,38 @@ class DeleteDocumentView(generics.DestroyAPIView):
 
 class AddTagView(APIView):
     def post(self, request, format = None):
-        tag = Tag.objects.get(name=request.data['tag_name'])
+        try:
+            tag = Tag.objects.get(name=request.data['tag_name'])
+        except Tag.DoesNotExist:
+            tag = Tag(name=request.data['tag_name'])
+            tag.save()
+        tag.use_count+=1
+        tag.save()
         document = Document.objects.get(id=request.data['document_id'])
         document.tags.add(tag)
+        document.modified_date = timezone.now()
         document.save()
         return Response({'status': 'ok'})
 
+class ListTagView(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+class SearchTagView(APIView):
+    def get(self, request, format = None):
+        queryset = Tag.objects.filter(name__icontains=request.query_params['keyword'])
+        return Response(TagSerializer(queryset, many=True).data)
+
+class DeleteTagView(APIView):
+     def post(self, request, format = None):
+        tag = Tag.objects.get(name=request.data['tag_name'])
+        tag.use_count-=1
+        tag.save()
+        document = Document.objects.get(id=request.data['document_id'])
+        document.tags.remove(tag)
+        document.modified_date = timezone.now()
+        document.save()
+        return Response({'status': 'ok'})
 class TrendingView(generics.ListAPIView):
     queryset = Document.objects.filter(modified_date__gte=datetime.date.today() - datetime.timedelta(days=3),
         privacy=PUBLIC, read_count__gte=READ_COUNT_THRESHOLD)

@@ -34,6 +34,11 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import SearchHighlights from './SearchHighlights';
 import Rating from '@mui/material/Rating';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import Addtags from './Addtags'
+import CancelIcon from '@mui/icons-material/Cancel';
+
+const colors = ['skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange','skyblue', '#fbcc04', '#ccccff', 'orange',];
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -161,6 +166,9 @@ const Notes = () => {
   }
   const [searchText, setSearchText] = React.useState("");
   const [searchHighlights, setSearchHighlights] = React.useState("");
+  const [searchTags, setSearchTags] = React.useState("");
+ 
+
   const handleAddEditor = (e) => {
 	setSearchText(e.target.value);
   }
@@ -173,7 +181,6 @@ const Notes = () => {
   let [data, setData] = useState({});
   const [highlights, setHighlights] = useState([{}]);
   const [privacy, setPrivacy] = useState("");
-  const [hostname, setHostname] = useState("") ;
   const [myRating, setRating] = React.useState(0);
   const [totalRating, setTotalRating] = React.useState(0);
   useEffect(() => {
@@ -183,7 +190,6 @@ const Notes = () => {
 	
 		setData(response.data[0]);
 		setPrivacy(response.data[0].privacy);
-		setHostname(response.data[0].url.toString().split("/")[2]);
 
 		axios.get(`http://127.0.0.1:8000/documents/rating/?user_id=${user.user_id}&document_id=${response.data[0].id}`).then((response) => {
 			console.log(response.data);
@@ -194,6 +200,14 @@ const Notes = () => {
 			console.log(response.data);
 			setTotalRating(response.data.rating__avg);
 		});
+		for(let i = 0; i<response.data[0].tags.length; i++){
+		
+			delIcon.push(false);
+			console.log(delIcon);
+		}
+
+		
+		// setHostname(response.data[0].url.toString().split("/")[2]);
 		
 		// console.log(privacy);
 		// console.log(typeof(encodeURI(hostname)));
@@ -208,7 +222,7 @@ const Notes = () => {
   useEffect(() => {
 	axios.get(`http://127.0.0.1:8000/highlight/list/?document__owner__username=&document__url=&document__id=${id}`).then((response) => {
 
-	console.log(response.data);
+	// console.log(response.data);
 	setHighlights(response.data);
   //console.log(response.data[0].note);
   //setValue(response.data.note);
@@ -218,7 +232,7 @@ const Notes = () => {
 
   {user && axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then((response) => {
   
-	console.log(response.data);
+	// console.log(response.data);
 	setFolders(response.data);
 
   
@@ -267,6 +281,9 @@ const Notes = () => {
   const [saved, setSaved] = useState(false);
   const [docDelDialog, setDocDelDialog] = useState(false);
   const [role, setRole] = useState("viewer");
+  const [openTag, setOpenTag] = useState(false);
+  const [delIcon, setDelIcon] = useState([]);
+
 
   const handleSaved = () => {
 	setSaved(true);
@@ -397,23 +414,59 @@ const Notes = () => {
 				}
 			</div>
 			{data.tags && data.tags.length > 0 && 
-	  		<div style={{width:'80%'}}>
-				{data.tag_names.map((tag, i) => {
-						
-						return(
-							<div key={i} style={{maxWidth:'max-content', padding:6, marginBottom:24, backgroundColor:'#ccc', borderRadius:'10% / 20%'}}>
-								<b style={{paddingRight:'2px', fontSize:18}}>#</b>
-								<Typography variant="subtitle" sx={{fontSize:18}} >
-								{tag}
-								</Typography>
-								
-							</div>
-						)
+				<>
+					{data.tag_names.map((tag, i) => {
+							
+							return(
+								<span key={i} onMouseEnter={() => {setDelIcon(current => [...current.slice(0, i), true, ...current.slice(i + 1)]
+										
+									)}} 
+									onMouseLeave={() => {setDelIcon(current => [...current.slice(0, i), false, ...current.slice(i + 1)]
+								)}}>
+								<span style={{
+									maxWidth:'max-content', 
+									display:'inline-block',
+									color:'black',
+									padding:'4px 10px 4px 8px', marginRight:8,marginTop:8,
+									backgroundColor:`${colors[i]}`,
+									borderRadius:'10% / 30%'
+									
+									}}
+									
+									>									
+									<b style={{paddingRight:'2px', fontSize:18}}>#</b>
+									<Typography variant="subtitle" sx={{fontSize:18}} >
+									{tag}
+									</Typography>
+									
+								</span>
+								{delIcon[i] &&<span style={{marginLeft:'-28px'}}> <CancelIcon fontSize='medium' sx={{color:'black', borderBottom:8, borderColor:'transparent', cursor:'pointer'}} 
+									onClick = {()=>{
+										axios.post(`http://localhost:8000/documents/deletetag/`, {
+											tag_name: tag,
+											document_id:id
+										}).then((response)=>{
+											
+											if(response.status == 200){
+												window.location.reload();
+											}
+										}).catch((error)=>{
+											console.log(error);
+										})
+									}}
+									/></span>}
+							</span>
+									)
 
-					}
-				)}
-			</div>
-		}
+						}
+					)}
+				</>
+			}
+			<Tooltip title="Add Tags">
+				<IconButton onClick={()=>{setOpenTag(true);}} >
+					<AddBoxIcon fontSize='large' sx={{color:'#1976d2'}} />
+				</IconButton>
+			</Tooltip>
 			{/* <div style={{display: 'grid', gridTemplateColumns: 'max-content auto'}}>
 			
 				<span style={{font: '24px bold', marginLeft: '16px'}}>
@@ -427,7 +480,7 @@ const Notes = () => {
 
 	{hasEditAccess(user.user_id, data) && 
 	
-	<div>
+	<div style={{float:'right', marginRight:64}}>
 	  {/* <Typography variant="subtitle1" component="div">
 		Selected: {selectedValue}
 	  </Typography>
@@ -447,7 +500,7 @@ const Notes = () => {
 			backgroundColor:'#FBCC04',
 		}
 		}}>
-		<ShareRoundedIcon sx={{}}/>
+		<ShareRoundedIcon/>
 		<span style={{paddingLeft:6}}>
 		Add Collaborator
 		</span>
@@ -461,7 +514,11 @@ const Notes = () => {
 			<input type="radio" value="viewer" name="role" defaultChecked/> Viewer
 			<input type="radio" value="editor" name="role" /> Editor
 		</div>
-	  <Search sx={{backgroundColor:'#f5f5f5', ml:2, mb:2}}>
+	  <Search sx={{backgroundColor:'#f5f5f5', ml:2, mb:2,
+			':hover':{
+				bgcolor:'#e5e5e5',
+			},
+		}}>
 		<SearchIconWrapper sx={{p:2}}><SearchIcon /></SearchIconWrapper>
 		<StyledInputBase sx={{pl:2}}
 		  placeholder="Add Collaborator"
@@ -506,6 +563,14 @@ const Notes = () => {
 		</List>
 		</div>}
 		</Dialog>
+
+		{hasEditAccess(user.user_id, data) && <Addtags 
+			openTag = {openTag}
+			setOpenTag = {setOpenTag}
+			searchTags = {searchTags}
+			setSearchTags = {setSearchTags}
+			docid = {id}
+		/>}
 	
 		<Dialog open={saved} onClose={()=>{setSaved(false)}}>
 		<DialogTitle>Note Saved</DialogTitle>
@@ -817,4 +882,4 @@ const Notes = () => {
   )
 }
 
-export default Notes
+export default Notes;
