@@ -6,7 +6,14 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
         <div style="padding: 10px;">
         <span> <img src="`+chrome.runtime.getURL('images/user.png')+`" height=35 width=35> </span>
         <span style="color: white;"> <b style="font-size:larger;">`+ data.username +`</b></span>
-        <span style="float: right;"><button id="logoutBtn" type="button" class="btn btn-primary">Logout</button></span>
+        <span style="float: right;">
+        
+        <button id="owner" type="button" class="btn">
+        <img src="`+chrome.runtime.getURL('images/owner.png')+`" height=25 width=25">
+        </button>
+        <button id="logoutBtn" type="button" class="btn">
+        <img src="`+chrome.runtime.getURL('images/logout.png')+`" height=20 width=20 style="float: right;">
+        </button></span>
         </div>
         <h4 id="header" style="text-align: center; color: white;  padding: 10px;">Highlights</h4>
         <ul class="list-group" id="highlightList" style="padding: 0px 10px 10px 10px">`;
@@ -69,8 +76,6 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
             });
         });
         document.body.innerHTML += "</ul>";
-        document.body.innerHTML += `
-        <button id="owner" type="button" class="btn btn-primary ownerbtn">Set Owner</button>`;
         document.getElementById("logoutBtn").addEventListener("click", (e) => {
             e.preventDefault();
             chrome.storage.local.clear();

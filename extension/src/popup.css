@@ -21,7 +21,14 @@ input {
     min-height: 48px;
     
 }
-
+#owner:hover{
+    background-color: #dd5353;
+    border:none;
+}
+#logoutBtn:hover{
+    background-color: #dd5353;
+    border:none;
+}
 .ownerbtn {
     position: absolute;
     bottom: 0;

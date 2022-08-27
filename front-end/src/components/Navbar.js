@@ -155,7 +155,7 @@ export default function Navbar({user, handleSubmit}) {
         position: "fixed",
         // marginLeft: "17%"
         backgroundColor: "#f46524",
-        zIndex:'10'
+        zIndex:'15'
       }}>
         <Toolbar sx={{ml:2}}>
           {/* <IconButton

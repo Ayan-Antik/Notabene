@@ -32,7 +32,7 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-
+import SearchHighlights from './SearchHighlights'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -151,8 +151,14 @@ const Notes = () => {
 	  logoutUser();
   }
   const [searchText, setSearchText] = React.useState("");
+  const [searchHighlights, setSearchHighlights] = React.useState("");
   const handleAddEditor = (e) => {
 	setSearchText(e.target.value);
+  }
+
+  const handleSearchHighlights = (e) => {
+	// console.log(e.target.value);
+	setSearchHighlights(e.target.value);
   }
 
   let [data, setData] = useState({});
@@ -189,13 +195,13 @@ const Notes = () => {
 
 	});
 
-  axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then((response) => {
+  {user && axios.get(`http://127.0.0.1:8000/documents/listdir/?owner__username=${user.username}`).then((response) => {
   
 	console.log(response.data);
 	setFolders(response.data);
 
   
-	});
+	});}
 	
 	
   }, []);
@@ -241,7 +247,7 @@ const Notes = () => {
 
   const handleSaved = () => {
 	setSaved(true);
-	// setTimeout(() => {setSaved(false)}, 1000);
+	setTimeout(() => {setSaved(false)}, 1000);
   };
   const handleClickOpen = () => {
 
@@ -260,11 +266,11 @@ const Notes = () => {
   return (
   	<div >
 
-	<Navbar user = {user} handleSubmit = {handleSubmit}/>
-		<Sidebar user = {user} />
+	{user &&<Navbar user = {user} handleSubmit = {handleSubmit}/>}
+		{user &&<Sidebar user = {user} />}
 
 
-	<div className='note-container'>
+	{user && <div className='note-container'>
 
 		<div className='note-info'>
 
@@ -509,8 +515,38 @@ const Notes = () => {
 	{/* code for popup ends */}
 		
 		{myframe}
-	   
-		{highlights.length && <h1 style={{textAlign:'left'}}>Highlights: </h1>}
+		
+		{highlights.length>0 && 
+		<div>
+		<h1 style={{
+			textAlign:'left', 
+			borderTop: '1px solid #ccc',
+			margin:'48px 24px auto auto', paddingTop: 12
+		}}> {highlights.length} Highlights </h1>
+ 		
+	<Search sx={{
+		
+		width:'100%',
+		backgroundColor:'#f5f5f5',
+		':hover':{
+			bgcolor:'#e5e5e5',
+		},
+		mt:-4,mb:2,ml:72,
+		pt:1, pb:1,
+
+	}}>
+		<SearchIconWrapper sx={{pl:2, pb:2}}><SearchIcon /></SearchIconWrapper>
+		<StyledInputBase sx={{pl:2, width:'inherit'}}
+		  placeholder="Search Highlights"
+		  inputProps={{ 'aria-label': 'search' }}
+		  onChange={handleSearchHighlights}/>
+	  </Search>
+	{searchHighlights && <SearchHighlights 
+		  searchHighlights = {searchHighlights}
+		  docId = {id}/>
+		}
+		
+		</div>}
 
 	<div>
 
@@ -525,8 +561,10 @@ const Notes = () => {
 			<div className='highlighted'>
 
 	  {hasEditAccess(user.user_id, data) && <Tooltip title="Delete Highlight" sx={{
-					float:'right', p: '0px 24px 0px 0px'}} >
-					<IconButton  onClick={() => { 
+					float:'right', m: '0px 24px 0px 0px'}} >
+					<IconButton
+				
+					onClick={() => { 
 							axios.delete(`http://127.0.0.1:8000/highlight/${highlight.id}/delete/`).then((response) => {
 								console.log(response.data);
 								setHighlights(current => current.filter(obj => obj.id !== highlight.id));
@@ -534,15 +572,19 @@ const Notes = () => {
 								console.log(error);
 							});
 					}}>
-						<DeleteIcon color='error' sx={{fontSize:'36px'}}/> 	
+						<DeleteIcon color='error' sx={{
+							fontSize:'36px',
+							':hover': {
+								color:'darkred'
+							}}}/> 	
 					</IconButton>
 
 				</Tooltip>}
-				<Typography sx={{width:'80%', mb:4}}>
+				<Typography sx={{width:'80%', mb:4, mt:4}} id={highlight.id}>
 					{highlight.text}
 				</Typography>
 			</div>
-	 {data.owner != user.user_id && highlight.note &&
+	 {!hasEditAccess(user.user_id, data) && highlight.note &&
 		<div data-color-mode="light" style={{border: '1px solid #ccc', padding:16, marginRight:24}}>
 
 		<MarkdownPreview
@@ -593,8 +635,10 @@ const Notes = () => {
 	  >
 			
 				<SaveIcon color='primary' sx={{
-					fontSize:'36px'
-					// color:'blue'
+					fontSize:'36px',
+					':hover': {
+						color:'blue'
+					 }
 
 				}} 
 				
@@ -655,8 +699,10 @@ const Notes = () => {
 		}  >
 		  
 			<DeleteIcon color='error' sx={{
-			  fontSize:'36px'
-			  // color:'blue'
+			  fontSize:'36px',
+			 ':hover': {
+				color:'darkred'
+			 }
 
 			}} 
 			
@@ -683,7 +729,7 @@ const Notes = () => {
 	
 	</div>
 
-	</div>
+	</div>}
 
 	</div>
   )
