@@ -30,6 +30,8 @@
 .card-view-2{
     
     display: grid;
+    grid-column-gap: 48px;
+
     grid-template-columns:  max-content max-content max-content;
 
 }
