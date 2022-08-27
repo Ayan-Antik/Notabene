@@ -15,4 +15,6 @@ urlpatterns = [
     path('listdir/', ListFolderView.as_view()),
     path('<int:pk>/addcollab/', AddCollabView.as_view()),
     path('sharedlist/', SharedListView.as_view()),
+    path('rating/', RatingView.as_view()),
+    path('totalrating/', TotalRatingView.as_view()),
 ]

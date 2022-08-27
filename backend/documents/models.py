@@ -44,7 +44,11 @@ class Document(models.Model):
     privacy = models.CharField(max_length=2, choices=PRIVACY_CHOICES, default=PRIVATE)
     is_deleted = models.BooleanField(default=False)
     read_count = models.IntegerField(default=0)
-    rating  = models.IntegerField(default=0)
 
     def __str__(self):
         return self.title
+
+class DocRating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    rating = models.IntegerField(default=0)

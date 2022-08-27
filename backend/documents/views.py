@@ -7,6 +7,7 @@ import datetime
 from django.db.models import Q
 from django.conf import settings
 from django.core.mail import send_mail
+from django.db.models import Avg
 
 READ_COUNT_THRESHOLD = 1
 
@@ -116,3 +117,28 @@ class SharedListView(APIView):
         queryset = Document.objects.filter(Q(editors__username=request.query_params['username']) | 
             Q(viewers__username=request.query_params['username']))
         return Response(DocumentSerializer(queryset, many=True).data)
+
+class RatingView(APIView):
+    def get(self, request, format = None):
+        try:
+            docRating = DocRating.objects.get(user__id=request.query_params['user_id'], document__id=request.query_params['document_id'])
+        except DocRating.DoesNotExist:
+            return Response({'rating': 0})
+        return Response({'rating': docRating.rating})
+
+    def post(self, request, format = None):
+        user = User.objects.get(id=request.data['user_id'])
+        document = Document.objects.get(id=request.data['document_id'])
+        try:
+            docRating = DocRating.objects.get(user=user, document=document)
+        except DocRating.DoesNotExist:
+            docRating = DocRating(user=user, document=document)
+            docRating.save()
+        docRating.rating = request.data['rating']
+        docRating.save()
+        return Response({'status': 'ok'})
+
+class TotalRatingView(APIView):
+    def get(self, request, format = None):
+        docRatings = DocRating.objects.filter(document__id=request.query_params['document_id'])
+        return Response(docRatings.aggregate(Avg('rating')))

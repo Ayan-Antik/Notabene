@@ -32,7 +32,8 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-import SearchHighlights from './SearchHighlights'
+import SearchHighlights from './SearchHighlights';
+import Rating from '@mui/material/Rating';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -173,6 +174,8 @@ const Notes = () => {
   const [highlights, setHighlights] = useState([{}]);
   const [privacy, setPrivacy] = useState("");
   const [hostname, setHostname] = useState("") ;
+  const [myRating, setRating] = React.useState(0);
+  const [totalRating, setTotalRating] = React.useState(0);
   useEffect(() => {
 	if(id!=null){
 
@@ -181,6 +184,16 @@ const Notes = () => {
 		setData(response.data[0]);
 		setPrivacy(response.data[0].privacy);
 		setHostname(response.data[0].url.toString().split("/")[2]);
+
+		axios.get(`http://127.0.0.1:8000/documents/rating/?user_id=${user.user_id}&document_id=${response.data[0].id}`).then((response) => {
+			console.log(response.data);
+			setRating(response.data.rating);
+		});
+
+		axios.get(`http://127.0.0.1:8000/documents/totalrating/?document_id=${response.data[0].id}`).then((response) => {
+			console.log(response.data);
+			setTotalRating(response.data.rating__avg);
+		});
 		
 		// console.log(privacy);
 		// console.log(typeof(encodeURI(hostname)));
@@ -556,6 +569,30 @@ const Notes = () => {
 
 	</Dialog>
 	</div>}
+
+	<Rating
+        name="half-rating-read"
+		precision={0.1} readOnly
+        value={totalRating}
+      />
+	  {totalRating}
+	  <br/>
+	  
+
+	{!hasEditAccess(user.user_id, data) && <Rating
+        name="simple-controlled"
+        value={myRating}
+        onChange={(event, newRating) => {
+        	setRating(newRating);
+			axios.post(`http://127.0.0.1:8000/documents/rating/`, {
+				  user_id: user.user_id,
+				  document_id: id,
+				  rating: newRating
+			  },).then((response)=>{
+				console.log(response);
+			  });
+        }}
+      />}
 
 	{/* code for popup ends */}
 		
