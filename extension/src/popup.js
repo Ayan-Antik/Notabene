@@ -80,6 +80,9 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
             e.preventDefault();
             chrome.storage.local.clear();
             location.reload();
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.reload(tabs[0].id);
+            });
         });
 
         document.getElementById("owner").addEventListener("click", (e) => {
@@ -87,6 +90,7 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
             document.getElementById("header").remove();
             document.getElementById("highlightList").remove();
             document.getElementById("owner").remove();
+            document.getElementById("logoutBtn").remove();
             document.body.innerHTML += `
             <h4 id="ownerHeader" style="text-align: center; color: white;  padding: 10px;">Owner List</h4>`;
             chrome.runtime.sendMessage({action: 'shared', username: data.username}, (docs) => {
@@ -133,6 +137,9 @@ chrome.storage.local.get(['username', 'owner_name'], data => {
                 password: document.getElementById("password").value }, (response) => {
                     if (response.isLoggedIn) {
                         location.reload();
+                        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                            chrome.tabs.reload(tabs[0].id);
+                        });
                     }
                    else {
                         document.body.innerHTML += `<div class="alert alert-danger" role="alert">
