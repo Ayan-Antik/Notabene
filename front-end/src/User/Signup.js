@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import './User.css'
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function SignUp({name, setName, mail, setMail, pass, setPass, handleSubmit}){
 
@@ -58,6 +59,12 @@ export default function SignUp({name, setName, mail, setMail, pass, setPass, han
             >
                 Sign Up
             </Button>
+
+            
+            <p style={{color:'white',  paddingLeft:16}}>
+                Got an Account?
+            <Link to="/user/login/" style={{color:'white', paddingLeft:8}}>Log In</Link>
+            </p>
         </div>
 
         </Box>

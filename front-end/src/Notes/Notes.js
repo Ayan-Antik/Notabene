@@ -512,7 +512,7 @@ const Notes = () => {
 		<Typography variant='h6' sx={{p:2}}>
 			Share "{data.title}"
 		</Typography>
-		<div onChange={(e)=>{setRole(e.target.value)}}>
+		<div onChange={(e)=>{setRole(e.target.value)}} style={{padding:'12px'}}>
 			<input type="radio" value="viewer" name="role" defaultChecked/> Viewer
 			<input type="radio" value="editor" name="role" /> Editor
 		</div>

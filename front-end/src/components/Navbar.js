@@ -157,7 +157,7 @@ export default function Navbar({user, handleSubmit}) {
         backgroundColor: "#f46524",
         zIndex:'15'
       }}>
-        <Toolbar sx={{ml:2}}>
+        <Toolbar sx={{ml:-1}}>
           {/* <IconButton
             size="large"
             edge="start"

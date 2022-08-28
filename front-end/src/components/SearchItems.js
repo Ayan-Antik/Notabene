@@ -39,9 +39,9 @@ export default function SearchItems({searchText, user}) {
         bgcolor: 'background.paper', 
         position:'fixed', 
         zIndex:'20', 
-        margin: '-22px auto auto 6.2%', 
+        margin: '-22px auto auto 4.7%', 
         border:'1px solid #e5e5e5',
-        borderRadius: '5px' }}>
+         }}>
       <nav aria-label="">
         <List sx={{padding:0}}>
           {data.map(function(card, i){

@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import './User.css'
 import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 export default function LogIn({name, setName, pass, setPass, handleSubmit}){
 
@@ -50,6 +51,11 @@ export default function LogIn({name, setName, pass, setPass, handleSubmit}){
             >
                 Log In
             </Button>
+
+            <p style={{color:'white',  paddingLeft:24}}>
+                No account?
+            <Link to="/user/signup/" style={{color:'white', paddingLeft:8}}>Sign Up</Link>
+            </p>
         </div>
 
         </Box>
