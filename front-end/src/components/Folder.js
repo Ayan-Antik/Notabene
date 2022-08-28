@@ -311,7 +311,8 @@ export default function Folder({user}) {
                 <IconButton sx={{color:'#f46523' , display: 'flex', float: 'right', marginTop:-6, marginRight:1}} onClick={()=>{
                   axios.delete(`http://localhost:8000/documents/${d.id}/deletefolder/`).then((response) => {
                   console.log(response);
-                  window.location.reload();
+                  // window.location.reload();
+                  setDir(currentDir => [...currentDir.filter(item => item.id !== d.id)]);
                 }).catch((error) => {
                   console.log(error);
                 })

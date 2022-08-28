@@ -5,7 +5,7 @@ import Sidebar from '../components/Sidebar'
 import './Notes.css'
 import Navbar from '../components/Navbar'
 import { Button, ListItemIcon, Typography } from '@mui/material';
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axios from "axios"
 import External from './external.png'
 import MDEditor from '@uiw/react-md-editor';
@@ -109,8 +109,7 @@ function SimpleDialog(props, folderArray) {
   };
 
   console.log(folderArray);
-
-
+  
   return (
 	<Dialog onClose={handleClose} open={open}>
 	  <DialogTitle>Select A Folder</DialogTitle>
@@ -158,6 +157,7 @@ const Notes = () => {
 
   const {id} = useParams()
   
+  const nav = useNavigate();
   const { user, logoutUser } = useContext(AuthContext);
   const handleSubmit = (event) =>{
 	  console.log("Logout Clicked");
@@ -173,10 +173,6 @@ const Notes = () => {
 	setSearchText(e.target.value);
   }
 
-  const handleSearchHighlights = (e) => {
-	// console.log(e.target.value);
-	setSearchHighlights(e.target.value);
-  }
 
   let [data, setData] = useState({});
   const [highlights, setHighlights] = useState([{}]);
@@ -200,6 +196,7 @@ const Notes = () => {
 			console.log(response.data);
 			setTotalRating(response.data.rating__avg);
 		});
+		setDelIcon([]);
 		for(let i = 0; i<response.data[0].tags.length; i++){
 		
 			delIcon.push(false);
@@ -349,7 +346,9 @@ const Notes = () => {
 			  }).then((response)=>{
 				console.log(response);
 				if(response.status == 200){
-				  window.location.reload();
+				//   window.location.reload();
+				setPrivacy("pu");
+
 				}
 			  });
 
@@ -379,7 +378,9 @@ const Notes = () => {
 			  }).then((response)=>{
 				console.log(response);
 				if(response.status == 200){
-				  window.location.reload();
+				//   window.location.reload();
+				setPrivacy("pr");
+
 				}
 			  });
 
@@ -413,7 +414,7 @@ const Notes = () => {
 				</>
 				}
 			</div>
-			{data.tags && data.tags.length > 0 && 
+			{data.tag_names && data.tag_names.length > 0 && 
 				<>
 					{data.tag_names.map((tag, i) => {
 							
@@ -448,7 +449,8 @@ const Notes = () => {
 										}).then((response)=>{
 											
 											if(response.status == 200){
-												window.location.reload();
+												// window.location.reload();
+												setData(data => ({...data, tag_names: data.tag_names.filter(t => t !== tag)}));
 											}
 										}).catch((error)=>{
 											console.log(error);
@@ -570,6 +572,8 @@ const Notes = () => {
 			searchTags = {searchTags}
 			setSearchTags = {setSearchTags}
 			docid = {id}
+			data = {data}
+			setData = {setData}
 		/>}
 	
 		<Dialog open={saved} onClose={()=>{setSaved(false)}}>
@@ -582,7 +586,8 @@ const Notes = () => {
 			  axios
 			  .delete(`http://localhost:8000/documents/${id}/delete/`).then((response)=>{
 				console.log(response);
-				window.location.replace("http://127.0.0.1:3000/");
+				// window.location.replace("http://127.0.0.1:3000/");
+				nav('/');
 			  });
 			}}>Yes</Button>
 		<Button id='doc-del-no' onClick={()=>{setDocDelDialog(false)}}>No</Button>
@@ -696,10 +701,13 @@ const Notes = () => {
 		<StyledInputBase sx={{pl:2, width:'inherit'}}
 		  placeholder="Search Highlights"
 		  inputProps={{ 'aria-label': 'search' }}
-		  onChange={handleSearchHighlights}/>
+		  value={searchHighlights}
+		  onChange={(e)=>{setSearchHighlights(e.target.value)}}
+		  />
 	  </Search>
 	{searchHighlights && <SearchHighlights 
 		  searchHighlights = {searchHighlights}
+		  setSearchHighlights = {setSearchHighlights}
 		  docId = {id}/>
 		}
 		
@@ -844,9 +852,14 @@ const Notes = () => {
 			  }, {
 				  headers: { 'Content-type': 'application/json' }
 			  }).then((response)=>{
+				console.log(response.status + " " + response.statusText);
 				console.log(response);
-				if(response.status == 200){
+				if(response.status === 201 || response.status === 200){
 				  window.location.reload();
+				// setHighlights(current => current.filter(obj => obj.id !== highlight.id));
+				// setHighlights(current => current.filter(obj => obj.id !== highlight.id));
+
+				
 				}
 			  });
 

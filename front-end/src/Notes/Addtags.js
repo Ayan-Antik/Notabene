@@ -47,7 +47,7 @@ const Search = styled('div')(({ theme }) => ({
     },
   }));
   
-const Addtags = ({openTag, setOpenTag, searchTags, setSearchTags, docid}) => {
+const Addtags = ({openTag, setOpenTag, searchTags, setSearchTags, docid, data, setData}) => {
 
     const [tags, setTags] = React.useState([{}]);
     useEffect(() => {
@@ -84,6 +84,8 @@ const Addtags = ({openTag, setOpenTag, searchTags, setSearchTags, docid}) => {
             }).then((response) => {
                 setOpenTag(false);
                 setSearchTags('');
+                // setData(data.tag_names.push(searchTags));
+                // setData(data.tags.push(searchTags));
                 window.location.reload();
             }).catch((error) => {
                 console.log(error);

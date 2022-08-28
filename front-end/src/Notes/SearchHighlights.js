@@ -7,7 +7,7 @@ import ListItemText from '@mui/material/ListItemText';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-export default function SearchHighlights({ searchHighlights, docId }) {
+export default function SearchHighlights({ searchHighlights, docId, setSearchHighlights }) {
     const [data, setData] = React.useState([{
     }]);
 
@@ -28,7 +28,7 @@ export default function SearchHighlights({ searchHighlights, docId }) {
             // maxWidth:'100%',
             zIndex: '10',
             mt:-2,
-            ml:53,
+            ml:66,
             border: '1px solid #ccc',
             borderRadius: '5px'
         }}>
@@ -40,14 +40,15 @@ export default function SearchHighlights({ searchHighlights, docId }) {
                         if (i < 5) {
                             return (
                                 <ListItem disablePadding sx={{ borderBottom: "1px solid #ccc" }} key={i} onClick={() => {
-                                    
-                                  console.log(card);
-
+                                   
+                                    console.log(card);
+                                    setSearchHighlights("");
                                 }} >
-                                <a href={`#${card.id}`} style={{textDecoration:'none'}}>
-                                    <ListItemButton sx={{width:'770px',
+                            <a href={`#${card.id}`} style={{textDecoration:'none'}}>
+                                    <ListItemButton sx={{width:'670px',
+                                    
                                         '&:click':{
-                                            color:'red'
+                                            color:'blue'
                                         }
                                     }}>
                                             <ListItemText primary={card.text} sx={{color:'black'}}/>

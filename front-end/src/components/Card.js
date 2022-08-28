@@ -146,7 +146,7 @@ export default function MyCard({card}) {
 				<Typography variant="p" sx={{display:'flex',pl:.5, pt:0.5, fontWeight:'bold'}}>
 					Recent Tag
 				</Typography>
-				<Typography variant="h6"  sx={{display:'flex', pl:16, fontWeight:'bold'}}>
+				<Typography variant="h6"  sx={{display:'flex', pl:22, fontWeight:'bold'}}>
 					 {tag}
 				</Typography>
 				</div>}
