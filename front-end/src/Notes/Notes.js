@@ -35,6 +35,7 @@ import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
 import SearchHighlights from './SearchHighlights';
 import Rating from '@mui/material/Rating';
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import PreviewIcon from '@mui/icons-material/Preview';
 import Addtags from './Addtags'
 import CancelIcon from '@mui/icons-material/Cancel';
 
@@ -280,7 +281,7 @@ const Notes = () => {
   const [role, setRole] = useState("viewer");
   const [openTag, setOpenTag] = useState(false);
   const [delIcon, setDelIcon] = useState([]);
-
+  const [openSource, setOpenSource] = useState(false);
 
   const handleSaved = () => {
 	setSaved(true);
@@ -674,10 +675,21 @@ const Notes = () => {
 	</>
 	  }
 
-	{/* code for popup ends */}
-		
+	  <Dialog fullWidth = 'true' maxWidth='lg' open={openSource} onClose={()=>{setOpenSource(false)}} >
+	  
 		{myframe}
-		
+
+	  </Dialog>
+
+	{/* code for popup ends */}
+		<br></br>
+		<Tooltip title = "preview source">
+			
+				<IconButton onClick={()=>{setOpenSource(true)}}>
+					<PreviewIcon fontSize='large' sx={{color:'#1976d2'}}/>
+				</IconButton>
+			
+		</Tooltip>
 		{highlights.length>0 && 
 		<div>
 		<h1 style={{
