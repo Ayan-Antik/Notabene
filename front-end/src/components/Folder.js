@@ -16,6 +16,7 @@ import { Form, FormControl, InputLabel, Input, InputAdornment, Tooltip, IconButt
 import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
+import { display } from '@mui/system';
 
 
 export default function Folder({user}) {
@@ -33,6 +34,7 @@ export default function Folder({user}) {
     // console.log(open);
 
   };
+
 
   const [dir, setDir] = React.useState([{}]);
 
@@ -127,14 +129,16 @@ export default function Folder({user}) {
 
               return(
               <span key={index}>
-                <ListItemButton key={index} onClick={() => handleClick(d.id-1)} sx={{maxWidth:'80%'}}>
+                <ListItemButton key={index} onClick={() => handleClick(d.id-1)} sx={{maxWidth:'90%'}}
+                  
+                >
                   <ListItemIcon>
                     <FolderIcon sx={{color:'#f46523'}}/>
                   </ListItemIcon>
                   <ListItemText primary={d.name}/>
                   {open[d.id-1] ? <ExpandLess/> : <ExpandMore/>}
-                </ListItemButton>
-                <IconButton sx={{color:'#f46523' , display: 'flex', float: 'right', marginTop:-6, marginRight:1}} onClick={()=>{
+                  </ListItemButton>
+                 <IconButton sx={{color:'grey', display:'flex', float:'right', mt:-5.5}} onClick={()=>{
                   axios.delete(`http://localhost:8000/documents/${d.id}/deletefolder/`).then((response) => {
                   console.log(response);
                   // window.location.reload();
@@ -144,7 +148,7 @@ export default function Folder({user}) {
                 })
               }
                 }>
-                <DeleteIcon  />
+                <DeleteIcon fontSize='small'/>
                 </IconButton>
                 <Collapse in={open[d.id-1]} timeout="auto" unmountOnExit>
               
