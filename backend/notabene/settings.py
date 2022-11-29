@@ -181,9 +181,9 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, '..//front-end//build//static'),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, '..//front-end//build//static'),
+# ]
 
 # CORS_ORIGIN_WHITELIST = [
 #     'http://localhost:3000'

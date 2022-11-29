@@ -42,9 +42,8 @@ export default function SearchItems({ searchText, docId, role }) {
                                         role: role
                                     }, {
                                         headers: { 'Content-type': 'application/json' }
-                                    }).then((response) => {
-                                        window.location.reload();
                                     });
+                                    window.location.reload();
                                 }} >
                                     <ListItemButton>
                                         <ListItemText primary={card.username} />
