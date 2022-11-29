@@ -24,7 +24,7 @@ Notabene is a browser based knowledge management tool. It basically consists of 
   * Categorize documents based on folders 📁
   * Collaborate with other users in editing documents 👋
   * Share private documents with selective users 📧
-  * Collaboration and share request will be sent through e-mail 📫
+  * Collaboration and share requests will be sent through e-mail 📫
   * Rate other documents ⭐
   * Trending documents will be shown in feed ⚡
   * Document recommendation 📚
