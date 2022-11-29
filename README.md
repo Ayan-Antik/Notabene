@@ -13,7 +13,8 @@ Notabene is a browser based knowledge management tool. It basically consists of 
   * Take notes corresponding to each highlight 🗒️
 
 ![](images/1.png)
- 
+<p align="center"><b><i>Fig 1: </i>Extension Demo</b></p><br/>
+
 * ### Website
   * View and edit *documents* (Here, "document" refers to a set of highlights and notes of a webpage) 📓
   * View source webpage of a document in the website 📜
@@ -30,9 +31,13 @@ Notabene is a browser based knowledge management tool. It basically consists of 
   * Search through public documents and highlights inside a document 🔍
 
 ![](images/5.png)
+<p align="center"><b><i>Fig 2: </i>Login</b></p><br/>
 
 ![](images/2.png)
+<p align="center"><b><i>Fig 3: </i>Feed</b></p><br/>
 
 ![](images/3.png)
+<p align="center"><b><i>Fig 4: </i>Document</b></p><br/>
 
 ![](images/4.png)
+<p align="center"><b><i>Fig 5: </i>Webpage source</b></p>
