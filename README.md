@@ -1,6 +1,8 @@
 # Notabene
 Notabene is a browser based knowledge management tool. It basically consists of a **browser extension** to highlight texts and take notes from webpages and a **website** to manage them.
 
+**Demo Video:** https://youtu.be/8-jehUd4qb4
+
 ## Tech Stack
 - Django REST Framework
 - React
