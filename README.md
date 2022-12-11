@@ -1,7 +1,17 @@
 # Notabene
 Notabene is a browser based knowledge management tool. It basically consists of a **browser extension** to highlight texts and take notes from webpages and a **website** to manage them.
 
+Website: https://notabene-web.web.app/
+
 **Demo Video:** https://youtu.be/8-jehUd4qb4
+
+## Installing the extension
+1. Download [this](https://drive.google.com/file/d/1p6qAptrLCwWZbGNdIHjZb7RHHUNoDmA3/view?usp=share_link) zip file.
+2. Unzip it. You will get a folder named *notabene-extension*.
+3. Go to *Extensions* in your Chrome browser menu.
+4. Turn on *Developer mode*.
+5. Select *Load unpacked*.
+6. Choose the *notabene-extension* folder.
 
 ## Tech Stack
 - Django REST Framework
